@@ -10,7 +10,7 @@ int process_cnt = 0;
 
 struct Process
 {
-    char name[64];
+    char name[128];
     __pid_t pid;
     __pid_t ppid;
 } process[65536];
