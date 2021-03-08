@@ -26,7 +26,7 @@ void ParameterMatch(int argc, char *argv[])
             numeric_sort = 1;
         if (strcmp(argv[i], "-V") == 0 || strcmp(argv[i], "--version") == 0)
             version = 1;
-        printf("argv[%d] = %s\n", i, argv[i]);
+        //printf("argv[%d] = %s\n", i, argv[i]);
     }
     assert(!argv[argc]);
 };
