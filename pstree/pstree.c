@@ -62,12 +62,10 @@ int main(int argc, char *argv[])
     {
         while ((dir = readdir(d)) != NULL)
         {
-            int pid = -1;
-            //printf("%s\n", dir->d_name);
+            __pid_t pid = -1;
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
-                //printf("%d\n", pid);
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
@@ -79,7 +77,7 @@ int main(int argc, char *argv[])
         }
         closedir(d);
     }
-    for (int i = 0; i < 6; i++)
+    for (int i = 0; i < 200; i++)
         printf("%s\n", process[i].name);
     return 0;
 }
