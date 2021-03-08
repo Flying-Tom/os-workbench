@@ -53,6 +53,7 @@ int main(int argc, char *argv[])
                 FILE *fp;
                 fp = fopen(strcat(strcat("/proc/", dir->d_name), "/stat"), "r");
                 fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
+                printf("ppid[%d]:%d\n", PID, ppid[PID]);
                 pid_rec[pid_cnt++] = PID;
             }
         }
