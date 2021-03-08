@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*s (%s) %*s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
-                process[process_cnt].name[strlen(process[process_cnt].name)] = '\0';
+                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 fclose(fp);
                 process_cnt++;
             }
