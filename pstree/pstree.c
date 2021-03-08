@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include <dirent.h>
@@ -52,7 +51,7 @@ int main(int argc, char *argv[])
             {
                 //printf("%d\n", PID);
                 FILE *fp;
-                fp = fopen(strcat(strcat("/proc/", itoa(PID)), "/stat"), "r");
+                fp = fopen(strcat(strcat("/proc/", dir->d_name), "/stat"), "r");
                 fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
                 pid_rec[pid_cnt++] = PID;
             }
