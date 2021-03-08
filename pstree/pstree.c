@@ -50,7 +50,7 @@ int main(int argc, char *argv[])
             if (PID != -1)
             {
                 printf("%d\n", PID);
-                char stat_buf[64];
+                char stat_buf[256];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 printf("%s\n", stat_buf);
                 FILE *fp = fopen(stat_buf, "r");
