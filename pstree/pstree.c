@@ -48,7 +48,7 @@ void PrintProcessTree(){
 int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
-    printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n", show_pids, numeric_sort, version);
+    //printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n", show_pids, numeric_sort, version);
     if (version)
     {
         PrintVersion();
