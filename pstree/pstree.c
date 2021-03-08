@@ -5,8 +5,14 @@
 
 int show_pids = 0, numeric_sort = 0, version = 0;
 char filename_buf[256];
-int pid_rec[65536] = {}, pid_cnt = 0;
-int ppid[65536] = {};
+
+int process_cnt = 0;
+
+struct Process
+{
+    __pid_t pid;
+    __pid_t ppid;
+} process[65536];
 
 void ParameterMatch(int argc, char *argv[])
 {
@@ -49,13 +55,13 @@ int main(int argc, char *argv[])
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
-                printf("%d\n", pid);
+                //printf("%d\n", pid);
+                process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*s %*s %*s %*s %d", &ppid[pid]);
-                printf("ppid[%d]:%d\n", pid, ppid[pid]);
-                pid_rec[pid_cnt++] = pid;
+                fscanf(fp, "%*s %*s %*s %*s %d", &process[process_cnt].ppid);
+                process_cnt++;
             }
         }
         closedir(d);
