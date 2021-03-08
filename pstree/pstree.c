@@ -10,6 +10,7 @@ int process_cnt = 0;
 
 struct Process
 {
+    char name[64];
     __pid_t pid;
     __pid_t ppid;
 } process[65536];
@@ -71,12 +72,14 @@ int main(int argc, char *argv[])
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*s %*s %*s %*s %d", &process[process_cnt].ppid);
+                fscanf(fp, "%*s (%s) %*s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
                 fclose(fp);
                 process_cnt++;
             }
         }
         closedir(d);
     }
+    for (int i = 0; i < 65536; i++)
+        printf("%s\n", process[i].name);
     return 0;
 }
