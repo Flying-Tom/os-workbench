@@ -79,7 +79,7 @@ int main(int argc, char *argv[])
         }
         closedir(d);
     }
-    for (int i = 0; i < 65536; i++)
+    for (int i = 0; i < 6; i++)
         printf("%s\n", process[i].name);
     return 0;
 }
