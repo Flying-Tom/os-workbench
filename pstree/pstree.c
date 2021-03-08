@@ -34,7 +34,7 @@ void ParameterMatch(int argc, char *argv[])
 void PrintVersion()
 {
     puts("pstree (PSmisc) UNKNOWN");
-    puts("Copyright (C) 2021 FlyingTom")
+    puts("Copyright (C) 2021 FlyingTom");
 };
 
 void BuildProcessTree(){
