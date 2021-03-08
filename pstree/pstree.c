@@ -49,9 +49,8 @@ int main(int argc, char *argv[])
             sscanf(dir->d_name, "%d", &PID);
             if (PID != -1)
             {
-                //printf("%d\n", PID);
-                FILE *fp;
-                fp = fopen(strcat(strcat("/proc/", dir->d_name), "/stat"), "r");
+                printf("%d\n", PID);
+                FILE *fp = fopen(strcat(strcat("/proc/", dir->d_name), "/stat"), "r");
                 fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
                 printf("ppid[%d]:%d\n", PID, ppid[PID]);
                 pid_rec[pid_cnt++] = PID;
