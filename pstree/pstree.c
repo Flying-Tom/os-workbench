@@ -44,19 +44,18 @@ int main(int argc, char *argv[])
     {
         while ((dir = readdir(d)) != NULL)
         {
-            int PID = -1;
+            int pid = -1;
             //printf("%s\n", dir->d_name);
-            sscanf(dir->d_name, "%d", &PID);
-            if (PID != -1)
+            sscanf(dir->d_name, "%d", &pid);
+            if (pid != -1)
             {
-                printf("%d\n", PID);
+                printf("%d\n", pid);
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
-                printf("%s\n", stat_buf);
                 FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
-                printf("ppid[%d]:%d\n", PID, ppid[PID]);
-                pid_rec[pid_cnt++] = PID;
+                fscanf(fp, "%*s %*s %*s %*s %d", &ppid[pid]);
+                printf("ppid[%d]:%d\n", pid, ppid[pid]);
+                pid_rec[pid_cnt++] = pid;
             }
         }
         closedir(d);
