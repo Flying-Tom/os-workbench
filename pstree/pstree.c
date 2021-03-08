@@ -4,6 +4,7 @@
 #include <dirent.h>
 
 int show_pids = 0, numeric_sort = 0, version = 0;
+char filename_buf[256];
 
 void ParameterMatch(int argc, char *argv[])
 {
@@ -33,7 +34,11 @@ int main(int argc, char *argv[])
     {
         while ((dir = readdir(d)) != NULL)
         {
+            int PID = -1;
             printf("%s\n", dir->d_name);
+            sscanf(dir->d_name, "%d", PID);
+            if (PID != -1)
+                printf("%d\n", PID);
         }
         closedir(d);
     }
