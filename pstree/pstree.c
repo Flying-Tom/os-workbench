@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
         {
             int PID = -1;
             printf("%s\n", dir->d_name);
-            sscanf(dir->d_name, "%d", PID);
+            sscanf(dir->d_name, "%d", &PID);
             if (PID != -1)
                 printf("%d\n", PID);
         }
