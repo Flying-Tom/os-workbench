@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <assert.h>
 #include <string.h>
+#include <dirent.h>
 
 int show_pids = 0, numeric_sort = 0, version = 0;
 
@@ -24,6 +25,17 @@ void ParameterMatch(int argc, char *argv[])
 int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
-    printf("show-pids:%d\n numeric-sort:%d\n version:%d\n ", show_pids, numeric_sort, version);
+    printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n ", show_pids, numeric_sort, version);
+    DIR *d;
+    struct dirent *dir;
+    d = opendir("/proc");
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            printf("%s\n", dir->d_name);
+        }
+        closedir(d);
+    }
     return 0;
 }
