@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
         while ((dir = readdir(d)) != NULL)
         {
             int PID = -1;
-            printf("%s\n", dir->d_name);
+            //printf("%s\n", dir->d_name);
             sscanf(dir->d_name, "%d", &PID);
             if (PID != -1)
                 printf("%d\n", PID);
