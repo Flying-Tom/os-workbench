@@ -1,10 +1,13 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <assert.h>
 #include <string.h>
 #include <dirent.h>
 
 int show_pids = 0, numeric_sort = 0, version = 0;
 char filename_buf[256];
+int pid_rec[65536] = {}, pid_cnt = 0;
+int ppid[65536] = {};
 
 void ParameterMatch(int argc, char *argv[])
 {
@@ -23,10 +26,18 @@ void ParameterMatch(int argc, char *argv[])
     assert(!argv[argc]);
 };
 
+void BuildProcessTree(){
+
+};
+
+void PrintProcessTree(){
+
+};
+
 int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
-    printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n ", show_pids, numeric_sort, version);
+    printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n", show_pids, numeric_sort, version);
     DIR *d;
     struct dirent *dir;
     d = opendir("/proc");
@@ -38,7 +49,13 @@ int main(int argc, char *argv[])
             //printf("%s\n", dir->d_name);
             sscanf(dir->d_name, "%d", &PID);
             if (PID != -1)
-                printf("%d\n", PID);
+            {
+                //printf("%d\n", PID);
+                FILE *fp;
+                fp = fopen(strcat(strcat("/proc/", itoa(PID)), "/stat"), "r");
+                fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
+                pid_rec[pid_cnt++] = PID;
+            }
         }
         closedir(d);
     }
