@@ -78,6 +78,6 @@ int main(int argc, char *argv[])
         closedir(d);
     }
     for (int i = 0; i < 200; i++)
-        printf("%d:%s\n", process[i].pid, [i].name);
+        printf("%d:%s\n", process[i].pid, process[i].name);
     return 0;
 }
