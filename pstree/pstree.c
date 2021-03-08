@@ -31,6 +31,12 @@ void ParameterMatch(int argc, char *argv[])
     assert(!argv[argc]);
 };
 
+void PrintVersion()
+{
+    puts("pstree (PSmisc) UNKNOWN");
+    puts("Copyright (C) 2021 FlyingTom")
+};
+
 void BuildProcessTree(){
 
 };
@@ -43,6 +49,11 @@ int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
     printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n", show_pids, numeric_sort, version);
+    if (version)
+    {
+        PrintVersion();
+        return 0;
+    }
     DIR *d;
     struct dirent *dir;
     d = opendir("/proc");
@@ -61,6 +72,7 @@ int main(int argc, char *argv[])
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*s %*s %*s %*s %d", &process[process_cnt].ppid);
+                fclose(fp);
                 process_cnt++;
             }
         }
