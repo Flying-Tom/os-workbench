@@ -50,8 +50,10 @@ int main(int argc, char *argv[])
             if (PID != -1)
             {
                 printf("%d\n", PID);
-                printf("%s\n", strcat(strcat("/proc/", dir->d_name), "/stat"));
-                FILE *fp = fopen(strcat(strcat("/proc/", dir->d_name), "/stat"), "r");
+                char stat_buf[64];
+                sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
+                printf("%s\n", stat_buf);
+                FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*s %*s %*s %*s %d", &ppid[PID]);
                 printf("ppid[%d]:%d\n", PID, ppid[PID]);
                 pid_rec[pid_cnt++] = PID;
