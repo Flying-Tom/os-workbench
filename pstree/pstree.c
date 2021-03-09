@@ -97,6 +97,8 @@ int main(int argc, char *argv[])
     //for (int i = 0; i < 200; i++)
     //   printf("%d:%s\n", process[i].pid, process[i].name);
     BuildProcessTree();
+    puts("Buildtree Completed!");
     PrintProcessTree(&process[1], 0);
+    puts("Printtree Completed!");
     return 0;
 }
