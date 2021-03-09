@@ -90,7 +90,7 @@ int main(int argc, char *argv[])
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
-                printf("%d\n", pid);
+                printf("%d %d\n", pid, process_cnt);
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
