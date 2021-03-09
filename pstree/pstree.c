@@ -78,7 +78,7 @@ void ProcessRead()
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*d (%s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
+                fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
                 fclose(fp);
                 process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 //process[process_cnt].name[0] = '\0';
