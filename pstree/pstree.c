@@ -94,6 +94,7 @@ int main(int argc, char *argv[])
         process_cnt--;
         closedir(d);
     }
+    puts("Preprocess Completed!");
     //for (int i = 0; i < 200; i++)
     //   printf("%d:%s\n", process[i].pid, process[i].name);
     BuildProcessTree();
