@@ -7,9 +7,7 @@
 int show_pids = 0, numeric_sort = 0, version = 0;
 int process_cnt = 0;
 
-char filename_buf[256];
-
-//char stat_buf[512];
+char filename_buf[256], stat_buf[512];
 
 __pid_t pidmap[65536] = {};
 struct Process
@@ -83,8 +81,7 @@ void ProcessRead()
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
-                char stat_buf[512];
-                //memset(stat_buf, '\0', sizeof(stat_buf));
+                memset(stat_buf, '\0', sizeof(stat_buf));
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 if (fp)
