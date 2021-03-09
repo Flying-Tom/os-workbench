@@ -46,7 +46,7 @@ void BuildProcessTree()
 {
     for (int i = 0; i < process_cnt; i++)
     {
-        process[process[i].ppid].children[process[process[i].ppid].children_num++] = process[i];
+        *process[process[i].ppid].children[process[process[i].ppid].children_num++] = process[i];
     }
 };
 
