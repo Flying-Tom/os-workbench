@@ -81,7 +81,7 @@ void ProcessRead()
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
-                char stat_buf[128];
+                char stat_buf[256];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
