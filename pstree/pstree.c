@@ -3,7 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 
-int show_pids = 0, numeric_sort = 0, version = 0;
+int show_pids = 0, numeric_sort = 1, version = 0;
 char filename_buf[256];
 
 int process_cnt = 0;
@@ -28,10 +28,9 @@ void sort()
         {
             if (strcmp(process[i].name + 1, process[j].name + 1) > 0)
             {
+                struct Process process_temp = process[j];
                 pidmap[process[j].pid] = i;
                 pidmap[process[i].pid] = j;
-
-                struct Process process_temp = process[j];
                 process[j] = process[i];
                 process[i] = process_temp;
             }
@@ -48,10 +47,9 @@ void ParameterMatch(int argc, char *argv[])
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--show-pids") == 0)
             show_pids = 1;
         if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "--numeric-sort") == 0)
-            numeric_sort = 1;
+            numeric_sort = 0;
         if (strcmp(argv[i], "-V") == 0 || strcmp(argv[i], "--version") == 0)
             version = 1;
-        //printf("argv[%d] = %s\n", i, argv[i]);
     }
     assert(!argv[argc]);
 };
@@ -94,11 +92,7 @@ void ProcessRead()
 void BuildProcessTree()
 {
     for (int i = 1; i < process_cnt; i++)
-    {
-        //printf("children_num:%d\n", process[process[i].ppid].children_num);
         process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_num++] = &process[i];
-        //printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
-    }
 };
 
 int line_rec[16] = {};
