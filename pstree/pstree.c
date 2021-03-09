@@ -33,7 +33,7 @@ void sort()
                 process[i] = process_temp;
                 int temp = pidmap[j];
                 pidmap[j] = pidmap[i];
-                pidmap[i] = pidmap[j];
+                pidmap[i] = temp;
             }
         }
     }
