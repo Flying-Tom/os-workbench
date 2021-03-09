@@ -104,12 +104,10 @@ int main(int argc, char *argv[])
         process_cnt--;
         closedir(d);
     }
-    puts("Preprocess Completed!");
-    //for (int i = 0; i < 200; i++)
-    //   printf("%d:%s\n", process[i].pid, process[i].name);
+    //puts("Preprocess Completed!");
     BuildProcessTree();
-    puts("Buildtree Completed!");
+    //puts("Buildtree Completed!");
     PrintProcessTree(&process[0], 0);
-    puts("Printtree Completed!");
+    //puts("Printtree Completed!");
     return 0;
 }
