@@ -44,7 +44,7 @@ void PrintVersion()
 
 void BuildProcessTree()
 {
-    for (int i = 0; i < process_cnt; i++)
+    for (int i = 1; i < process_cnt; i++)
     {
         printf("children_num:%d\n", process[process[i].ppid].children_num);
         *process[process[i].ppid].children[process[process[i].ppid].children_num++] = process[i];
