@@ -60,7 +60,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
         printf("\t");
 
     if (show_pids)
-        printf("%s(%d)", cur->name + 1, cur->pid);
+        printf("%s(%d)\n", cur->name + 1, cur->pid);
     else
         printf("%s\n", cur->name + 1);
 
