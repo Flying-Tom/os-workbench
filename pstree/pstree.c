@@ -26,7 +26,7 @@ void sort()
     {
         for (int j = i + 1; i <= process_cnt; j++)
         {
-            if (strcmp(process[i], process[j] > 0))
+            if (strcmp(process[i].name, process[j].name > 0))
             {
                 struct Process temp = process[j];
                 process[j] = process[i];
