@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
     //puts("Preprocess Completed!");
     BuildProcessTree();
     //puts("Buildtree Completed!");
-    PrintProcessTree(&process[0], 0);
+    PrintProcessTree(&process[1], 0);
     //puts("Printtree Completed!");
     return 0;
 }
