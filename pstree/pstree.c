@@ -53,7 +53,7 @@ void BuildProcessTree()
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
             process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_num++] = &process[i];
-            printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
+            //printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
         }
     }
 };
