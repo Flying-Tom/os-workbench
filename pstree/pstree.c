@@ -6,7 +6,7 @@
 int show_pids = 0, numeric_sort = 0, version = 0;
 char filename_buf[256];
 
-int process_cnt = 0;
+int process_cnt = 1;
 
 __pid_t pidmap[65536] = {};
 struct Process
