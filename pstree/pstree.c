@@ -103,16 +103,6 @@ void PrintProcessTree(struct Process *cur, int deepth)
     else
         printf("%s\n", cur->name + 1);
 
-    if (strcmp("containerd-shim", cur->name))
-    {
-        int temp;
-        temp++;
-    }
-    if (cur->children_num == 1)
-    {
-        int temp;
-        temp++;
-    }
     line_rec[deepth] = 1;
     for (int i = 0; i < cur->children_num; i++)
     {
