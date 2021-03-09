@@ -115,10 +115,9 @@ void PrintProcessTree(struct Process *cur, int deepth)
             printf("       ");
         }
         printf("\n");
-
+        line_rec[deepth] = 0;
         PrintProcessTree(cur->children[i], deepth + 1);
     }
-    line_rec[deepth] = 0;
 };
 
 int main(int argc, char *argv[])
