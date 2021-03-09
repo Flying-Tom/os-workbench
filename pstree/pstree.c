@@ -106,8 +106,6 @@ void PrintProcessTree(struct Process *cur, int deepth)
     line_rec[deepth] = 1;
     for (int i = 0; i < cur->children_num; i++)
     {
-        if (i == cur->children_num - 1)
-            line_rec[deepth] = 0;
         for (int i = 0; i <= deepth + 1; i++)
         {
             if (line_rec[0])
@@ -120,6 +118,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
 
         PrintProcessTree(cur->children[i], deepth + 1);
     }
+    line_rec[deepth] = 0;
 };
 
 int main(int argc, char *argv[])
