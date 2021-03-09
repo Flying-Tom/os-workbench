@@ -112,7 +112,10 @@ void PrintProcessTree(struct Process *cur, int deepth, int line)
             linetemp >>= 1;
         }
         printf("\n");
-        PrintProcessTree(cur->children[i], deepth + 1, line + deepth);
+
+        linetemp = (i == cur->children_num - 1) ? 0 : line;
+
+        PrintProcessTree(cur->children[i], deepth + 1, linetemp + deepth);
     }
 };
 
