@@ -90,9 +90,10 @@ void BuildProcessTree()
 
 void PrintProcessTree(struct Process *cur, int deepth)
 {
-    for (int i = 0; i < deepth; i++)
+    for (int i = 0; i < deepth - 1; i++)
         printf("\t");
-
+    if (deepth)
+        printf("+-------");
     if (show_pids)
         printf("%s(%d)\n", cur->name + 1, cur->pid);
     else
