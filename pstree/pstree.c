@@ -8,6 +8,7 @@ char filename_buf[256];
 
 int process_cnt = 0;
 
+__pid_t pidmap[65536] = {};
 struct Process
 {
     char name[128];
@@ -17,7 +18,7 @@ struct Process
     struct Process *parent;
     struct Process *children[128];
 
-} process[65536];
+} process[4096];
 
 void ParameterMatch(int argc, char *argv[])
 {
@@ -49,11 +50,8 @@ void BuildProcessTree()
         if (process[i].ppid >= 0)
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
-            if (process[i].ppid == 1014)
-                process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
-            else
-                process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
-            printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
+            process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_num++] = &process[i];
+            //printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
         }
     }
 };
@@ -70,10 +68,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
 
     for (int i = 0; i < cur->children_num; i++)
     {
-        if (cur->pid == 1014)
-            PrintProcessTree(cur->children[i], deepth + 1);
-        else
-            PrintProcessTree(cur->children[i], deepth + 1);
+        PrintProcessTree(cur->children[i], deepth + 1);
     }
 };
 
@@ -106,7 +101,7 @@ int main(int argc, char *argv[])
                 fclose(fp);
                 process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 process[process_cnt].name[0] = '\0';
-                process_cnt++;
+                pidmap[pid] = process_cnt++;
             }
         }
         closedir(d);
