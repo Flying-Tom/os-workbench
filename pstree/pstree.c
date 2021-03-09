@@ -103,7 +103,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
     {
 
         for (int j = 0; j <= deepth; j++)
-            printf("|       ");
+            printf("\t");
         printf("\n");
         PrintProcessTree(cur->children[i], deepth + 1);
     }
