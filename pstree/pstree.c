@@ -83,7 +83,9 @@ void BuildProcessTree()
     }
 };
 
-void PrintProcessTree(struct Process *cur, int deepth, int line)
+int line_rec[16] = {};
+
+void PrintProcessTree(struct Process *cur, int deepth)
 {
     int linetemp = line;
     while (linetemp & 1)
@@ -91,6 +93,15 @@ void PrintProcessTree(struct Process *cur, int deepth, int line)
         printf("|       ");
         linetemp >>= 1;
     }
+    for (int i = 0; i < deepth; i++)
+    {
+        if (line_rec[0])
+            printf("|");
+        else
+            printf(" ");
+        printf("       ");
+    }
+
     if (deepth)
         printf("+-------");
     if (show_pids)
@@ -100,15 +111,11 @@ void PrintProcessTree(struct Process *cur, int deepth, int line)
 
     for (int i = 0; i < cur->children_num; i++)
     {
-        linetemp = line + ((i == cur->children_num - 1) ? 0 : (1 << deepth));
-        while (linetemp & 1)
-        {
-            printf("|       ");
-            linetemp >>= 1;
-        }
+    
+    
         printf("\n");
 
-        PrintProcessTree(cur->children[i], deepth + 1, linetemp);
+        PrintProcessTree(cur->children[i], deepth + 1);
     }
 };
 
@@ -122,6 +129,6 @@ int main(int argc, char *argv[])
     }
     ProcessRead();
     BuildProcessTree();
-    PrintProcessTree(&process[1], 0, 0);
+    PrintProcessTree(&process[1], 0);
     return 0;
 }
