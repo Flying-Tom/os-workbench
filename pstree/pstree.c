@@ -88,9 +88,9 @@ int main(int argc, char *argv[])
     {
         while ((dir = readdir(d)) != NULL)
         {
-            __pid_t pid = -1;
+            __pid_t pid = 0;
             sscanf(dir->d_name, "%d", &pid);
-            if (pid != -1)
+            if (pid != 0)
             {
                 //printf("%d %d\n", pid, process_cnt);
                 process[process_cnt].pid = pid;
