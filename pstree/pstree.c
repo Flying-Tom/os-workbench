@@ -46,7 +46,7 @@ void BuildProcessTree()
 {
     for (int i = 1; i < process_cnt; i++)
     {
-        if (process[i].ppid >= 0 )
+        if (process[i].ppid >= 0)
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
             process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
@@ -58,7 +58,10 @@ void PrintProcessTree(struct Process *cur, int deepth)
 {
     for (int i = 0; i < deepth; i++)
         printf("\t");
-    printf("%s\n", cur->name+1);
+    printf("%s", cur->name + 1);
+    if (show_pids)
+        printf("(%d)", cur->pid);
+    printf("\n");
     for (int i = 0; i < cur->children_num; i++)
     {
         PrintProcessTree(cur->children[i], deepth + 1);
