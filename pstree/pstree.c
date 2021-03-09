@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
                 fclose(fp);
-                process[process_cnt].name++;
+                process[process_cnt].name[0] = '\0';
                 process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 process_cnt++;
             }
