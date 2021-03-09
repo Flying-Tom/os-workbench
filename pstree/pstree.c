@@ -12,20 +12,20 @@ char filename_buf[256];
 __pid_t pidmap[65536] = {};
 struct Process
 {
-    char name[128];
+    char name[256];
     __pid_t pid;
     __pid_t ppid;
     int children_num;
     struct Process *parent;
     struct Process *children[128];
 
-} process[4096];
+} process[65536];
 
 void NeedPrintVersion()
 {
     if (version)
     {
-        puts("pstree (PSmisc) UNKNOWN");
+        puts("pstree-lite_0.0.1_linux_x86_64");
         puts("Copyright (C) 2021 FlyingTom");
         exit(0);
     }
@@ -69,9 +69,8 @@ void ParameterMatch(int argc, char *argv[])
 
 void ProcessRead()
 {
-    DIR *d;
     struct dirent *dir;
-    d = opendir("/proc");
+    DIR *d = opendir("/proc");
     if (d)
     {
         while ((dir = readdir(d)) != NULL)
@@ -82,7 +81,7 @@ void ProcessRead()
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
-                char stat_buf[512];
+                char stat_buf[128];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
