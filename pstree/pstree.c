@@ -105,7 +105,8 @@ void PrintProcessTree(struct Process *cur, int deepth)
 
     if (strcmp("containerd-shim", cur->name))
     {
-        ;
+        int temp;
+        temp++;
     }
 
     line_rec[deepth] = 1;
