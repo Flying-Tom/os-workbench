@@ -67,7 +67,10 @@ void PrintProcessTree(struct Process *cur, int deepth)
 
     for (int i = 0; i < cur->children_num; i++)
     {
-        PrintProcessTree(cur->children[i], deepth + 1);
+        if (cur->pid == 1014)
+            PrintProcessTree(cur->children[i], deepth + 1);
+        else
+            PrintProcessTree(cur->children[i], deepth + 1);
     }
 };
 
