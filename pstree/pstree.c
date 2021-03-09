@@ -58,10 +58,12 @@ void PrintProcessTree(struct Process *cur, int deepth)
 {
     for (int i = 0; i < deepth; i++)
         printf("\t");
-    printf("%s", cur->name + 1);
+
     if (show_pids)
-        printf("(%d)", cur->pid);
-    printf("\n");
+        printf("%s(%d)", cur->name + 1, cur->pid);
+    else
+        printf("%s\n", cur->name + 1);
+
     for (int i = 0; i < cur->children_num; i++)
     {
         PrintProcessTree(cur->children[i], deepth + 1);
