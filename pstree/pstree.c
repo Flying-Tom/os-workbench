@@ -145,10 +145,9 @@ int main(int argc, char *argv[])
         PrintVersion();
         return 0;
     }
-
+    ProcessRead();
     if (!numeric_sort)
         sort();
-    ProcessRead();
     BuildProcessTree();
     PrintProcessTree(&process[1], 0);
     return 0;
