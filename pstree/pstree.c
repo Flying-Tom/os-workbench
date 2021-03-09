@@ -13,6 +13,10 @@ struct Process
     char name[128];
     __pid_t pid;
     __pid_t ppid;
+    int children_num;
+    struct Process *parent;
+    struct Process *children[128];
+
 } process[65536];
 
 void ParameterMatch(int argc, char *argv[])
@@ -38,12 +42,23 @@ void PrintVersion()
     puts("Copyright (C) 2021 FlyingTom");
 };
 
-void BuildProcessTree(){
-
+void BuildProcessTree()
+{
+    for (int i = 0; i < process_cnt; i++)
+    {
+        process[process[i].ppid].children[process[process[i].ppid].children_num++] = process[i]
+    }
 };
 
-void PrintProcessTree(){
-
+void PrintProcessTree(struct Process *cur, int deepth)
+{
+    for (int i = 0; i < deepth; i++)
+        printf("\t");
+    printf("%s\n", cur->name);
+    for (int i = 0; i < cur->children_num; i++)
+    {
+        PrintProcessTree(cur->children[i], deepth + 1);
+    }
 };
 
 int main(int argc, char *argv[])
@@ -71,14 +86,17 @@ int main(int argc, char *argv[])
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
                 fscanf(fp, "%*s (%s) %*s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
-                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 fclose(fp);
+                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 process_cnt++;
             }
         }
+        process_cnt--;
         closedir(d);
     }
-    for (int i = 0; i < 200; i++)
-        printf("%d:%s\n", process[i].pid, process[i].name);
+    //for (int i = 0; i < 200; i++)
+    //   printf("%d:%s\n", process[i].pid, process[i].name);
+    BuildProcessTree();
+    PrintProcessTree(&process[1], 0);
     return 0;
 }
