@@ -6,7 +6,7 @@
 int show_pids = 0, numeric_sort = 0, version = 0;
 char filename_buf[256];
 
-int process_cnt = 1;
+int process_cnt = 0;
 
 __pid_t pidmap[65536] = {};
 struct Process
@@ -95,6 +95,7 @@ int main(int argc, char *argv[])
             if (pid != -1)
             {
                 //printf("%d %d\n", pid, process_cnt);
+                ++process_cnt;
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
@@ -103,16 +104,15 @@ int main(int argc, char *argv[])
                 fclose(fp);
                 process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 process[process_cnt].name[0] = '\0';
-                pidmap[pid] = process_cnt++;
+                pidmap[pid] = process_cnt;
             }
         }
         closedir(d);
     }
-    process_cnt--;
     //puts("Preprocess Completed!");
     BuildProcessTree();
     //puts("Buildtree Completed!");
-    PrintProcessTree(&process[0], 0);
+    PrintProcessTree(&process[1], 0);
     //puts("Printtree Completed!");
     return 0;
 }
