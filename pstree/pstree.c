@@ -28,8 +28,8 @@ void sort()
         {
             if (strcmp(process[i].name + 1, process[j].name + 1) > 0)
             {
-                pidmap[i] = process[j].pid;
-                pidmap[j] = process[i].pid;
+                pidmap[process[j].pid] = i;
+                pidmap[process[i].pid] = j;
 
                 struct Process process_temp = process[j];
                 process[j] = process[i];
