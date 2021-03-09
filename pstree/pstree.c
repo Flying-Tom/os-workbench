@@ -4,9 +4,9 @@
 #include <dirent.h>
 
 int show_pids = 0, numeric_sort = 1, version = 0;
-char filename_buf[256];
-
 int process_cnt = 0;
+
+char filename_buf[256];
 
 __pid_t pidmap[65536] = {};
 struct Process
@@ -20,8 +20,20 @@ struct Process
 
 } process[4096];
 
-void sort()
+void NeedPrintVersion()
 {
+    if (version)
+    {
+        puts("pstree (PSmisc) UNKNOWN");
+        puts("Copyright (C) 2021 FlyingTom");
+        exit(0);
+    }
+};
+
+void NeedNumericSort()
+{
+    if (numeric_sort)
+        return;
     for (int i = 2; i <= process_cnt; i++)
     {
         for (int j = i + 1; j <= process_cnt; j++)
@@ -52,12 +64,6 @@ void ParameterMatch(int argc, char *argv[])
             version = 1;
     }
     assert(!argv[argc]);
-};
-
-void PrintVersion()
-{
-    puts("pstree (PSmisc) UNKNOWN");
-    puts("Copyright (C) 2021 FlyingTom");
 };
 
 void ProcessRead()
@@ -136,16 +142,9 @@ void PrintProcessTree(struct Process *cur, int deepth)
 int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
-    if (version)
-    {
-        PrintVersion();
-        return 0;
-    }
+    NeedPrintVersion();
     ProcessRead();
-
-    if (!numeric_sort)
-        sort();
-
+    NeedNumericSort();
     BuildProcessTree();
     PrintProcessTree(&process[1], 0);
     return 0;
