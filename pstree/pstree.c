@@ -20,6 +20,22 @@ struct Process
 
 } process[4096];
 
+void sort()
+{
+    for (int i = 2; i <= process_cnt; i++)
+    {
+        for (int j = i + 1; i <= process_cnt; j++)
+        {
+            if (strcmp(process[i], process[j] > 0))
+            {
+                struct Process temp = process[j];
+                process[j] = process[i];
+                process[i] = temp;
+            }
+        }
+    }
+};
+
 void ParameterMatch(int argc, char *argv[])
 {
 
@@ -97,7 +113,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
     }
     if (deepth)
         printf("+-------");
-        
+
     if (show_pids)
         printf("%s(%d)\n", cur->name + 1, cur->pid);
     else
@@ -129,6 +145,9 @@ int main(int argc, char *argv[])
         PrintVersion();
         return 0;
     }
+
+    if (numeric_sort)
+        sort();
     ProcessRead();
     BuildProcessTree();
     PrintProcessTree(&process[1], 0);
