@@ -100,7 +100,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int line)
 
     for (int i = 0; i < cur->children_num; i++)
     {
-        linetemp = line + (i == cur->children_num - 1) ? 0 : 1 << (deepth + 1);
+        linetemp = line + ((i == cur->children_num - 1) ? 0 : (1 << deepth));
         while (linetemp & 1)
         {
             printf("|       ");
