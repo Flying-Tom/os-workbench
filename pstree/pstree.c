@@ -16,8 +16,7 @@ struct Process
     __pid_t pid;
     __pid_t ppid;
     char name[256];
-    int children_num;
-    struct Process *parent;
+    int children_cnt;
     struct Process *children[128];
 
 } process[65536];
@@ -107,7 +106,7 @@ void ProcessRead()
 void BuildProcessTree()
 {
     for (int i = 1; i < process_cnt; i++)
-        process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_num++] = &process[i];
+        process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_cnt++] = &process[i];
 };
 
 void PrintProcessTree(struct Process *cur, int deepth)
@@ -128,7 +127,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
         printf("%s\n", cur->name + 1);
 
     line_rec[deepth] = 1;
-    for (int i = 0; i < cur->children_num; i++)
+    for (int i = 0; i < cur->children_cnt; i++)
     {
         for (int i = 0; i <= deepth; i++)
         {
@@ -136,7 +135,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
             printf("%c%7s", line_temp, "");
         }
         printf("\n");
-        if (i + 1 == cur->children_num)
+        if (i + 1 == cur->children_cnt)
             line_rec[deepth] = 0;
         PrintProcessTree(cur->children[i], deepth + 1);
     }
