@@ -90,6 +90,7 @@ int main(int argc, char *argv[])
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
+                printf("%d\n", pid);
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
@@ -107,7 +108,7 @@ int main(int argc, char *argv[])
     //puts("Preprocess Completed!");
     BuildProcessTree();
     //puts("Buildtree Completed!");
-    PrintProcessTree(&process[0], 0);
+    //PrintProcessTree(&process[0], 0);
     //puts("Printtree Completed!");
     return 0;
 }
