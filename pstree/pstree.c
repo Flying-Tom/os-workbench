@@ -50,6 +50,7 @@ void BuildProcessTree()
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
             process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
+            printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
         }
     }
 };
@@ -90,7 +91,7 @@ int main(int argc, char *argv[])
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
-                printf("%d %d\n", pid, process_cnt);
+                //printf("%d %d\n", pid, process_cnt);
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
@@ -102,9 +103,9 @@ int main(int argc, char *argv[])
                 process_cnt++;
             }
         }
-        process_cnt--;
         closedir(d);
     }
+    process_cnt--;
     //puts("Preprocess Completed!");
     BuildProcessTree();
     //puts("Buildtree Completed!");
