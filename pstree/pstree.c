@@ -146,7 +146,7 @@ int main(int argc, char *argv[])
         return 0;
     }
 
-    if (numeric_sort)
+    if (!numeric_sort)
         sort();
     ProcessRead();
     BuildProcessTree();
