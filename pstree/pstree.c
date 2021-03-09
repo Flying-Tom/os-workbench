@@ -43,6 +43,36 @@ void PrintVersion()
     puts("Copyright (C) 2021 FlyingTom");
 };
 
+void ProcessRead()
+{
+    DIR *d;
+    struct dirent *dir;
+    d = opendir("/proc");
+    if (d)
+    {
+        while ((dir = readdir(d)) != NULL)
+        {
+            __pid_t pid = -1;
+            sscanf(dir->d_name, "%d", &pid);
+            if (pid != -1)
+            {
+                //printf("%d %d\n", pid, process_cnt);
+                ++process_cnt;
+                process[process_cnt].pid = pid;
+                char stat_buf[512];
+                sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
+                FILE *fp = fopen(stat_buf, "r");
+                fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
+                fclose(fp);
+                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
+                process[process_cnt].name[0] = '\0';
+                pidmap[pid] = process_cnt;
+            }
+        }
+        closedir(d);
+    }
+};
+
 void BuildProcessTree()
 {
     for (int i = 1; i < process_cnt; i++)
@@ -77,42 +107,13 @@ void PrintProcessTree(struct Process *cur, int deepth)
 int main(int argc, char *argv[])
 {
     ParameterMatch(argc, argv);
-    //printf("show-pids:%d\nnumeric-sort:%d\nversion:%d\n", show_pids, numeric_sort, version);
     if (version)
     {
         PrintVersion();
         return 0;
     }
-    DIR *d;
-    struct dirent *dir;
-    d = opendir("/proc");
-    if (d)
-    {
-        while ((dir = readdir(d)) != NULL)
-        {
-            __pid_t pid = -1;
-            sscanf(dir->d_name, "%d", &pid);
-            if (pid != -1)
-            {
-                //printf("%d %d\n", pid, process_cnt);
-                ++process_cnt;
-                process[process_cnt].pid = pid;
-                char stat_buf[512];
-                sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
-                FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
-                fclose(fp);
-                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
-                process[process_cnt].name[0] = '\0';
-                pidmap[pid] = process_cnt;
-            }
-        }
-        closedir(d);
-    }
-    //puts("Preprocess Completed!");
+    ProcessRead();
     BuildProcessTree();
-    //puts("Buildtree Completed!");
     PrintProcessTree(&process[1], 0);
-    //puts("Printtree Completed!");
     return 0;
 }
