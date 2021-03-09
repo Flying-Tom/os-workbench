@@ -83,7 +83,7 @@ void ProcessRead()
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
-                char filename_buf[256];
+                char stat_buf[512];
                 //memset(stat_buf, '\0', sizeof(stat_buf));
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
