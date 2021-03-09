@@ -89,7 +89,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
 {
     for (int i = 0; i < deepth; i++)
     {
-        if (line_rec[0])
+        if (line_rec[i])
             printf("|");
         else
             printf(" ");
