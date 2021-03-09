@@ -2,6 +2,7 @@
 #include <assert.h>
 #include <string.h>
 #include <dirent.h>
+#include <stdlib.h>
 
 int show_pids = 0, numeric_sort = 1, version = 0;
 int process_cnt = 0;
