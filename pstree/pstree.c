@@ -28,9 +28,12 @@ void sort()
         {
             if (strcmp(process[i].name + 1, process[j].name + 1) > 0)
             {
-                struct Process temp = process[j];
+                struct Process process_temp = process[j];
                 process[j] = process[i];
-                process[i] = temp;
+                process[i] = process_temp;
+                int temp = pidmap[j];
+                pidmap[j] = pidmap[i];
+                pidmap[i] = pidmap[j];
             }
         }
     }
@@ -72,7 +75,6 @@ void ProcessRead()
             sscanf(dir->d_name, "%d", &pid);
             if (pid != -1)
             {
-                //printf("%d %d\n", pid, process_cnt);
                 ++process_cnt;
                 process[process_cnt].pid = pid;
                 char stat_buf[512];
