@@ -24,7 +24,7 @@ void sort()
 {
     for (int i = 2; i <= process_cnt; i++)
     {
-        for (int j = i + 1; i <= process_cnt; j++)
+        for (int j = i + 1; j <= process_cnt; j++)
         {
             if (strcmp(process[i].name, process[j].name) > 0)
             {
@@ -146,8 +146,10 @@ int main(int argc, char *argv[])
         return 0;
     }
     ProcessRead();
+
     if (!numeric_sort)
         sort();
+
     BuildProcessTree();
     PrintProcessTree(&process[1], 0);
     return 0;
