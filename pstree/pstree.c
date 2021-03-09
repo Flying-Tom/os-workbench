@@ -9,6 +9,8 @@ int process_cnt = 0;
 
 char filename_buf[256];
 
+//char stat_buf[512];
+
 __pid_t pidmap[65536] = {};
 struct Process
 {
@@ -81,11 +83,18 @@ void ProcessRead()
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
-                char stat_buf[512];
+                char filename_buf[256];
+                //memset(stat_buf, '\0', sizeof(stat_buf));
                 sprintf(stat_buf, "/proc/%s/stat", dir->d_name);
                 FILE *fp = fopen(stat_buf, "r");
-                fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
-                fclose(fp);
+                if (fp)
+                {
+                    fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
+                    fclose(fp);
+                }
+                else
+                    exit(2);
+
                 process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 process[process_cnt].name[0] = '\0';
                 pidmap[pid] = process_cnt;
@@ -93,6 +102,8 @@ void ProcessRead()
         }
         closedir(d);
     }
+    else
+        exit(2);
 };
 
 void BuildProcessTree()
