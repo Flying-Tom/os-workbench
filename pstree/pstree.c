@@ -46,7 +46,7 @@ void BuildProcessTree()
 {
     for (int i = 1; i < process_cnt; i++)
     {
-        if (process[i].ppid)
+        if (process[i].ppid >= 0 )
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
             process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
