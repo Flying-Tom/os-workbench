@@ -6,15 +6,16 @@
 
 int show_pids = 0, numeric_sort = 0, version = 0;
 int process_cnt = 0;
+int line_rec[32] = {};
 
 char filename_buf[256], stat_buf[512];
 
 __pid_t pidmap[65536] = {};
 struct Process
 {
-    char name[256];
     __pid_t pid;
     __pid_t ppid;
+    char name[256];
     int children_num;
     struct Process *parent;
     struct Process *children[128];
@@ -109,17 +110,13 @@ void BuildProcessTree()
         process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_num++] = &process[i];
 };
 
-int line_rec[16] = {};
-
 void PrintProcessTree(struct Process *cur, int deepth)
 {
+    char line_temp;
     for (int i = 0; i < deepth - 1; i++)
     {
-        if (line_rec[i])
-            printf("|");
-        else
-            printf(" ");
-        printf("       ");
+        line_temp = (line_rec[i]) ? '|' : ' ';
+        printf("%c       ", line_temp);
     }
     if (deepth)
         printf("+-------");
