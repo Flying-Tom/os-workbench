@@ -49,7 +49,10 @@ void BuildProcessTree()
         if (process[i].ppid >= 0)
         {
             //printf("children_num:%d\n", process[process[i].ppid].children_num);
-            process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
+            if (cur->pid == 1014)
+                process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
+            else
+                process[process[i].ppid].children[process[process[i].ppid].children_num++] = &process[i];
             printf("pid:%d ppid:%d\n", process[i].pid, process[i].ppid);
         }
     }
