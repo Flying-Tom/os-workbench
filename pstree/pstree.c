@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <stdlib.h>
 
-int show_pids = 0, numeric_sort = 0, version = 0;
+int show_pids = 0, numeric_sort = 0, version = 0, pidarg = 1;
 int process_cnt = 0;
 int line_rec[32] = {};
 
@@ -58,7 +58,10 @@ void ParameterMatch(int argc, char *argv[])
     {
         assert(argv[i]);
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--show-pids") == 0)
+        {
             show_pids = 1;
+            pidarg = atoi(argv[++i]);
+        }
         if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "--numeric-sort") == 0)
             numeric_sort = 1;
         if (strcmp(argv[i], "-V") == 0 || strcmp(argv[i], "--version") == 0)
@@ -148,6 +151,6 @@ int main(int argc, char *argv[])
     ProcessRead();
     NeedNumericSort();
     BuildProcessTree();
-    PrintProcessTree(&process[1], 0);
+    PrintProcessTree(&process[pidmap[pidarg]], 0);
     return 0;
 }
