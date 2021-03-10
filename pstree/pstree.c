@@ -4,7 +4,6 @@
 #include <dirent.h>
 #include <stdlib.h>
 
-int show_pids = 0, numeric_sort = 0, version = 0;
 int process_cnt = 0;
 int line_rec[32] = {};
 
@@ -21,17 +20,17 @@ struct Process
 
 } process[65536];
 
-void NeedPrintVersion()
+void NeedPrintVersion(int version)
 {
     if (version)
     {
-        puts("pstree-lite_0.0.1_linux_x86_64");
+        puts("pstree-lite_v0.0.1_linux_x86_64");
         puts("Copyright (C) 2021 FlyingTom");
         exit(0);
     }
 };
 
-void NeedNumericSort()
+void NeedNumericSort(int numeric_sort)
 {
     if (numeric_sort)
         return;
@@ -51,7 +50,7 @@ void NeedNumericSort()
     }
 };
 
-void ParameterMatch(int argc, char *argv[])
+void ParameterMatch(int argc, char *argv[], int show_pids, int numeric_sort, int version)
 {
 
     for (int i = 0; i < argc; i++)
@@ -147,10 +146,11 @@ void PrintProcessTree(struct Process *cur, int deepth)
 
 int main(int argc, char *argv[])
 {
-    ParameterMatch(argc, argv);
-    NeedPrintVersion();
+    int show_pids = 0, numeric_sort = 0, version = 0;
+    ParameterMatch(argc, argv, show_pids, numeric_sort, version);
+    NeedPrintVersion(version);
     ProcessRead();
-    NeedNumericSort();
+    NeedNumericSort(numeric_sort);
     BuildProcessTree();
     PrintProcessTree(&process[pidmap[pidarg]], 0);
     return 0;
