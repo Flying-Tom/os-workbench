@@ -112,7 +112,7 @@ void BuildProcessTree()
         process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_cnt++] = &process[i];
 };
 
-void PrintProcessTree(struct Process *cur, int deepth)
+void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
 {
     char line_temp;
     for (int i = 0; i < deepth - 1; i++)
@@ -152,6 +152,6 @@ int main(int argc, char *argv[])
     ProcessRead();
     NeedNumericSort(numeric_sort);
     BuildProcessTree();
-    PrintProcessTree(&process[pidmap[pidarg]], 0);
+    PrintProcessTree(&process[pidmap[pidarg]], 0, show_pids);
     return 0;
 }
