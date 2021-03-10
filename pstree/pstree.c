@@ -60,7 +60,7 @@ void ParameterMatch(int argc, char *argv[])
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--show-pids") == 0)
         {
             show_pids = 1;
-            if ((pidarg = atoi(argv[i + 1])) != 0)
+            if (i < argc - 1 && (pidarg = atoi(argv[i + 1])) != 0)
                 i++;
         }
         if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "--numeric-sort") == 0)
