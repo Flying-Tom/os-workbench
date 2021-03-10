@@ -140,7 +140,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
         printf("\n");
         if (i + 1 == cur->children_cnt)
             line_rec[deepth] = 0;
-        PrintProcessTree(cur->children[i], deepth + 1);
+        PrintProcessTree(cur->children[i], deepth + 1, show_pids);
     }
 };
 
