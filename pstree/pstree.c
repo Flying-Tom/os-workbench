@@ -115,7 +115,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
     for (int i = 0; i < deepth - 1; i++)
     {
         line_temp = (line_rec[i]) ? '|' : ' ';
-        printf("%c%7s", line_temp, "");
+        printf("%c%2s", line_temp, "");
     }
 
     if (deepth)
@@ -132,7 +132,7 @@ void PrintProcessTree(struct Process *cur, int deepth)
         for (int i = 0; i <= deepth; i++)
         {
             line_temp = (line_rec[i]) ? '|' : ' ';
-            printf("%c%7s", line_temp, "");
+            printf("%c%2s", line_temp, "");
         }
         printf("\n");
         if (i + 1 == cur->children_cnt)
