@@ -50,7 +50,7 @@ void NeedNumericSort(int numeric_sort)
     }
 };
 
-void ParameterMatch(int argc, char *argv[], int show_pids, int numeric_sort, int version)
+void ParameterMatch(int argc, char *argv[], int *show_pids, int *numeric_sort, int *version)
 {
 
     for (int i = 0; i < argc; i++)
@@ -147,7 +147,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
 int main(int argc, char *argv[])
 {
     int show_pids = 0, numeric_sort = 0, version = 0;
-    ParameterMatch(argc, argv, show_pids, numeric_sort, version);
+    ParameterMatch(argc, argv, &show_pids, &numeric_sort, &version);
     NeedPrintVersion(version);
     ProcessRead();
     NeedNumericSort(numeric_sort);
