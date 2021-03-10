@@ -58,14 +58,14 @@ void ParameterMatch(int argc, char *argv[], int *show_pids, int *numeric_sort, i
         assert(argv[i]);
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--show-pids") == 0)
         {
-            show_pids = 1;
+            *show_pids = 1;
             if (i < argc - 1 && (pidarg = atoi(argv[i + 1])) != 0)
                 i++;
         }
         if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "--numeric-sort") == 0)
-            numeric_sort = 1;
+            *numeric_sort = 1;
         if (strcmp(argv[i], "-V") == 0 || strcmp(argv[i], "--version") == 0)
-            version = 1;
+            *version = 1;
     }
     assert(!argv[argc]);
 };
