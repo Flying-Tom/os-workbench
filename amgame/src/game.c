@@ -1,5 +1,23 @@
 #include <game.h>
 
+#define SIDE 8
+
+struct Snake
+{
+    int x, y;
+} snake;
+
+void generate_state()
+{
+    snake.x = rand() % w;
+    snake.y = rand() % h;
+}
+
+void update_screen()
+{
+    draw_tile(snake.x * SIDE, snake.y * SIDE, SIDE, SIDE, 0xffffff);
+}
+
 // Operating system is a C program!
 int main(const char *args)
 {
@@ -16,6 +34,8 @@ int main(const char *args)
     {
         exit_check();
         print_key();
+        generate_state();
+        update_screen();
     }
     return 0;
 }
