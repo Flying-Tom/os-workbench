@@ -9,8 +9,8 @@ struct Snake
 
 void generate_state()
 {
-    snake.x = rand() % w;
-    snake.y = rand() % h;
+    snake.x = rand() % 64;
+    snake.y = rand() % 32;
 }
 
 void update_screen()
