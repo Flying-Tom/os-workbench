@@ -38,7 +38,7 @@ void splash()
         {
             if ((x & 1) ^ (y & 1))
             {
-                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff); // white
             }
         }
     }
