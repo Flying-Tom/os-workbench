@@ -42,7 +42,7 @@ int main(const char *args)
         print_key();
         generate_state();
         update_screen();
-        delay(10000);
+        delay(10000000);
     }
     return 0;
 }
