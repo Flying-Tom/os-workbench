@@ -16,3 +16,9 @@ void print_key()
         puts("\n");
     }
 }
+
+void exit_check()
+{
+    if (event.keycode == AM_KEY_ESCAPE && event.keydown)
+        _halt();
+}
