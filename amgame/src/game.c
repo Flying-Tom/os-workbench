@@ -10,7 +10,7 @@ struct Snake
 void delay(uint64_t z)
 {
     z = z * 10000;
-    for (; z > 0; z--)
+    while (z--)
         ;
 }
 
