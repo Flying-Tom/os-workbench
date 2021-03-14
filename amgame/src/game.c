@@ -7,6 +7,12 @@ struct Snake
     int x, y;
 } snake;
 
+void delay(int z)
+{
+    for (; z > 0; z--)
+        ;
+}
+
 void generate_state()
 {
     snake.x = rand() % 64;
@@ -36,6 +42,7 @@ int main(const char *args)
         print_key();
         generate_state();
         update_screen();
+        delay(10000);
     }
     return 0;
 }
