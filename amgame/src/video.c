@@ -1,6 +1,6 @@
 #include <game.h>
 
-#define SIDE 4
+#define SIDE 8
 static int w, h;
 
 static void init()
