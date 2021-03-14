@@ -22,5 +22,5 @@ void exit_check()
     AM_INPUT_KEYBRD_T event = {.keycode = AM_KEY_NONE};
     ioe_read(AM_INPUT_KEYBRD, &event);
     if (event.keycode == AM_KEY_ESCAPE && event.keydown)
-        halt();
+        halt(0);
 }
