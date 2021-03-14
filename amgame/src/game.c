@@ -22,7 +22,8 @@ void generate_state()
 
 void update_screen()
 {
-    draw_snake(snake.x, snake.y);
+    draw_snake(snake.x, snake.y, 0xffffff);
+    draw_snake(snake.x, snake.y, 0x0);
 }
 
 // Operating system is a C program!
