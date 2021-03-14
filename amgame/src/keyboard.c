@@ -20,5 +20,5 @@ void print_key()
 void exit_check()
 {
     if (event.keycode == AM_KEY_ESCAPE && event.keydown)
-        _halt();
+        halt();
 }
