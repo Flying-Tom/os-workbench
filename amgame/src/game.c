@@ -7,8 +7,9 @@ struct Snake
     int x, y;
 } snake;
 
-void delay(int z)
+void delay(uint64_t z)
 {
+    z = z * 10000;
     for (; z > 0; z--)
         ;
 }
@@ -41,9 +42,9 @@ int main(const char *args)
         exit_check();
         print_key();
         generate_state();
-        printf("snake.x:%d snake.y:%d\n", snake.x, snake.y);
+        //printf("snake.x:%d snake.y:%d\n", snake.x, snake.y);
         update_screen();
-        delay(10000000);
+        delay(100000);
     }
     return 0;
 }
