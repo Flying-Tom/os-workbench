@@ -44,7 +44,7 @@ int main(const char *args)
         print_key();
         generate_state();
         //printf("snake.x:%d snake.y:%d\n", snake.x, snake.y);
-        //update_screen();
+        update_screen();
         delay(1000000000);
     }
     return 0;
