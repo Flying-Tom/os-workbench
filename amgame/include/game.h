@@ -6,6 +6,8 @@
 void splash();
 void print_key();
 void exit_check();
+void draw_snake(int, int);
+void draw_apple();
 
 static inline void puts(const char *s)
 {

@@ -44,3 +44,12 @@ void splash()
     }
 }
 
+void draw_snake(int x,int y)
+{
+    draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff);
+}
+
+void draw_apple()
+{
+    
+}
