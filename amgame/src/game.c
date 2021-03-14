@@ -42,9 +42,10 @@ int main(const char *args)
     {
         exit_check();
         print_key();
+        draw_snake(snake.x, snake.y, 0xffffff);
         generate_state();
-        //printf("snake.x:%d snake.y:%d\n", snake.x, snake.y);
-        update_screen();
+        draw_snake(snake.x, snake.y, 0x0);
+        //update_screen();
         delay(1000000000);
     }
     return 0;
