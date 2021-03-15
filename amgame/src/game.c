@@ -27,9 +27,9 @@ int main(const char *args)
 
     while (1)
     {
-        print_key();
-        key_process();
         render();
+        key_process();
+        print_key();
         //draw_snake(snake.x, snake.y, 0xffffff);
         //generate_state();
 
