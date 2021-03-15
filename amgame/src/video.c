@@ -53,10 +53,11 @@ void render()
     {
         for (int y = 0; y * SIDE <= screen_h; y++)
         {
+            if (coin_rec[x][y])
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff00);
+
             if (x == player.x && y == player.y)
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
-            else if (coin_rec[player.x][player.y])
-                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff00);
             else
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0x0);
         }
