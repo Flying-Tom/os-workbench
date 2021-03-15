@@ -24,11 +24,11 @@ int main(const char *args)
     puts("Press any key to see its key code...\n");
     p.x = p.y = 5;
     get_screen_info();
-    
+
     while (1)
     {
-        exit_check();
         print_key();
+        key_process();
         render();
         //draw_snake(snake.x, snake.y, 0xffffff);
         //generate_state();

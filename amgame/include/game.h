@@ -12,8 +12,7 @@ void render();
 
 /* keyboard.c */
 void print_key();
-void exit_check();
-void direction_control();
+void key_process();
 
 /* game */
 
