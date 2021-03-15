@@ -49,6 +49,7 @@ void key_process()
             {
                 coin_rec[player.x][player.y] = 0;
                 generate_coin();
+                printf("score:%d\n", ++score);
             }
         default:
             break;
