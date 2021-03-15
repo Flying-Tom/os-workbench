@@ -2,10 +2,7 @@
 
 #define SIDE 8
 
-struct point
-{
-    int x, y;
-} p;
+struct point p;
 
 void generate_state()
 {

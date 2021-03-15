@@ -15,7 +15,10 @@ void direction_control();
 
 /* game */
 
-struct point;
+struct point
+{
+    int x, y;
+};
 
 static inline void puts(const char *s)
 {
