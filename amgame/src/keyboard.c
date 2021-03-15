@@ -45,14 +45,14 @@ void key_process()
             halt(0);
             break;
 
-            if (coin_rec[player.x][player.y])
-            {
-                coin_rec[player.x][player.y] = 0;
-                generate_coin();
-                printf("score:%d\n", ++score);
-            }
         default:
             break;
+        }
+        if (coin_rec[player.x][player.y])
+        {
+            coin_rec[player.x][player.y] = 0;
+            generate_coin();
+            printf("score:%d\n", ++score);
         }
     }
 }
