@@ -18,7 +18,7 @@ void resetgame()
 
 void generate_coin()
 {
-    int n = randint(1, 1);
+    //int n = randint(1, 1);
     coin_rec[randint(0, loc_x)][randint(0, loc_y)] = 1;
 }
 
