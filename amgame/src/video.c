@@ -48,7 +48,8 @@ extern struct point p;
 
 void render()
 {
-    init() for (int x = 0; x * SIDE <= w; x++)
+    init();
+    for (int x = 0; x * SIDE <= w; x++)
     {
         for (int y = 0; y * SIDE <= h; y++)
         {
