@@ -31,9 +31,9 @@ static void draw_tile(int x, int y, int w, int h, uint32_t color)
 void splash()
 {
     get_screen_info();
-    for (int x = 0; x * SIDE <= w; x++)
+    for (int x = 0; x * SIDE <= screen_w; x++)
     {
-        for (int y = 0; y * SIDE <= h; y++)
+        for (int y = 0; y * SIDE <= screen_h; y++)
         {
             if ((x & 1) ^ (y & 1))
             {
