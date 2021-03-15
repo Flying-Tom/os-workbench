@@ -13,7 +13,6 @@ void generate_state()
     //snake.y = rand() % 32;
 }
 
-
 // Operating system is a C program!
 int main(const char *args)
 {
@@ -26,6 +25,8 @@ int main(const char *args)
     //splash();
 
     puts("Press any key to see its key code...\n");
+    p.x = p.y = 5;
+
     while (1)
     {
         exit_check();

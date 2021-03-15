@@ -6,6 +6,7 @@
 /* video.c */
 void splash();
 void draw_point(int x, int y, int color);
+void render();
 
 /* keyboard.c */
 void print_key();

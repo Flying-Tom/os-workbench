@@ -44,6 +44,21 @@ void splash()
     }
 }
 
+extern struct point p;
+
+void render()
+{
+    init() for (int x = 0; x * SIDE <= w; x++)
+    {
+        for (int y = 0; y * SIDE <= h; y++)
+        {
+            if (x == p.x && y == p.y)
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
+            else
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0x0);
+        }
+    }
+}
 
 void draw_point(int x, int y, int color)
 {
