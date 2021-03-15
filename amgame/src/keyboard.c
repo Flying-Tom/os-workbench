@@ -38,6 +38,8 @@ void key_process()
         case AM_KEY_S:
             player.y = player.y < loc_y ? player.y + 1 : player.y;
             break;
+        case AM_KEY_R:
+            resetgame();
         case AM_KEY_ESCAPE:
             halt(0);
             break;

@@ -19,6 +19,7 @@ int loc_x, loc_y;
 int coin_rec[256][256];
 void generate_coin();
 void bonus_check();
+void resetgame();
 
 struct point
 {
