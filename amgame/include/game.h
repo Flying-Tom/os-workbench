@@ -13,6 +13,10 @@ void print_key();
 void exit_check();
 void direction_control();
 
+/* game */
+
+struct point;
+
 static inline void puts(const char *s)
 {
     for (; *s; s++)
