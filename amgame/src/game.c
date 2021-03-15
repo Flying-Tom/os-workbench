@@ -19,10 +19,13 @@ void resetgame()
 
 void generate_coin()
 {
-    //int n = randint(1, 1);
-    int coin_x = randint(0, loc_x), coin_y = randint(0, loc_y);
-    coin_rec[coin_x][coin_y] = 1;
-    printf("new coin location:(%d,%d)\n", coin_x, coin_y);
+    int n = randint(1, 5);
+    for (int i = 1; i <= n; i++)
+    {
+        int coin_x = randint(0, loc_x), coin_y = randint(0, loc_y);
+        coin_rec[coin_x][coin_y] = 1;
+        printf("new coin location:(%d,%d)\n", coin_x, coin_y);
+    }
 }
 
 void bonus_check()
