@@ -23,11 +23,10 @@ void key_process()
 {
     AM_INPUT_KEYBRD_T event = {.keycode = AM_KEY_NONE};
     ioe_read(AM_INPUT_KEYBRD, &event);
-    while (event.keycode == AM_KEY_NONE)
-        ;
-    if (event.keydown)
+
+    if (event.keycode != AM_KEY_NONE && event.keydown)
     {
-        prinf("fuck\n");
+        printf("fuck\n");
         switch (event.keycode)
         {
         case AM_KEY_W:
