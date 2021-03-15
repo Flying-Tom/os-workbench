@@ -35,10 +35,10 @@ void key_process()
             p.x = p.x > 0 ? p.x - 1 : p.x;
             break;
         case AM_KEY_D:
-            p.x++;
+            p.x = p.x < loc_x ? p.x + 1 : p.x;
             break;
         case AM_KEY_S:
-            p.y++;
+            p.y = p.y < loc_y ? p.y + 1 : p.y;
             break;
         case AM_KEY_ESCAPE:
             halt(0);

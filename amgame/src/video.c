@@ -8,6 +8,8 @@ void get_screen_info()
     ioe_read(AM_GPU_CONFIG, &info);
     screen_w = info.width;
     screen_h = info.height;
+    loc_x = screen_w / SIDE;
+    loc_y = screen_h / SIDE;
     printf("screen_w:%d\n", screen_w);
     printf("screen_h:%d\n", screen_h);
 }

@@ -15,6 +15,7 @@ void print_key();
 void key_process();
 
 /* game */
+int loc_x, loc_y;
 
 struct point
 {
