@@ -1,6 +1,6 @@
 #include <game.h>
 
-#define SIDE 8
+#define SIDE 16
 
 void get_screen_info()
 {
@@ -8,8 +8,8 @@ void get_screen_info()
     ioe_read(AM_GPU_CONFIG, &info);
     screen_w = info.width;
     screen_h = info.height;
-    loc_x = screen_w / SIDE;
-    loc_y = screen_h / SIDE;
+    loc_x = screen_w / SIDE - 1;
+    loc_y = screen_h / SIDE - 1;
     printf("screen_w:%d\n", screen_w);
     printf("screen_h:%d\n", screen_h);
 }
