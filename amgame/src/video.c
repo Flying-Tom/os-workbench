@@ -44,7 +44,7 @@ void splash()
     }
 }
 
-extern point p;
+extern struct point p;
 
 void render()
 {
