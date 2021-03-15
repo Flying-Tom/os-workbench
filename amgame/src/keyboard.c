@@ -38,6 +38,7 @@ void key_process()
             break;
         case AM_KEY_S:
             p.x++;
+            break;
         case AM_KEY_ESCAPE:
             halt(0);
             break;
