@@ -9,8 +9,8 @@ struct point
 
 void generate_state()
 {
-    snake.x = rand() % 64;
-    snake.y = rand() % 32;
+    //snake.x = rand() % 64;
+    //snake.y = rand() % 32;
 }
 
 
