@@ -28,6 +28,7 @@ int main(const char *args)
     {
         exit_check();
         print_key();
+        render();
         //draw_snake(snake.x, snake.y, 0xffffff);
         //generate_state();
 
