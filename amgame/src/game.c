@@ -19,7 +19,7 @@ void resetgame()
 
 void generate_coin()
 {
-    int n = randint(1, 50);
+    int n = randint(0, 2);
     for (int i = 1; i <= n; i++)
     {
         int coin_x = randint(0, loc_x), coin_y = randint(0, loc_y);
