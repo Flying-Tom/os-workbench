@@ -45,6 +45,7 @@ void key_process()
             if (coin_rec[player.x][player.y])
             {
                 coin_rec[player.x][player.y] = 0;
+                generate_coin();
             }
         default:
             break;
