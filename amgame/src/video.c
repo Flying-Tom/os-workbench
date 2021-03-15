@@ -1,7 +1,6 @@
 #include <game.h>
 
 #define SIDE 8
-static int w, h;
 
 void get_screen_info()
 {
