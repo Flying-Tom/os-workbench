@@ -29,10 +29,10 @@ void key_process()
         switch (event.keycode)
         {
         case AM_KEY_W:
-            p.y--;
+            p.y = p.y > 0 ? p.y - 1 : p.y;
             break;
         case AM_KEY_A:
-            p.x--;
+            p.x = p.x > 0 ? p.x - 1 : p.x;
             break;
         case AM_KEY_D:
             p.x++;
