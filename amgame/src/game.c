@@ -2,10 +2,10 @@
 
 #define SIDE 8
 
-struct Snake
+struct point
 {
     int x, y;
-} snake;
+} p;
 
 void delay(uint64_t z)
 {

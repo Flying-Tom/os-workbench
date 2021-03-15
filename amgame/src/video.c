@@ -49,6 +49,3 @@ void draw_snake(int x, int y, int color)
     draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, color);
 }
 
-void draw_apple()
-{
-}
