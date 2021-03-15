@@ -4,6 +4,8 @@
 #include <klib-macros.h>
 
 /* video.c */
+int screen_w, screen_h;
+void get_screen_info();
 void splash();
 void draw_point(int x, int y, int color);
 void render();

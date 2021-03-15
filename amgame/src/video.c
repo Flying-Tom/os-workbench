@@ -3,12 +3,12 @@
 #define SIDE 8
 static int w, h;
 
-static void init()
+void get_screen_info()
 {
     AM_GPU_CONFIG_T info = {0};
     ioe_read(AM_GPU_CONFIG, &info);
-    w = info.width;
-    h = info.height;
+    screen_w = info.width;
+    screen_h = info.height;
 }
 
 static void draw_tile(int x, int y, int w, int h, uint32_t color)
@@ -31,7 +31,7 @@ static void draw_tile(int x, int y, int w, int h, uint32_t color)
 
 void splash()
 {
-    init();
+    get_screen_info();
     for (int x = 0; x * SIDE <= w; x++)
     {
         for (int y = 0; y * SIDE <= h; y++)
@@ -48,7 +48,6 @@ extern struct point p;
 
 void render()
 {
-    init();
     for (int x = 0; x * SIDE <= w; x++)
     {
         for (int y = 0; y * SIDE <= h; y++)

@@ -38,12 +38,14 @@ void direction_control()
         switch (event.keycode)
         {
         case AM_KEY_UP:
+            p.x--;
             break;
         case AM_KEY_LEFT:
             break;
         case AM_KEY_RIGHT:
             break;
         case AM_KEY_DOWN:
+            p.x++;
             break;
 
         default:
