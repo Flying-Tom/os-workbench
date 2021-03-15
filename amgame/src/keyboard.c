@@ -27,6 +27,7 @@ void key_process()
         ;
     if (event.keydown)
     {
+        print_key();
         switch (event.keycode)
         {
         case AM_KEY_W:

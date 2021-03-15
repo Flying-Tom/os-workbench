@@ -29,7 +29,7 @@ int main(const char *args)
     {
         render();
         key_process();
-        print_key();
+        //print_key();
         //draw_snake(snake.x, snake.y, 0xffffff);
         //generate_state();
 
