@@ -17,7 +17,7 @@ void print_key()
     }
 }
 
-extern struct point p;
+extern struct point player;
 
 void key_process()
 {
@@ -29,21 +29,25 @@ void key_process()
         switch (event.keycode)
         {
         case AM_KEY_W:
-            p.y = p.y > 0 ? p.y - 1 : p.y;
+            player.y = player.y > 0 ? player.y - 1 : player.y;
             break;
         case AM_KEY_A:
-            p.x = p.x > 0 ? p.x - 1 : p.x;
+            player.x = player.x > 0 ? player.x - 1 : player.x;
             break;
         case AM_KEY_D:
-            p.x = p.x < loc_x ? p.x + 1 : p.x;
+            player.x = player.x < loc_x ? player.x + 1 : player.x;
             break;
         case AM_KEY_S:
-            p.y = p.y < loc_y ? p.y + 1 : p.y;
+            player.y = player.y < loc_y ? player.y + 1 : player.y;
             break;
         case AM_KEY_ESCAPE:
             halt(0);
             break;
 
+            if (coin_rec[player.x][player.y])
+            {
+                coin_rec[player.x][player.y] = 0;
+            }
         default:
             break;
         }

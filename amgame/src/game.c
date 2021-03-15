@@ -2,12 +2,28 @@
 
 #define SIDE 8
 
-struct point p;
+struct point player;
 
-void generate_state()
+int randint(int l, int r)
 {
-    //snake.x = rand() % 64;
-    //snake.y = rand() % 32;
+    return l + (rand() & 0x7fffffff) % (r - l + 1);
+}
+
+void resetgame()
+{
+    player.x = randint(0, loc_x);
+    player.y = randint(0, loc_y);
+    generate_coin();
+}
+
+void generate_coin()
+{
+    int n = randint(1, 1);
+    coin_rec[randint(0, loc_x)][randint(0, loc_y)] = 1;
+}
+
+void bonus_check()
+{
 }
 
 // Operating system is a C program!
@@ -19,21 +35,20 @@ int main(const char *args)
     puts(args); // make run mainargs=xxx
     puts("\"\n");
 
-    //splash();
-
+    /*
+    splash();
     puts("Press any key to see its key code...\n");
-    p.x = p.y = 5;
+    */
     get_screen_info();
+
+    resetgame();
 
     while (1)
     {
         render();
         key_process();
         //print_key();
-        //draw_snake(snake.x, snake.y, 0xffffff);
         //generate_state();
-
-        //update_screen();
     }
     return 0;
 }
