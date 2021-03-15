@@ -24,3 +24,30 @@ void exit_check()
     if (event.keycode == AM_KEY_ESCAPE && event.keydown)
         halt(0);
 }
+
+extern struct point p;
+
+void direction_control()
+{
+    AM_INPUT_KEYBRD_T event = {.keycode = AM_KEY_NONE};
+    ioe_read(AM_INPUT_KEYBRD, &event);
+    while (event.keycode == AM_KEY_NONE)
+        ;
+    if (event.keydown)
+    {
+        switch (event.keycode)
+        {
+        case AM_KEY_UP:
+            break;
+        case AM_KEY_LEFT:
+            break;
+        case AM_KEY_RIGHT:
+            break;
+        case AM_KEY_DOWN:
+            break;
+
+        default:
+            break;
+        }
+    }
+}

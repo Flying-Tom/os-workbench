@@ -44,8 +44,8 @@ void splash()
     }
 }
 
-void draw_snake(int x, int y, int color)
+
+void draw_point(int x, int y, int color)
 {
     draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, color);
 }
-
