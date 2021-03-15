@@ -27,7 +27,7 @@ void key_process()
         ;
     if (event.keydown)
     {
-        print_key();
+        prinf("fuck\n");
         switch (event.keycode)
         {
         case AM_KEY_W:
