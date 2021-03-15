@@ -47,8 +47,6 @@ void splash()
     }
 }
 
-extern struct point p;
-
 void render()
 {
     for (int x = 0; x * SIDE <= screen_w; x++)

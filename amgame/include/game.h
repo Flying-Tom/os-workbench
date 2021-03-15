@@ -23,7 +23,7 @@ void bonus_check();
 struct point
 {
     int x, y;
-};
+} player;
 
 static inline void puts(const char *s)
 {

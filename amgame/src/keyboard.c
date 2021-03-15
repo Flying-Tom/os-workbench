@@ -17,8 +17,6 @@ void print_key()
     }
 }
 
-extern struct point player;
-
 void key_process()
 {
     AM_INPUT_KEYBRD_T event = {.keycode = AM_KEY_NONE};
