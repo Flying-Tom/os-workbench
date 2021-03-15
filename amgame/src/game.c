@@ -11,6 +11,7 @@ int randint(int l, int r)
 
 void resetgame()
 {
+    memset(coin_rec, 0, sizeof(coin_rec));
     player.x = randint(0, loc_x);
     player.y = randint(0, loc_y);
     generate_coin();
