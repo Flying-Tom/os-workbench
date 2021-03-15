@@ -8,6 +8,8 @@ void get_screen_info()
     ioe_read(AM_GPU_CONFIG, &info);
     screen_w = info.width;
     screen_h = info.height;
+    printf("screen_w:%d\n", screen_w);
+    printf("screen_h:%d\n", screen_h);
 }
 
 static void draw_tile(int x, int y, int w, int h, uint32_t color)
