@@ -39,6 +39,7 @@ int main(const char *args)
     splash();
     puts("Press any key to see its key code...\n");
     */
+    srand(114514);
     get_screen_info();
 
     resetgame();
