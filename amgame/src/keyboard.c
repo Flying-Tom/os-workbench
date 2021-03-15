@@ -26,18 +26,19 @@ void key_process()
 
     if (event.keycode != AM_KEY_NONE && event.keydown)
     {
-        printf("fuck\n");
         switch (event.keycode)
         {
         case AM_KEY_W:
-            p.x--;
+            p.y--;
             break;
         case AM_KEY_A:
+            p.x--;
             break;
         case AM_KEY_D:
+            p.x++;
             break;
         case AM_KEY_S:
-            p.x++;
+            p.y++;
             break;
         case AM_KEY_ESCAPE:
             halt(0);
