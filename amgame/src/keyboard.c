@@ -40,6 +40,7 @@ void key_process()
             break;
         case AM_KEY_R:
             resetgame();
+            break;
         case AM_KEY_ESCAPE:
             halt(0);
             break;
