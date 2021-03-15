@@ -48,9 +48,9 @@ extern struct point p;
 
 void render()
 {
-    for (int x = 0; x * SIDE <= w; x++)
+    for (int x = 0; x * SIDE <= screen_w; x++)
     {
-        for (int y = 0; y * SIDE <= h; y++)
+        for (int y = 0; y * SIDE <= screen_h; y++)
         {
             if (x == p.x && y == p.y)
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
