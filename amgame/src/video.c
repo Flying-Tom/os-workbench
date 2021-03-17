@@ -1,6 +1,6 @@
 #include <game.h>
 
-#define SIDE 32
+#define SIDE 128
 
 void get_screen_info()
 {
