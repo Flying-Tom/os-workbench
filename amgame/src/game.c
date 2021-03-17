@@ -4,11 +4,6 @@
 
 struct point player;
 
-int randint(int l, int r)
-{
-    return l + (rand() & 0x7fffffff) % (r - l + 1);
-}
-
 void resetgame()
 {
     memset(coin_rec, 0, sizeof(coin_rec));

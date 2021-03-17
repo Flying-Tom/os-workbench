@@ -56,7 +56,10 @@ void render()
             if (x == player.x && y == player.y)
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
             else if (coin_rec[x][y])
-                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff00);
+            {
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, randint(1, 0xfffffe));
+                //draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff00);
+            }
             else
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0x0);
         }

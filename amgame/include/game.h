@@ -32,3 +32,8 @@ static inline void puts(const char *s)
     for (; *s; s++)
         putch(*s);
 }
+
+int randint(int l, int r)
+{
+    return l + (rand() & 0x7fffffff) % (r - l + 1);
+}
