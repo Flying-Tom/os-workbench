@@ -16,7 +16,7 @@ void resetgame()
 void generate_coin()
 {
     int n = 0;
-    if (coincnt == 1)
+    if (coincnt == 0)
         n = randint(1, 3);
     else if (coincnt < 5)
         n = randint(0, 2);
