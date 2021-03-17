@@ -18,16 +18,16 @@ void generate_coin()
     int n = 0;
     if (coincnt == 0)
         n = randint(1, 3);
-    else if (coincnt > 5)
+    else if (coincnt < 5)
         n = randint(0, 2);
 
     coincnt += n;
-    
+
     for (int i = 1; i <= n; i++)
     {
         int coin_x = randint(0, loc_x), coin_y = randint(0, loc_y);
         coin_rec[coin_x][coin_y] = 1;
-        printf("new coin location:(%d,%d)\n", coin_x, coin_y);
+        //printf("new coin location:(%d,%d)\n", coin_x, coin_y);
     }
 }
 
