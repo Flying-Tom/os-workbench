@@ -57,7 +57,8 @@ void render()
                 draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffffff); // white
             else if (coin_rec[x][y])
             {
-                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, randint(1, 0xfffffe));
+                int red = randint(1, 0xff), green = randint(1, 0xff), blue = randint(1, 0xff);
+                draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, red << 16 + green << 8 + blue);
                 //draw_tile(x * SIDE, y * SIDE, SIDE, SIDE, 0xffff00);
             }
             else
