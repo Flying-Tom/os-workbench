@@ -16,6 +16,7 @@ void key_process();
 
 /* game */
 int score;
+int coincnt;
 int loc_x, loc_y;
 int coin_rec[256][256];
 void generate_coin();
