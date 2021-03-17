@@ -15,7 +15,12 @@ void resetgame()
 
 void generate_coin()
 {
-    int n = randint(0, 3);
+    int n;
+    if (coincnt == 0)
+        n = randint(1, 3);
+    else
+        n = randint(0, 2);
+
     for (int i = 1; i <= n; i++)
     {
         int coin_x = randint(0, loc_x), coin_y = randint(0, loc_y);
