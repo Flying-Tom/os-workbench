@@ -1,5 +1,6 @@
 #include "co.h"
 #include <stdlib.h>
+#include <stdint.h>
 #include <setjmp.h>
 
 #define STACK_SIZE 64 * 1024
