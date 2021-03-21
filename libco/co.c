@@ -62,7 +62,7 @@ void co_wait(struct co *co)
 {
     co_current->status = CO_WAITING;
     co->waiter = co_current;
-    stack_switch_call(co->stack, co->func, NULL);
+    stack_switch_call(co->stack, co->func, co->arg);
     co->status = CO_DEAD;
 
     co_current->status = CO_RUNNING;
