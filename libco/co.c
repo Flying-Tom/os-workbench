@@ -51,7 +51,7 @@ void coroutine_entry(struct co *co)
 {
     co->status = CO_RUNNING;
     co->func(co->arg);
-    co_status = CO_DEAD;
+    co->status = CO_DEAD;
 }
 
 void coroutine_switch(struct co *co)
