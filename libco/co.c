@@ -33,6 +33,7 @@ int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
+    // restore the stack pointer, and move arg to %rdi( the fist parameter register), then call the function "entry"
     asm volatile(
 #if __x86_64__
         "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
@@ -44,6 +45,30 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
         : "b"((uintptr_t)sp - 8), "d"(entry), "a"(arg)
 #endif
     );
+}
+
+void coroutine_entry(struct co *co)
+{
+    co->status = CO_RUNNING;
+    co->func(co->arg);
+    co_status = CO_DEAD;
+}
+
+void coroutine_switch(struct co *co)
+{
+    co_current = co;
+    switch (co->status)
+    {
+    case CO_NEW:
+        stack_switch_call((void *)(co->stack), coroutine_entry, (uintptr_t)co->arg);
+        break;
+    case CO_RUNNING:
+        longjmp(co_current->context, 1);
+        break;
+    default:
+        assert(false);
+        break;
+    }
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
@@ -80,8 +105,7 @@ void co_yield()
         {
             next_co_id = rand() % co_group_cnt;
         } while (co_group[next_co_id]->status == CO_DEAD);
-        co_current = co_group[next_co_id];
-        longjmp(co_current->context, 1);
+        coroutine_switch(co_group[next_co_id])
     }
     else
     {
