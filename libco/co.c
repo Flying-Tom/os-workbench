@@ -30,7 +30,7 @@ struct co
     uint8_t stack[STACK_SIZE];
 } co_root;
 
-struct co *co_list_head = co_root;
+struct co *co_list_head = &co_root;
 
 struct co *co_current, co_group[CO_MAXNUM];
 int co_group_cnt;
@@ -85,6 +85,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     co_group_cnt++;
+    printf("%d\n", co_list_head->status);
     *(new_co->prev) = *co_list_head;
     co_list_head = new_co;
 
