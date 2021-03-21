@@ -85,7 +85,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     co_group_cnt++;
-    *new_co->prev = *co_list_head;
+    //*new_co->prev = *co_list_head;
     co_list_head = new_co;
 
     return new_co;
