@@ -66,7 +66,7 @@ void coroutine_switch(struct co *co)
         longjmp(co_current->context, 1);
         break;
     default:
-        assert(false);
+        assert(0);
         break;
     }
 }
@@ -105,7 +105,7 @@ void co_yield()
         {
             next_co_id = rand() % co_group_cnt;
         } while (co_group[next_co_id]->status == CO_DEAD);
-        coroutine_switch(co_group[next_co_id])
+        coroutine_switch(co_group[next_co_id]);
     }
     else
     {
