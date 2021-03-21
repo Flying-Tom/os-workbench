@@ -116,8 +116,8 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt;
-        } while (co_group[next_co_id]->status == CO_DEAD);
-        coroutine_switch(co_group[next_co_id]);
+        } while (co_group[next_co_id].status == CO_DEAD);
+        coroutine_switch(&co_group[next_co_id]);
     }
     else
     {
