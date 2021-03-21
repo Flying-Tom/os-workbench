@@ -28,7 +28,7 @@ struct co
     uint8_t stack[STACK_SIZE];
 };
 
-struct co *co_current, co_group[CO_MAXNUM];
+struct co *co_current, *co_group[CO_MAXNUM];
 int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
