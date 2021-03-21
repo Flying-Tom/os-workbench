@@ -99,6 +99,7 @@ void co_wait(struct co *co)
         }
         co_current->status = CO_RUNNING;
     }
+    assert(co->status > 0);
     free(co);
 }
 
