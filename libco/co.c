@@ -75,17 +75,19 @@ void coroutine_switch(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-    struct co *new_co = malloc(sizeof(struct co));
-
-    new_co->name = (char *)name;
-    //strcpy(new_co->name, name);
-    new_co->func = func;
-    new_co->arg = arg;
-    printf("%d\n", new_co->status);
-    new_co->status = CO_NEW;
-    printf("%d\n", new_co->status);
-
-    return new_co;
+    for (int i = 0; i < CO_MAXNUM; i++)
+    {
+        if (co_group[i].status == CO_UNDEFINE)
+        {
+            co_group[i].name = (char *)name;
+            co_group[i].func = func;
+            co_group[i].arg = arg;
+            co_group[i].status = CO_NEW;
+            return &co_group[i];
+        }
+    }
+    assert(0);
+    return NULL;
 }
 
 void co_wait(struct co *co)
