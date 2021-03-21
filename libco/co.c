@@ -75,25 +75,29 @@ void coroutine_switch(struct co *co)
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     struct co *new_co = malloc(sizeof(struct co));
-    new_co->name = (char*)name;
+    new_co->name = (char *)name;
     //strcpy(new_co->name, name);
     new_co->func = func;
     new_co->arg = arg;
-    printf("%d\n",new_co->status);
+    printf("%d\n", new_co->status);
     new_co->status = CO_NEW;
-    printf("%d\n",new_co->status);
+    printf("%d\n", new_co->status);
 
     return new_co;
 }
 
 void co_wait(struct co *co)
 {
-    co_current->status = CO_WAITING;
-    co->waiter = co_current;
-    stack_switch_call(co->stack, co->func, (uintptr_t)co->arg);
-    co->status = CO_DEAD;
-
-    co_current->status = CO_RUNNING;
+    if (co->status != CO_DEAD)
+    {
+        co_current->status = CO_WAITING;
+        co->waiter = co_current;
+        while (co->status != CO_DEAD)
+        {
+            co_yield();
+        }
+        co_current->status = CO_RUNNING;
+    }
     free(co);
 }
 
