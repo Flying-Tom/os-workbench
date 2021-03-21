@@ -88,6 +88,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
 void co_wait(struct co *co)
 {
+    assert(co->status > 0);
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
@@ -99,7 +100,6 @@ void co_wait(struct co *co)
         }
         co_current->status = CO_RUNNING;
     }
-    assert(co->status > 0);
     free(co);
 }
 
