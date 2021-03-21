@@ -88,7 +88,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
 void co_wait(struct co *co)
 {
-    puts("enter co_wait");
+    printf("co_wait(%s)\n", co->name);
     assert(co->status > 0);
     if (co->status != CO_DEAD)
     {
