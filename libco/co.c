@@ -75,10 +75,8 @@ void coroutine_switch(struct co *co)
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     struct co *new_co = malloc(sizeof(struct co));
-    //*new_co->name = *name;
-    puts("strcpy?");
-    strcpy(new_co->name, name);
-    puts("strcpy!");
+    new_co->name = (char*)name;
+    //strcpy(new_co->name, name);
     new_co->func = func;
     new_co->arg = arg;
     printf("%d",new_co->status);
