@@ -30,7 +30,7 @@ struct co
     uint8_t stack[STACK_SIZE];
 } co_root;
 
-struct co *co_list_head = &co_root;
+struct co *co_list_head = co_root;
 
 struct co *co_current, co_group[CO_MAXNUM];
 int co_group_cnt;
