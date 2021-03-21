@@ -1,4 +1,5 @@
 #include "co.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <setjmp.h>
@@ -78,7 +79,9 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     strcpy(new_co->name, name);
     new_co->func = func;
     new_co->arg = arg;
+    printf("%d",new_co->status);
     new_co->status = CO_NEW;
+    printf("%d",new_co->status);
 
     return new_co;
 }
