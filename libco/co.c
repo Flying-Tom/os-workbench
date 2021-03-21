@@ -11,7 +11,8 @@
 
 enum co_status
 {
-    CO_NEW = 1,
+    CO_UNDEFINE,
+    CO_NEW,
     CO_RUNNING,
     CO_WAITING,
     CO_DEAD,
@@ -29,7 +30,7 @@ struct co
     uint8_t stack[STACK_SIZE];
 };
 
-struct co *co_current, *co_group[CO_MAXNUM];
+struct co *co_current, co_group[CO_MAXNUM];
 int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
@@ -75,6 +76,7 @@ void coroutine_switch(struct co *co)
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     struct co *new_co = malloc(sizeof(struct co));
+
     new_co->name = (char *)name;
     //strcpy(new_co->name, name);
     new_co->func = func;
