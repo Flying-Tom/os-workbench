@@ -62,7 +62,7 @@ void co_wait(struct co *co)
 {
     co_current->status = CO_WAITING;
     co->waiter = co_current;
-    stack_switch_call(co->stack, co->func, co->arg);
+    stack_switch_call(co->stack, co->func, NULL);
     co->status = CO_DEAD;
 
     co_current->status = CO_RUNNING;
@@ -79,7 +79,7 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt;
-        } while (co_group[next_co_id].status == CO_DEAD);
+        } while (co_group[next_co_id]->status == CO_DEAD);
         co_current = co_group[next_co_id];
         longjmp(co_current->context, 1);
     }
