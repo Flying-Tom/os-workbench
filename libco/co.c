@@ -11,8 +11,7 @@
 
 enum co_status
 {
-    CO_UNDEFINE,
-    CO_NEW,
+    CO_NEW = 1,
     CO_RUNNING,
     CO_WAITING,
     CO_DEAD,
@@ -26,9 +25,12 @@ struct co
 
     enum co_status status;
     struct co *waiter;
+    struct co *prev;
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-};
+} co_root;
+
+struct co *co_list_head = &co_root;
 
 struct co *co_current, co_group[CO_MAXNUM];
 int co_group_cnt;
@@ -75,20 +77,18 @@ void coroutine_switch(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-    for (int i = 0; i < CO_MAXNUM; i++)
-    {
-        if (co_group[i].status == CO_UNDEFINE)
-        {
-            co_group[i].name = (char *)name;
-            co_group[i].func = func;
-            co_group[i].arg = arg;
-            co_group[i].status = CO_NEW;
-            co_group_cnt++;
-            return &co_group[i];
-        }
-    }
-    assert(0);
-    return NULL;
+
+    struct co *new_co = malloc(sizeof(struct co));
+    new_co->name = (char *)name;
+    new_co->func = func;
+    new_co->arg = arg;
+    new_co->status = CO_NEW;
+
+    co_group_cnt++;
+    *new_co->prev = *co_list_head;
+    co_list_head = new_co;
+
+    return new_co;
 }
 
 void co_wait(struct co *co)
@@ -116,11 +116,19 @@ void co_yield()
     {
         // start to switch coruntine
         int next_co_id;
+        struct co *next_co;
+
         do
         {
-            next_co_id = rand() % co_group_cnt;
-        } while (co_group[next_co_id].status == CO_DEAD);
-        coroutine_switch(&co_group[next_co_id]);
+            next_co_id = rand() % co_group_cnt + 1;
+            next_co = co_list_head;
+            while (next_co_id--)
+            {
+                next_co = next_co->prev;
+            }
+
+        } while (next_co->status != CO_RUNNING);
+        coroutine_switch(next_co);
     }
     else
     {
