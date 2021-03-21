@@ -88,7 +88,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     printf("%d\n", co_list_head->status);
     //*new_co->prev = *co_list_head;
     //co_list_head = new_co;
-
+    puts("return");
     return new_co;
 }
 
