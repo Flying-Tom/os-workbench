@@ -88,11 +88,7 @@ void co_wait(struct co *co)
         co_current->status = CO_WAITING;
         co->waiter = co_current;
         while (co->status != CO_DEAD)
-        {
             co_yield();
-            printf("while\n");
-        }
-        puts("Out!");
         //printf("co_current->status:%d\n", co_current->status);
         co_current->status = CO_RUNNING;
     }
