@@ -110,13 +110,10 @@ void co_wait(struct co *co)
     {
         co_current->status = CO_WAITING;
         co->waiter = co_current;
-        /*
         while (co->status != CO_DEAD)
         {
             co_yield();
-        }*/
-        co_yield();
-        assert(co->status == CO_DEAD);
+        }
         puts("Out!");
         co_current->status = CO_RUNNING;
     }
