@@ -59,7 +59,7 @@ void coroutine_entry(struct co *co)
     co->func(co->arg);
     co->status = CO_DEAD;
     co_group_cnt--;
-    //co_yield();
+    co_yield();
 }
 
 void coroutine_switch(struct co *co)
@@ -74,7 +74,7 @@ void coroutine_switch(struct co *co)
         puts("out");
         break;
     case CO_RUNNING:
-        puts("longjmp");
+        //puts("longjmp");
         longjmp(co_current->context, 1);
         break;
     default:
