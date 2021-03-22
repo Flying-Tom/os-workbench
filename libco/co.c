@@ -129,9 +129,8 @@ void co_yield()
             next_co_id = rand() % co_group_cnt + 1;
             //printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
-            printf("%s\n", next_co->name);
-            printf("%d\n", next_co->status);
-            printf("%d\n", next_co->prev->status);
+            printf("%s %d\n", next_co->name, next_co->status);
+            printf("%s %d\n", next_co->prev->name, next_co->prev->status);
             assert(0);
             while (--next_co_id)
             {
