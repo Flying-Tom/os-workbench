@@ -109,6 +109,8 @@ void co_wait(struct co *co)
         }
         co_current->status = CO_RUNNING;
     }
+    puts("Should not free");
+    assert(0);
     free(co);
 }
 
