@@ -35,7 +35,7 @@ struct co
 struct co *co_list_head = &co_root;
 struct co *co_current = &co_root;
 
-int co_group_cnt;
+int co_group_cnt = 1;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
