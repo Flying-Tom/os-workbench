@@ -155,6 +155,7 @@ void co_yield()
     else
     {
         // return from longjmp
+        printf("co_root.status:%d\n", co_root.status);
         return;
     }
 }
