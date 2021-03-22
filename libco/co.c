@@ -57,7 +57,7 @@ void coroutine_entry(struct co *co)
 {
     co->status = CO_RUNNING;
     co->func(co->arg);
-    //co->status = CO_DEAD;
+    co->status = CO_DEAD;
     co_group_cnt--;
     if (co->waiter->status == CO_WAITING)
         co->waiter->status = CO_RUNNING;
@@ -76,8 +76,6 @@ void coroutine_switch(struct co *co)
         puts("out");
         break;
     case CO_RUNNING:
-        //puts("longjmp");
-        co->status = CO_DEAD;
         longjmp(co_current->context, 1);
         break;
     default:
