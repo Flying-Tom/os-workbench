@@ -100,7 +100,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
 void co_wait(struct co *co)
 {
-    printf("co_wait(%s) status:%d\n", co->name, co->status);
+    //printf("co_wait(%s) status:%d\n", co->name, co->status);
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
@@ -111,7 +111,7 @@ void co_wait(struct co *co)
             printf("while\n");
         }
         puts("Out!");
-        printf("co_current->status:%d\n", co_current->status);
+        //printf("co_current->status:%d\n", co_current->status);
         co_current->status = CO_RUNNING;
     }
 
@@ -126,7 +126,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     puts("co_yield");
-    printf("%s status:%d\n", co_main.name, co_main.status);
+    //printf("%s status:%d\n", co_main.name, co_main.status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
