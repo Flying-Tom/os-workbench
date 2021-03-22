@@ -35,7 +35,7 @@ struct co
 struct co *co_list_head = &co_main;
 struct co *co_current = &co_main;
 
-int co_group_cnt = 1;
+int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
@@ -109,7 +109,6 @@ void co_wait(struct co *co)
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
-        //printf("co_current:%s %d\n", co_current->name, co_current->status);
         co->waiter = co_current;
         /*
         while (co->status != CO_DEAD)
@@ -133,21 +132,16 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
+    //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
-        // start to switch coruntine
         int next_co_id;
         struct co *next_co;
-
         do
         {
             next_co_id = rand() % co_group_cnt + 1;
             //printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
-            //printf("%s %d\n", next_co->name, next_co->status);
-            //printf("%s %d\n", next_co->prev->name, next_co->prev->status);
-            //assert(0);
             while (--next_co_id)
             {
                 next_co = next_co->prev;
@@ -155,7 +149,7 @@ void co_yield()
             //printf("next_co->status:%d\n", next_co->status);
             //printf("co_group_cnt:%d\n", co_group_cnt);
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
-        //printf("switch to: %s %d\n", next_co->name, next_co->status);
+        printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
     }
     else
@@ -170,4 +164,5 @@ void __attribute__((constructor)) beforemain()
 {
     co_main.name = "main";
     co_main.status = CO_RUNNING;
+    co_group_cnt++;
 }
