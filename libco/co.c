@@ -133,7 +133,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    printf("%s %d\n", co_current->name, co_current->status);
+    printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
         // start to switch coruntine
