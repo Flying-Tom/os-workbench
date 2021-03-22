@@ -132,6 +132,7 @@ void co_wait(struct co *co)
 
 void co_yield()
 {
+    puts("co_yield");
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
@@ -150,7 +151,7 @@ void co_yield()
                     next_co = next_co->prev;
                 }
                 //printf("next_co->status:%d\n", next_co->status);
-                printf("co_group_cnt:%d\n", co_group_cnt);
+                //printf("co_group_cnt:%d\n", co_group_cnt);
             } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
         }
         else
