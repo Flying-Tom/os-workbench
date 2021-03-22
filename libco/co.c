@@ -65,6 +65,7 @@ void coroutine_entry(struct co *co)
 void coroutine_switch(struct co *co)
 {
     co_current = co;
+    assert(sizeof(co->stack) == STACK_SIZE);
     uintptr_t ptrtemp = (uintptr_t)((((uintptr_t)co->stack + STACK_SIZE) >> 4) << 4);
     switch (co->status)
     {
