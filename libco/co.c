@@ -74,7 +74,7 @@ void coroutine_switch(struct co *co)
         puts("out");
         break;
     case CO_RUNNING:
-        puts("longjmp");
+        //puts("longjmp");
         longjmp(co_current->context, 1);
         break;
     default:
@@ -133,7 +133,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
+    printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
         // start to switch coruntine
