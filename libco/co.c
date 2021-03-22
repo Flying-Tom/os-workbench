@@ -168,6 +168,6 @@ void co_yield()
 
 void __attribute__((constructor)) beforemain()
 {
-    strcpy(co_main.name, "main");
+    //strcpy(co_main.name, "main");
     co_main.status = CO_RUNNING;
 }
