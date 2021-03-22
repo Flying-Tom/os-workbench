@@ -145,7 +145,7 @@ void co_yield()
                     next_co = next_co->prev;
                 }
                 //printf("next_co->status:%d\n", next_co->status);
-                printf("co_group_cnt:%d\n", co_group_cnt);
+                //printf("co_group_cnt:%d\n", co_group_cnt);
             } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
         }
         else
