@@ -113,7 +113,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     puts("co_yield");
-    //printf("%s status:%d\n", co_main.name, co_main.status);
+    printf("%s status:%d\n", co_main.name, co_main.status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
