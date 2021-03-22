@@ -64,24 +64,6 @@ void coroutine_entry(struct co *co)
     co_yield();
 }
 
-void coroutine_switch(struct co *co)
-{
-    co_current = co;
-    switch (co->status)
-    {
-    case CO_NEW:
-        stack_switch_call((void *)(co->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co);
-        puts("out");
-        break;
-    case CO_RUNNING:
-        longjmp(co_current->context, 1);
-        break;
-    default:
-        printf("%s %d\n", co->name, co->status);
-        assert(0);
-    }
-}
-
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
 
@@ -153,7 +135,20 @@ void co_yield()
             next_co = &co_main;
         }
         printf("switch to: %s %d\n", next_co->name, next_co->status);
-        coroutine_switch(next_co);
+        co_current = next_co;
+        switch (co->status)
+        {
+        case CO_NEW:
+            stack_switch_call((void *)(co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
+            puts("out");
+            break;
+        case CO_RUNNING:
+            longjmp(co_current->context, 1);
+            break;
+        default:
+            printf("%s %d\n", co_current->name, co_current->status);
+            assert(0);
+        }
     }
     else
     {
@@ -165,7 +160,7 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
-    co_main.name = "main"; // main will be always waiting for other routines  
+    co_main.name = "main"; // main will be always waiting for other routines
     co_main.status = CO_RUNNING;
     co_group_cnt = 1;
 }
