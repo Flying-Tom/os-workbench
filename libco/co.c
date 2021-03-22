@@ -32,7 +32,7 @@ struct co
 } co_root;
 
 struct co *co_list_head = &co_root;
-struct co *co_current = co_list_head;
+struct co *co_current = &co_root;
 
 int co_group_cnt;
 
