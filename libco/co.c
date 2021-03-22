@@ -97,7 +97,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     co_list_head = new_co;
 
     co_group_cnt++;
-    printf("%s\n", co_list_head->name);
+    //printf("%s\n", co_list_head->name);
 
     return new_co;
 }
@@ -133,7 +133,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
+    //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
         // start to switch coruntine
