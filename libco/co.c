@@ -155,7 +155,7 @@ void co_yield()
         {
             next_co = &co_main;
         }
-        //printf("switch to: %s %d\n", next_co->name, next_co->status);
+        printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
     }
     else
