@@ -58,7 +58,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    co_group_cnt--;
+    //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
     co_yield();
@@ -67,12 +67,10 @@ void coroutine_entry(struct co *co)
 void coroutine_switch(struct co *co)
 {
     co_current = co;
-    //uintptr_t ptrtemp = (uintptr_t)(((uintptr_t)(co->stack + STACK_SIZE) >> 4) << 4);
     switch (co->status)
     {
     case CO_NEW:
         stack_switch_call((void *)(co->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co);
-        //stack_switch_call((void*)((uintptr_t)((((uintptr_t)co->stack + STACK_SIZE) >> 4) << 4)), coroutine_entry, (uintptr_t)co);
         puts("out");
         break;
     case CO_RUNNING:
@@ -81,7 +79,6 @@ void coroutine_switch(struct co *co)
     default:
         printf("%s %d\n", co->name, co->status);
         assert(0);
-        break;
     }
 }
 
@@ -166,9 +163,9 @@ void co_yield()
     }
 }
 
-void __attribute__((constructor)) beforemain()
+void __attribute__((constructor)) co_init()
 {
-    co_main.name = "main";
+    co_main.name = "main"; // main will be always waiting for other routines  
     co_main.status = CO_RUNNING;
-    co_group_cnt++;
+    co_group_cnt = 1;
 }
