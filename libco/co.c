@@ -39,7 +39,7 @@ int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
-    // restore the stack pointer, and move arg to %rdi( the fist parameter register), then call the function "entry"
+    // restore the stack pointer, and move arg to %rdi( the first parameter register), then call the function "entry"
     asm volatile(
 #if __x86_64__
         "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
@@ -67,7 +67,7 @@ void coroutine_switch(struct co *co)
     switch (co->status)
     {
     case CO_NEW:
-        stack_switch_call((void *)(co->stack), coroutine_entry, (uintptr_t)co->arg);
+        stack_switch_call((void *)(co->stack), coroutine_entry, (uintptr_t)co);
         break;
     case CO_RUNNING:
         longjmp(co_current->context, 1);
