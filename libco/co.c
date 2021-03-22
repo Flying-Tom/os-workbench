@@ -134,18 +134,23 @@ void co_yield()
     {
         int next_co_id;
         struct co *next_co;
-        do
+        if (co_group_cnt > 1)
         {
-            next_co_id = rand() % co_group_cnt + 1;
-            //printf("next_co_id:%d\n", next_co_id);
-            next_co = co_list_head;
-            while (next_co_id--)
+            do
             {
-                next_co = next_co->prev;
-            }
-            //printf("next_co->status:%d\n", next_co->status);
-            printf("co_group_cnt:%d\n", co_group_cnt);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
+                next_co_id = rand() % co_group_cnt + 1;
+                //printf("next_co_id:%d\n", next_co_id);
+                next_co = co_list_head;
+                while (--next_co_id)
+                {
+                    next_co = next_co->prev;
+                }
+                //printf("next_co->status:%d\n", next_co->status);
+                printf("co_group_cnt:%d\n", co_group_cnt);
+            } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
+        }
+        else
+            next_co = &co_main;
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
     }
