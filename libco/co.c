@@ -96,13 +96,15 @@ void co_wait(struct co *co)
         //printf("co_current->status:%d\n", co_current->status);
         co_current->status = CO_RUNNING;
     }
-    assert(0);
-    struct co *co_temp = co_list_head;
-    while (co_temp->prev != co)
-        co_temp = co_temp->prev;
+    else
+    {
+        struct co *co_temp = co_list_head;
+        while (co_temp->prev != co)
+            co_temp = co_temp->prev;
 
-    co_temp->prev = co->prev;
-    free(co);
+        co_temp->prev = co->prev;
+        free(co);
+    }
 }
 
 void co_yield()
