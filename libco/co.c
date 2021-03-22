@@ -105,6 +105,7 @@ void co_wait(struct co *co)
         while (co->status != CO_DEAD)
         {
             co_yield();
+            printf("fuck\n");
         }
         co_current->status = CO_RUNNING;
     }
