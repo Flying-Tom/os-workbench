@@ -61,7 +61,6 @@ void coroutine_entry(struct co *co)
     co_group_cnt--;
     if (co->waiter->status == CO_WAITING)
         co->waiter->status = CO_RUNNING;
-    printf("fuck\n");
     co_yield();
 }
 
