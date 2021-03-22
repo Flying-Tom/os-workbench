@@ -58,7 +58,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    printf('coroutine_entry finished\n');
+    puts("coroutine_entry finished");
 }
 
 void coroutine_switch(struct co *co)
