@@ -71,6 +71,7 @@ void coroutine_switch(struct co *co)
         puts("out");
         break;
     case CO_RUNNING:
+        puts("longjmp");
         longjmp(co_current->context, 1);
         break;
     default:
