@@ -11,7 +11,8 @@
 
 enum co_status
 {
-    CO_NEW = 1,
+    CO_UNDEFINE,
+    CO_NEW,
     CO_RUNNING,
     CO_WAITING,
     CO_DEAD,
@@ -130,7 +131,7 @@ void co_yield()
                 next_co = next_co->prev;
             }
 
-        } while (next_co->status != CO_RUNNING);
+        } while (next_co->status != CO_RUNNING && next_co->status != CO_UNDEFINE);
         coroutine_switch(next_co);
     }
     else
