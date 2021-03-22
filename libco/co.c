@@ -138,7 +138,7 @@ void co_yield()
     {
         int next_co_id;
         struct co *next_co;
-        if (co_group_cnt > 0)
+        if (co_group_cnt > 1)
         {
             do
             {
