@@ -58,7 +58,9 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    puts("coroutine_entry finished");
+    if (co->waiter)
+        co->waiter->status = CO_RUNNING;
+    co_yield();
 }
 
 void coroutine_switch(struct co *co)
