@@ -132,7 +132,7 @@ void co_yield()
             next_co = co_list_head;
             //printf("%s %d\n", next_co->name, next_co->status);
             //printf("%s %d\n", next_co->prev->name, next_co->prev->status);
-            assert(0);
+            //assert(0);
             while (--next_co_id)
             {
                 next_co = next_co->prev;
