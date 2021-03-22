@@ -106,6 +106,7 @@ void co_wait(struct co *co)
         }
         co_temp = co_list_head;
 
+        co_group_cnt--;
         free(co);
     }
 }
