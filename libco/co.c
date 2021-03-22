@@ -136,7 +136,7 @@ void co_yield()
         }
         printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
-        switch (co->status)
+        switch (co_current->status)
         {
         case CO_NEW:
             stack_switch_call((void *)(co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
