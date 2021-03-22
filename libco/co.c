@@ -117,6 +117,7 @@ void co_wait(struct co *co)
             co_yield();
         }*/
         co_yield();
+        assert(co->status == CO_DEAD);
         puts("Out!");
         co_current->status = CO_RUNNING;
     }
@@ -132,7 +133,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    if (val == 0 && co_group_cnt > 0)
+    if (val == 0)
     {
         // start to switch coruntine
         int next_co_id;
