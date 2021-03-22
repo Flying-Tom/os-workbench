@@ -103,7 +103,7 @@ void co_wait(struct co *co)
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
-        printf("co_current:%s %d\n", co_current->name, co_current->status);
+        //printf("co_current:%s %d\n", co_current->name, co_current->status);
         co->waiter = co_current;
         while (co->status != CO_DEAD)
         {
@@ -130,14 +130,14 @@ void co_yield()
             next_co_id = rand() % co_group_cnt + 1;
             //printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
-            printf("%s %d\n", next_co->name, next_co->status);
-            printf("%s %d\n", next_co->prev->name, next_co->prev->status);
+            //printf("%s %d\n", next_co->name, next_co->status);
+            //printf("%s %d\n", next_co->prev->name, next_co->prev->status);
             assert(0);
             while (--next_co_id)
             {
                 next_co = next_co->prev;
             }
-
+            printf("%s %d\n", next_co->name, next_co->status);
         } while (next_co->status != CO_RUNNING && next_co->status != CO_UNDEFINE);
         puts("switch");
         coroutine_switch(next_co);
