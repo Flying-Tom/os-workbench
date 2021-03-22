@@ -127,7 +127,7 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt + 1;
-            printf("next_co_id:%d\n", next_co_id);
+            //printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
             while (next_co_id--)
             {
@@ -135,6 +135,7 @@ void co_yield()
             }
 
         } while (next_co->status != CO_RUNNING && next_co->status != CO_UNDEFINE);
+        puts("switch");
         coroutine_switch(next_co);
     }
     else
