@@ -133,7 +133,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     int val = setjmp(co_current->context);
-    if (val == 0)
+    if (val == 0 && co_group_cnt > 1)
     {
         // start to switch coruntine
         int next_co_id;
