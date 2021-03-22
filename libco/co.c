@@ -143,7 +143,7 @@ void co_yield()
         {
             do
             {
-                next_co_id = rand() % co_group_cnt ;
+                next_co_id = rand() % co_group_cnt + 1;
                 //printf("next_co_id:%d\n", next_co_id);
                 next_co = co_list_head;
                 while (--next_co_id)
