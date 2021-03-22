@@ -68,6 +68,7 @@ void coroutine_switch(struct co *co)
     {
     case CO_NEW:
         stack_switch_call(co->stack + STACK_SIZE, coroutine_entry, (uintptr_t)co);
+        puts("out");
         break;
     case CO_RUNNING:
         longjmp(co_current->context, 1);
@@ -111,7 +112,7 @@ void co_wait(struct co *co)
         }
         co_current->status = CO_RUNNING;
     }
-    
+
     struct co *co_temp = co_list_head;
     while (co_temp->prev != co)
         co_temp = co_temp->prev;
