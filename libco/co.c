@@ -67,9 +67,9 @@ void coroutine_switch(struct co *co)
     switch (co->status)
     {
     case CO_NEW:
-        assert(co->stack == &co->stack[STACK_SIZE]);
         printf("co->stack:%p\n", co->stack);
         printf("co->stack[STACK_SIZE]:%p\n", &co->stack[STACK_SIZE]);
+        assert(co->stack == &co->stack[STACK_SIZE]);
         stack_switch_call(&co->stack[STACK_SIZE], coroutine_entry, (uintptr_t)co);
         break;
     case CO_RUNNING:
