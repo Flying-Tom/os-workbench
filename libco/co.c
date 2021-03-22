@@ -105,7 +105,6 @@ void co_wait(struct co *co)
         while (co->status != CO_DEAD)
         {
             co_yield();
-            printf("fuck\n");
         }
         co_current->status = CO_RUNNING;
     }
@@ -124,6 +123,7 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt + 1;
+            printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
             while (next_co_id--)
             {
