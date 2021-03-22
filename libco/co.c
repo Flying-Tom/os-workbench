@@ -111,10 +111,12 @@ void co_wait(struct co *co)
         co_current->status = CO_WAITING;
         //printf("co_current:%s %d\n", co_current->name, co_current->status);
         co->waiter = co_current;
+        /*
         while (co->status != CO_DEAD)
         {
             co_yield();
-        }
+        }*/
+        co_yield();
         puts("Out!");
         co_current->status = CO_RUNNING;
     }
