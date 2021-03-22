@@ -76,7 +76,7 @@ void coroutine_switch(struct co *co)
         longjmp(co_current->context, 1);
         break;
     default:
-        assert(0);
+        //assert(0);
         break;
     }
 }
