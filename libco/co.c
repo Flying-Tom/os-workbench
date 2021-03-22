@@ -98,6 +98,7 @@ void co_wait(struct co *co)
     assert(co->status > 0);
     if (co->status != CO_DEAD)
     {
+        puts("if");
         co_current->status = CO_WAITING;
         co->waiter = co_current;
         puts("while");
