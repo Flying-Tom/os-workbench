@@ -121,7 +121,7 @@ void co_wait(struct co *co)
         co_temp = co_temp->prev;
 
     co_temp->prev = co->prev;
-
+    co_group_cnt--;
     free(co);
 }
 
@@ -147,6 +147,7 @@ void co_yield()
                 next_co = next_co->prev;
             }
             //printf("next_co->status:%d\n", next_co->status);
+            printf("co_group_cnt:%d", co_group_cnt);
         } while (next_co->status == CO_UNDEFINE || next_co->status == CO_DEAD);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
