@@ -57,6 +57,7 @@ void coroutine_entry(struct co *co)
 {
     co->status = CO_RUNNING;
     co->func(co->arg);
+    printf("%s should be dead\n", co->name);
     co->status = CO_DEAD;
 }
 
