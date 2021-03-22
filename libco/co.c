@@ -26,13 +26,14 @@ struct co
     enum co_status status;
     struct co *waiter;
     struct co *prev;
+
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
 } co_root;
 
 struct co *co_list_head = &co_root;
+struct co *co_current;
 
-struct co *co_current, co_group[CO_MAXNUM];
 int co_group_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
@@ -84,10 +85,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->arg = arg;
     new_co->status = CO_NEW;
 
-    co_group_cnt++;
-    printf("%d\n", co_list_head->status);
-    new_co->prev = co_list_head;
-    //co_list_head = new_co;
+
     puts("return");
     return new_co;
 }
