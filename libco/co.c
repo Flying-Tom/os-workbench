@@ -138,7 +138,7 @@ void co_yield()
                 next_co = next_co->prev;
             }
             printf("%s %d\n", next_co->name, next_co->status);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_UNDEFINE);
+        } while (next_co->status == CO_RUNNING && next_co->status == CO_UNDEFINE);
         puts("switch");
         coroutine_switch(next_co);
     }
