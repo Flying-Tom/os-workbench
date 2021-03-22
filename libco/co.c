@@ -59,7 +59,7 @@ void coroutine_entry(struct co *co)
     co->func(co->arg);
     co->status = CO_DEAD;
     co_group_cnt--;
-    if (co->waiter)
+    if (co->waiter->status == CO_WAITING)
         co->waiter->status = CO_RUNNING;
     co_yield();
 }
