@@ -68,7 +68,9 @@ void coroutine_switch(struct co *co)
     switch (co->status)
     {
     case CO_NEW:
-        stack_switch_call( (co->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co);
+        //stack_switch_call((co->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co);
+        uintptr_t ptrtemp = (uintptr_t)((((uintptr_t)co->stack + STACK_SIZE) >> 4) << 4);
+        stack_switch_call((void *)ptrtemp, coroutine_entry, (uintptr_t)co);
         //stack_switch_call((void*)((uintptr_t)((((uintptr_t)co->stack + STACK_SIZE) >> 4) << 4)), coroutine_entry, (uintptr_t)co);
         puts("out");
         break;
