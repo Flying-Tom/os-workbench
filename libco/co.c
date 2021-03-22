@@ -111,8 +111,13 @@ void co_wait(struct co *co)
         }
         co_current->status = CO_RUNNING;
     }
-    puts("Should not free");
-    assert(0);
+    
+    struct co *co_temp = co_list_head;
+    while (co_temp->prev != co)
+        co_temp = co_temp->prev;
+
+    co_temp->prev = co->prev;
+
     free(co);
 }
 
