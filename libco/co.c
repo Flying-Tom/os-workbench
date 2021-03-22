@@ -117,6 +117,7 @@ void co_wait(struct co *co)
             co_yield();
         }
         puts("Out!");
+        printf("co_current->status:%d\n", co_current->status);
         co_current->status = CO_RUNNING;
     }
 
