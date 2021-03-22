@@ -99,10 +99,17 @@ void co_wait(struct co *co)
     else
     {
         struct co *co_temp = co_list_head;
-        while (co_temp->prev != co)
-            co_temp = co_temp->prev;
 
-        co_temp->prev = co->prev;
+        if (co == co_list_head)
+            co_list_head = co->prev;
+        else
+        {
+            while (co_temp->prev != co)
+                co_temp = co_temp->prev;
+            co_temp->prev = co->prev;
+        }
+        co_temp = co_list_head;
+
         free(co);
     }
 }
