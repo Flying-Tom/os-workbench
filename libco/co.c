@@ -67,7 +67,7 @@ void coroutine_switch(struct co *co)
     switch (co->status)
     {
     case CO_NEW:
-        stack_switch_call((void *)(co->stack), coroutine_entry, (uintptr_t)co);
+        stack_switch_call((void *)(co->stack), coroutine_entry, co);
         break;
     case CO_RUNNING:
         longjmp(co_current->context, 1);
