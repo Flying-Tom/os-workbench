@@ -32,7 +32,7 @@ struct co
 } co_root;
 
 struct co *co_list_head = &co_root;
-struct co *co_current;
+struct co *co_current = co_list_head;
 
 int co_group_cnt;
 
@@ -98,7 +98,6 @@ void co_wait(struct co *co)
     assert(co->status > 0);
     if (co->status != CO_DEAD)
     {
-        puts("if");
         co_current->status = CO_WAITING;
         puts("iff");
         co->waiter = co_current;
