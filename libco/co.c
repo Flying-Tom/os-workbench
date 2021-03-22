@@ -98,15 +98,12 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     co_list_head = new_co;
 
     co_group_cnt++;
-    //printf("%s\n", co_list_head->name);
-
     return new_co;
 }
 
 void co_wait(struct co *co)
 {
     printf("co_wait(%s) status:%d\n", co->name, co->status);
-    assert(co->status > 0);
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
