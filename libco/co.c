@@ -150,7 +150,10 @@ void co_yield()
             } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
         }
         else
+        {
             next_co = &co_main;
+            next_co->status = CO_RUNNING;
+        }
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
     }
