@@ -100,6 +100,7 @@ void co_wait(struct co *co)
     {
         puts("if");
         co_current->status = CO_WAITING;
+        puts("iff");
         co->waiter = co_current;
         puts("while");
         while (co->status != CO_DEAD)
