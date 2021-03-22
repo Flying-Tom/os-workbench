@@ -131,7 +131,7 @@ void co_yield()
             next_co = co_list_head;
             printf("%s\n", next_co->name);
             printf("%d\n", next_co->status);
-            printf("%d\n", next_co->prev->name);
+            printf("%d\n", next_co->prev->status);
             assert(0);
             while (--next_co_id)
             {
