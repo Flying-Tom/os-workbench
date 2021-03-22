@@ -153,7 +153,7 @@ void co_yield()
             }
             //printf("next_co->status:%d\n", next_co->status);
             //printf("co_group_cnt:%d\n", co_group_cnt);
-        } while (next_co->status == CO_UNDEFINE || next_co->status == CO_DEAD);
+        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
     }
