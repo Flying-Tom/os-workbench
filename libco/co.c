@@ -76,6 +76,7 @@ void coroutine_switch(struct co *co)
         longjmp(co_current->context, 1);
         break;
     default:
+        printf("%s %d\n", co->name, co->status);
         assert(0);
         break;
     }
