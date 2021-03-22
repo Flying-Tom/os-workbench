@@ -58,8 +58,6 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    co_group_cnt--;
-    //co_yield();
 }
 
 void coroutine_switch(struct co *co)
