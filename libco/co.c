@@ -29,7 +29,7 @@ struct co
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-} co_root;
+} co_root; // root coroutine
 
 struct co *co_list_head = &co_root;
 struct co *co_current = &co_root;
@@ -87,6 +87,8 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
     new_co->prev = co_list_head;
     co_list_head = new_co;
+
+    co_group_cnt++;
     printf("%s\n", co_list_head->name);
 
     return new_co;
@@ -99,9 +101,7 @@ void co_wait(struct co *co)
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
-        puts("iff");
         co->waiter = co_current;
-        puts("while");
         while (co->status != CO_DEAD)
         {
             co_yield();
