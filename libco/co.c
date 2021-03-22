@@ -59,6 +59,8 @@ void coroutine_entry(struct co *co)
     co->func(co->arg);
     co->status = CO_DEAD;
     co_group_cnt--;
+    if (co->waiter->status == CO_WAITING)
+        co->waiter->status = CO_RUNNING;
     co_yield();
 }
 
@@ -152,7 +154,6 @@ void co_yield()
         else
         {
             next_co = &co_main;
-            next_co->status = CO_RUNNING;
         }
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         coroutine_switch(next_co);
