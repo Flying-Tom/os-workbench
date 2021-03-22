@@ -30,10 +30,10 @@ struct co
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-} co_root; // root coroutine
+} co_main; // root coroutine
 
-struct co *co_list_head = &co_root;
-struct co *co_current = &co_root;
+struct co *co_list_head = &co_main;
+struct co *co_current = &co_main;
 
 int co_group_cnt = 1;
 
@@ -161,7 +161,13 @@ void co_yield()
     else
     {
         // return from longjmp
-        // printf("co_root.status:%d\n", co_root.status);
+        // printf("co_main.status:%d\n", co_main.status);
         return;
     }
+}
+
+void __attribute__((constructor)) beforemain()
+{
+    strcpy(co_main.name, "main");
+    co_main.status = CO_RUNNING;
 }
