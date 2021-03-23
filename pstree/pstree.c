@@ -8,6 +8,7 @@
 
 int process_cnt = 0;
 int line_rec[32] = {};
+int last_child_flag = 0;
 
 char filename_buf[256], stat_buf[512];
 
@@ -120,7 +121,13 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     }
 
     if (deepth)
-        printf("├─");
+    {
+        if (last_child_flag)
+            printf("└─");
+        else
+            printf("├─");
+        last_child_flag = 0;
+    }
 
     if (show_pids)
         printf("%s(%d)\n", cur->name + 1, cur->pid);
@@ -137,7 +144,10 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
         }
         //printf("\n");
         if (i + 1 == cur->children_cnt)
+        {
             line_rec[deepth] = 0;
+            last_child_flag = 1;
+        }
         PrintProcessTree(cur->children[i], deepth + 1, show_pids);
     }
 };
