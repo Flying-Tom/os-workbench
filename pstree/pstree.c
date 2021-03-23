@@ -23,14 +23,15 @@ struct Process
 
 } process[65536];
 
-void NeedPrintVersion(int version)
+bool NeedPrintVersion(int version)
 {
     if (version)
     {
         puts("pstree-lite_v0.0.1_linux_x86_64");
         puts("Copyright (C) 2021 FlyingTom");
-        exit(0);
+        return true;
     }
+    return false;
 };
 
 void NeedNumericSort(int numeric_sort)
@@ -137,12 +138,6 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     line_rec[deepth] = 1;
     for (int i = 0; i < cur->children_cnt; i++)
     {
-        for (int i = 0; i <= deepth; i++)
-        {
-            //line_temp = (line_rec[i]) ? '|' : ' ';
-            //printf("%c%2s", line_temp, "");
-        }
-        //printf("\n");
         if (i + 1 == cur->children_cnt)
         {
             line_rec[deepth] = 0;
@@ -156,7 +151,8 @@ int main(int argc, char *argv[])
 {
     int show_pids = 0, numeric_sort = 0, version = 0;
     ParameterMatch(argc, argv, &show_pids, &numeric_sort, &version);
-    NeedPrintVersion(version);
+    if (NeedPrintVersion(version))
+        return 0;
     ProcessRead();
     NeedNumericSort(numeric_sort);
     BuildProcessTree();
