@@ -82,7 +82,7 @@ void ProcessRead()
         {
             __pid_t pid = -1;
             sscanf(dir->d_name, "%d", &pid);
-            if (pid != -1 && pid != 2)
+            if (pid != -1 )
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
