@@ -93,7 +93,7 @@ void ProcessRead()
                     memset(filename_buf, '\0', sizeof(filename_buf));
                     fscanf(fp, "%*d %s %*s %d", filename_buf, &process[process_cnt].ppid);
                     fclose(fp);
-                    strcpy(process[process_cnt].name, filename_buf + 1);
+                    strcpy(process[process_cnt].name, filename_buf);
                     process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                     pidmap[pid] = process_cnt;
                 }
