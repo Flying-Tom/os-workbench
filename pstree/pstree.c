@@ -4,6 +4,8 @@
 #include <dirent.h>
 #include <stdlib.h>
 
+#define TABSIZE 4
+
 int process_cnt = 0;
 int line_rec[32] = {};
 
@@ -135,7 +137,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
         for (int i = 0; i <= deepth; i++)
         {
             line_temp = (line_rec[i]) ? '|' : ' ';
-            printf("%c%4s", line_temp, "");
+            printf("%c%"# TABSIZE # "4s", line_temp, "");
         }
         printf("\n");
         if (i + 1 == cur->children_cnt)
