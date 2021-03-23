@@ -153,20 +153,15 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
 void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
 {
     for (int i = 0; i < deepth; i++)
-    {
         printf("%4s", "");
-    }
 
     if (show_pids)
         printf("%s(%d)\n", cur->name, cur->pid);
     else
         printf("%s\n", cur->name);
 
-    line_rec[deepth] = 1;
     for (int i = 0; i < cur->children_cnt; i++)
-    {
         PrintProcessTree(cur->children[i], deepth + 1, show_pids);
-    }
 };
 
 int main(int argc, char *argv[])
