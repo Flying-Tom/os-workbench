@@ -154,7 +154,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
 {
     for (int i = 0; i < deepth; i++)
     {
-        printf("%2s", "");
+        printf("%4s", "");
     }
 
     if (show_pids)
