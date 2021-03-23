@@ -90,14 +90,14 @@ void ProcessRead()
                 FILE *fp = fopen(stat_buf, "r");
                 if (fp)
                 {
-                    fscanf(fp, "%*d %s %*s %d", process[process_cnt].name, &process[process_cnt].ppid);
+                    fscanf(fp, "%*d %s %*s %d", filename_buf, &process[process_cnt].ppid);
                     fclose(fp);
                 }
                 else
                     exit(2);
-
-                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
-                process[process_cnt].name[0] = '\0';
+                strcpy(process[process_cnt].name, filename_buf + 1);
+                //process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
+                //process[process_cnt].name[0] = '\0';
                 pidmap[pid] = process_cnt;
             }
         }
