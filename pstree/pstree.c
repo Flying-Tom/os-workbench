@@ -115,7 +115,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     char line_temp;
     for (int i = 0; i < deepth - 1; i++)
     {
-        line_temp = (line_rec[i]) ? '|' : ' ';
+        //line_temp = (line_rec[i]) ? '|' : ' ';
         printf("%c%2s", line_temp, "");
     }
 
@@ -132,7 +132,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     {
         for (int i = 0; i <= deepth; i++)
         {
-            line_temp = (line_rec[i]) ? '|' : ' ';
+            //line_temp = (line_rec[i]) ? '|' : ' ';
             printf("%c%2s", line_temp, "");
         }
         printf("\n");
