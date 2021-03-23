@@ -43,7 +43,7 @@ void NeedNumericSort(int numeric_sort)
     {
         for (int j = i + 1; j <= process_cnt; j++)
         {
-            if (strcmp(process[i].name + 1, process[j].name + 1) > 0)
+            if (strcmp(process[i].name, process[j].name) > 0)
             {
                 struct Process process_temp = process[j];
                 pidmap[process[j].pid] = i;
@@ -93,7 +93,7 @@ void ProcessRead()
                     memset(filename_buf, '\0', sizeof(filename_buf));
                     fscanf(fp, "%*d %s %*s %d", filename_buf, &process[process_cnt].ppid);
                     fclose(fp);
-                    strcpy(process[process_cnt].name, filename_buf);
+                    strcpy(process[process_cnt].name, filename_buf + 1);
                     process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                     pidmap[pid] = process_cnt;
                 }
@@ -132,9 +132,9 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     }
 
     if (show_pids)
-        printf("%s(%d)\n", cur->name + 1, cur->pid);
+        printf("%s(%d)\n", cur->name, cur->pid);
     else
-        printf("%s\n", cur->name + 1);
+        printf("%s\n", cur->name);
 
     line_rec[deepth] = 1;
     for (int i = 0; i < cur->children_cnt; i++)
