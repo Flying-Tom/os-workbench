@@ -95,9 +95,9 @@ void ProcessRead()
                 }
                 else
                     exit(2);
+                memset(filename_buf, '\0', sizeof(filename_buf));
                 strcpy(process[process_cnt].name, filename_buf + 1);
-                //process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
-                //process[process_cnt].name[0] = '\0';
+                process[process_cnt].name[strlen(process[process_cnt].name) - 1] = '\0';
                 pidmap[pid] = process_cnt;
             }
         }
