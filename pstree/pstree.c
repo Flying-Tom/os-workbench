@@ -109,7 +109,7 @@ void ProcessRead()
 
 void BuildProcessTree()
 {
-    for (int i = 1; i < process_cnt; i++)
+    for (int i = 1; i <= process_cnt; i++)
         process[pidmap[process[i].ppid]].children[process[pidmap[process[i].ppid]].children_cnt++] = &process[i];
 };
 
