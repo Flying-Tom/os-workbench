@@ -28,8 +28,8 @@ bool NeedPrintVersion(int version)
 {
     if (version)
     {
-        fprintf(stderr, "pstree-lite_v0.0.1_linux_x86_64");
-        fprintf(stderr, "Copyright (C) 2021 FlyingTom");
+        fprintf(stderr, "pstree-lite_v0.0.1_linux_x86_64\n");
+        fprintf(stderr, "Copyright (C) 2021 FlyingTom\n");
         return true;
     }
     return false;
