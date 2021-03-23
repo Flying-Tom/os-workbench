@@ -119,7 +119,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
         printf("%c%2s", line_temp, "");
     }
 
-    if (deepth)
+    if (deepth && cur->children_cnt > 0)
         printf("├─");
 
     if (show_pids)
