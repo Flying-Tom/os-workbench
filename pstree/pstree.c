@@ -59,11 +59,7 @@ void ParameterMatch(int argc, char *argv[], int *show_pids, int *numeric_sort, i
     {
         assert(argv[i]);
         if (strcmp(argv[i], "-p") == 0 || strcmp(argv[i], "--show-pids") == 0)
-        {
             *show_pids = 1;
-            if (i < argc - 1 && (pidarg = atoi(argv[i + 1])) != 0)
-                i++;
-        }
         if (strcmp(argv[i], "-n") == 0 || strcmp(argv[i], "--numeric-sort") == 0)
             *numeric_sort = 1;
         if (strcmp(argv[i], "-V") == 0 || strcmp(argv[i], "--version") == 0)
@@ -82,7 +78,7 @@ void ProcessRead()
         {
             __pid_t pid = -1;
             sscanf(dir->d_name, "%d", &pid);
-            if (pid != -1 )
+            if (pid != -1)
             {
                 ++process_cnt;
                 process[process_cnt].pid = pid;
