@@ -122,7 +122,7 @@ void PrintProcessTree(struct Process *cur, int deepth, int show_pids)
     }
 
     if (deepth)
-        printf("+-");
+        printf("|-");
 
     if (show_pids)
         printf("%s(%d)\n", cur->name + 1, cur->pid);
