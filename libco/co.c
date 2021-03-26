@@ -58,6 +58,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
+    co_group_cnt--;
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
@@ -105,7 +106,6 @@ void co_wait(struct co *co)
     }
     co_temp = co_list_head;
 
-    co_group_cnt--;
     free(co);
 }
 
