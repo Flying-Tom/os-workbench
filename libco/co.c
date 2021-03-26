@@ -128,6 +128,8 @@ void co_yield()
         struct co *next_co = co_list_head;
 
         printf("valid_co_num:%d\n", valid_co_num);
+        printf("co_group_cnt:%d\n", co_group_cnt);
+
         next_co_id = rand() % valid_co_num + 1;
 
         //printf("next_co_id:%d\n", next_co_id);
