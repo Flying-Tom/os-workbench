@@ -125,7 +125,7 @@ void co_yield()
         printf("next_co_id:%d\n", next_co_id);
         while (next_co != NULL)
         {
-            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
+            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW || next_co->status == CO_WAITING)
                 next_co_id--;
             if (next_co_id == 0)
                 break;
