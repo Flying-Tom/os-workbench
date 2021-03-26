@@ -123,13 +123,13 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt + 1;
-            //printf("next_co_id:%d\n", next_co_id);
+            printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
-            while (next_co_id--)
+            while (--next_co_id)
             {
                 next_co = next_co->prev;
             }
-            printf("next_co->status:%d\n", next_co->status);
+            //printf("next_co->status:%d\n", next_co->status);
             //printf("co_group_cnt:%d\n", co_group_cnt);
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
