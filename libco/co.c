@@ -101,10 +101,7 @@ void co_wait(struct co *co)
         else
         {
             while (co_temp->prev != co)
-            {
                 co_temp = co_temp->prev;
-                puts("fuck");
-            }
             co_temp->prev = co->prev;
         }
         co_temp = co_list_head;
@@ -127,11 +124,23 @@ void co_yield()
         while (next_co != NULL)
         {
             if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
-                break;
+                valid_co_num++;
             next_co = next_co->prev;
-            puts("fuck");
         }
 
+        next_co = co_list_head;
+        next_co_id = rand() % valid_co_num + 1;
+
+        //printf("next_co_id:%d\n", next_co_id);
+        while (next_co != NULL)
+        {
+            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
+                next_co_id--;
+            if (next_co_id == 0)
+                break;
+            next_co = next_co->prev;
+        }
+        assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
         switch (co_current->status)
