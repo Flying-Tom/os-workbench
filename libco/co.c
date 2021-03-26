@@ -35,7 +35,7 @@ struct co
 struct co *co_list_head = &co_main;
 struct co *co_current = &co_main;
 
-int co_group_cnt;
+int co_group_cnt, co_waiting_cnt;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
@@ -60,7 +60,11 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
+    {
+        assert(co->waiter->status == CO_WAITING);
         co->waiter->status = CO_RUNNING;
+        co_waiting_cnt--;
+    }
     co_yield();
 }
 
@@ -86,6 +90,7 @@ void co_wait(struct co *co)
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
+        co_waiting_cnt++;
         co->waiter = co_current;
         while (co->status != CO_DEAD)
             co_yield();
@@ -119,16 +124,9 @@ void co_yield()
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
-        int next_co_id, valid_co_num = 0;
+        int next_co_id, valid_co_num = co_group_cnt - co_waiting_cnt;
         struct co *next_co = co_list_head;
-        while (next_co != NULL)
-        {
-            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
-                valid_co_num++;
-            next_co = next_co->prev;
-        }
 
-        next_co = co_list_head;
         next_co_id = rand() % valid_co_num + 1;
 
         //printf("next_co_id:%d\n", next_co_id);
@@ -171,4 +169,5 @@ void __attribute__((constructor)) co_init()
     co_main.name = "main"; // main will be always waiting for other routines
     co_main.status = CO_RUNNING;
     co_group_cnt = 1;
+    co_waiting_cnt = 0;
 }
