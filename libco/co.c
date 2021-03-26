@@ -119,13 +119,22 @@ void co_yield()
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
-        int next_co_id;
+        int next_co_id, valid_co_num = 0;
         struct co *next_co = co_list_head;
-        next_co_id = rand() % co_group_cnt + 1;
+        while (next_co != NULL)
+        {
+            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
+                valid_co_num++;
+            next_co = next_co->prev;
+        }
+
+        next_co = co_list_head;
+        next_co_id = rand() % valid_co_num + 1;
+
         printf("next_co_id:%d\n", next_co_id);
         while (next_co != NULL)
         {
-            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW || next_co->status == CO_WAITING)
+            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
                 next_co_id--;
             if (next_co_id == 0)
                 break;
@@ -146,7 +155,7 @@ void co_yield()
             break;
         default:
             //printf("%s %d\n", co_current->name, co_current->status);
-            //assert(0);
+            assert(0);
             break;
         }
     }
