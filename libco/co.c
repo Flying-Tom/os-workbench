@@ -126,6 +126,7 @@ void co_yield()
             if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
                 break;
             next_co = next_co->prev;
+            puts("fuck");
         }
 
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
