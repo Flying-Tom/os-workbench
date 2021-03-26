@@ -125,7 +125,7 @@ void co_yield()
         //next_co_id = rand() % co_group_cnt + 1;
         //printf("next_co_id:%d\n", next_co_id);
         //next_co = co_list_head;
-        while (next_co->prev)
+        while (next_co->prev != NULL)
         {
             if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
                 break;
