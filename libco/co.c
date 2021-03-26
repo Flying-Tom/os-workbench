@@ -131,7 +131,7 @@ void co_yield()
         next_co = co_list_head;
         next_co_id = rand() % valid_co_num + 1;
 
-        printf("next_co_id:%d\n", next_co_id);
+        //printf("next_co_id:%d\n", next_co_id);
         while (next_co != NULL)
         {
             if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
@@ -139,7 +139,6 @@ void co_yield()
             if (next_co_id == 0)
                 break;
             next_co = next_co->prev;
-            //printf("co_group_cnt:%d\n", co_group_cnt);
         }
         assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
