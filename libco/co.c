@@ -98,7 +98,10 @@ void co_wait(struct co *co)
     else
     {
         while (co_temp->prev != co)
+        {
             co_temp = co_temp->prev;
+            puts("fuck");
+        }
         co_temp->prev = co->prev;
     }
     co_temp = co_list_head;
