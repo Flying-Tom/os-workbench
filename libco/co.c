@@ -121,7 +121,7 @@ void co_yield()
     {
         int next_co_id;
         struct co *next_co = co_list_head;
-        next_co_id = rand() % co_group_cnt + 1;
+        next_co_id = rand() % co_group_cnt ;
 
         while (next_co != NULL)
         {
