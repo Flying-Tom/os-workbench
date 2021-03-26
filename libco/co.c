@@ -132,7 +132,7 @@ void co_yield()
             next_co = next_co->prev;
             //printf("co_group_cnt:%d\n", co_group_cnt);
         }
-
+        assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
         switch (co_current->status)
