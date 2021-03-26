@@ -58,7 +58,6 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    co_group_cnt--;
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
@@ -84,13 +83,15 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
-
-    co_current->status = CO_WAITING;
-    co->waiter = co_current;
-    co_yield();
-    assert(co->status == CO_DEAD);
-    //printf("co_current->status:%d\n", co_current->status);
-    co_current->status = CO_RUNNING;
+    if (co->status != CO_DEAD)
+    {
+        co_current->status = CO_WAITING;
+        co->waiter = co_current;
+        while (co->status != CO_DEAD)
+            co_yield();
+        //printf("co_current->status:%d\n", co_current->status);
+        co_current->status = CO_RUNNING;
+    }
 
     struct co *co_temp = co_list_head;
 
@@ -99,13 +100,12 @@ void co_wait(struct co *co)
     else
     {
         while (co_temp->prev != co)
-        {
             co_temp = co_temp->prev;
-        }
         co_temp->prev = co->prev;
     }
     co_temp = co_list_head;
 
+    co_group_cnt--;
     free(co);
 }
 
@@ -123,7 +123,7 @@ void co_yield()
         do
         {
             next_co_id = rand() % co_group_cnt + 1;
-            printf("next_co_id:%d\n", next_co_id);
+            //printf("next_co_id:%d\n", next_co_id);
             next_co = co_list_head;
             while (--next_co_id)
             {
