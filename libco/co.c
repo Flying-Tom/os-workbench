@@ -100,7 +100,6 @@ void co_wait(struct co *co)
         while (co_temp->prev != co)
         {
             co_temp = co_temp->prev;
-            puts("fuck");
         }
         co_temp->prev = co->prev;
     }
@@ -131,7 +130,7 @@ void co_yield()
                 next_co = next_co->prev;
             }
             //printf("next_co->status:%d\n", next_co->status);
-            //printf("co_group_cnt:%d\n", co_group_cnt);
+            printf("co_group_cnt:%d\n", co_group_cnt);
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
