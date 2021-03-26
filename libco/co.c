@@ -83,27 +83,32 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
-    co_current->status = CO_WAITING;
-    co->waiter = co_current;
-    while (co->status != CO_DEAD)
-        co_yield();
-    //printf("co_current->status:%d\n", co_current->status);
-    co_current->status = CO_RUNNING;
-
-    struct co *co_temp = co_list_head;
-
-    if (co == co_list_head)
-        co_list_head = co->prev;
+    if (co->status != CO_DEAD)
+    {
+        co_current->status = CO_WAITING;
+        co->waiter = co_current;
+        while (co->status != CO_DEAD)
+            co_yield();
+        //printf("co_current->status:%d\n", co_current->status);
+        co_current->status = CO_RUNNING;
+    }
     else
     {
-        while (co_temp->prev != co)
-            co_temp = co_temp->prev;
-        co_temp->prev = co->prev;
-    }
-    co_temp = co_list_head;
+        struct co *co_temp = co_list_head;
 
-    co_group_cnt--;
-    free(co);
+        if (co == co_list_head)
+            co_list_head = co->prev;
+        else
+        {
+            while (co_temp->prev != co)
+                co_temp = co_temp->prev;
+            co_temp->prev = co->prev;
+        }
+        co_temp = co_list_head;
+
+        co_group_cnt--;
+        free(co);
+    }
 }
 
 void co_yield()
@@ -115,20 +120,19 @@ void co_yield()
     if (val == 0)
     {
         int next_co_id;
-        struct co *next_co;
+        struct co *next_co = co_list_head;
 
-        do
+        //next_co_id = rand() % co_group_cnt + 1;
+        //printf("next_co_id:%d\n", next_co_id);
+        //next_co = co_list_head;
+        while (next_co->prev)
         {
-            next_co_id = rand() % co_group_cnt + 1;
-            //printf("next_co_id:%d\n", next_co_id);
-            next_co = co_list_head;
-            while (--next_co_id)
-            {
-                next_co = next_co->prev;
-            }
-            //printf("next_co->status:%d\n", next_co->status);
-            //printf("co_group_cnt:%d\n", co_group_cnt);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
+            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
+                break;
+            next_co = next_co->prev;
+        }
+        //printf("next_co->status:%d\n", next_co->status);
+        //printf("co_group_cnt:%d\n", co_group_cnt);
 
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
