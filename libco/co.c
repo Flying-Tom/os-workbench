@@ -120,7 +120,7 @@ void co_yield()
     if (val == 0)
     {
         int next_co_id;
-        struct co *next_co;
+        struct co *next_co = co_list_head;
         next_co_id = rand() % co_group_cnt + 1;
 
         while (next_co != NULL)
