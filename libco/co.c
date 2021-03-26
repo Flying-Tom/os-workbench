@@ -129,6 +129,7 @@ void co_yield()
                 next_co_id--;
             if (next_co_id == 0)
                 break;
+            next_co = next_co->prev;
             printf("co_group_cnt:%d\n", co_group_cnt);
         }
 
