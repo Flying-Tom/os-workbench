@@ -87,16 +87,14 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
-    if (co->status != CO_DEAD)
-    {
-        co_current->status = CO_WAITING;
-        co_waiting_cnt++;
-        co->waiter = co_current;
-        while (co->status != CO_DEAD)
-            co_yield();
-        //printf("co_current->status:%d\n", co_current->status);
-        co_current->status = CO_RUNNING;
-    }
+
+    co_current->status = CO_WAITING;
+    co_waiting_cnt++;
+    co->waiter = co_current;
+    while (co->status != CO_DEAD)
+        co_yield();
+    //printf("co_current->status:%d\n", co_current->status);
+    co_current->status = CO_RUNNING;
 
     struct co *co_temp = co_list_head;
 
