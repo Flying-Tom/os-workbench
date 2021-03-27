@@ -27,6 +27,7 @@ struct co
     enum co_status status;
     struct co *waiter;
     struct co *prev;
+    struct co *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
@@ -93,7 +94,7 @@ void co_wait(struct co *co)
     //printf("co_current->status:%d\n", co_current->status);
     co_current->status = CO_RUNNING;
 
-/*
+    /*
     struct co *co_temp = co_list_head;
     puts("fuck");
     if (co == co_list_head)
