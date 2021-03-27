@@ -26,7 +26,7 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    struct co *prev;
+    struct co *prev, *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
@@ -74,6 +74,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     new_co->prev = co_list_head;
+    co_list_head->next = new_co;
     co_list_head = new_co;
 
     co_group_cnt++;
@@ -97,14 +98,15 @@ void co_wait(struct co *co)
         struct co *co_temp = co_list_head;
 
         if (co == co_list_head)
+        {
             co_list_head = co->prev;
+            co_list_head->next = NULL;
+        }
         else
         {
-            while (co_temp->prev != co)
-                co_temp = co_temp->prev;
-            co_temp->prev = co->prev;
+            co->prev->next = co->next;
+            co->next->prev = co->prev;
         }
-        co_temp = co_list_head;
 
         co_group_cnt--;
         free(co);
