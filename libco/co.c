@@ -26,7 +26,7 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    struct co *prev,*next;
+    struct co *prev, *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
@@ -73,6 +73,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->arg = arg;
     new_co->status = CO_NEW;
 
+    new_co->next = NULL;
     new_co->prev = co_list_head;
     co_list_head = new_co;
 
@@ -170,5 +171,7 @@ void __attribute__((constructor)) co_init()
 {
     co_main.name = "main"; // main will be always waiting for other routines
     co_main.status = CO_RUNNING;
+    co_main.next = NULL;
+    co_main.prev = NULL;
     co_group_cnt = 1;
 }
