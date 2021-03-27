@@ -74,7 +74,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     new_co->prev = co_list_head;
-    co_list_head->next = new_co;
+    //co_list_head->next = new_co;
     puts("?");
     co_list_head = new_co;
 
