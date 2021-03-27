@@ -93,6 +93,7 @@ void co_wait(struct co *co)
     //printf("co_current->status:%d\n", co_current->status);
     co_current->status = CO_RUNNING;
 
+/*
     struct co *co_temp = co_list_head;
     puts("fuck");
     if (co == co_list_head)
@@ -105,7 +106,7 @@ void co_wait(struct co *co)
         co->prev->next = co->next;
         co->next->prev = co->prev;
     }
-
+*/
     co_group_cnt--;
     free(co);
 }
