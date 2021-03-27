@@ -27,7 +27,6 @@ struct co
     enum co_status status;
     struct co *waiter;
     struct co *prev;
-    struct co *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
@@ -56,7 +55,6 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 
 void coroutine_entry(struct co *co)
 {
-    puts("fuck");
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
@@ -76,8 +74,6 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     new_co->prev = co_list_head;
-    //co_list_head->next = new_co;
-    puts("?");
     co_list_head = new_co;
 
     co_group_cnt++;
@@ -87,30 +83,32 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
-
-    co_current->status = CO_WAITING;
-    co->waiter = co_current;
-    while (co->status != CO_DEAD)
-        co_yield();
-    //printf("co_current->status:%d\n", co_current->status);
-    co_current->status = CO_RUNNING;
-
-    /*
-    struct co *co_temp = co_list_head;
-    puts("fuck");
-    if (co == co_list_head)
+    if (co->status != CO_DEAD)
     {
-        co_list_head = co->prev;
-        co_list_head->next = NULL;
+        co_current->status = CO_WAITING;
+        co->waiter = co_current;
+        while (co->status != CO_DEAD)
+            co_yield();
+        //printf("co_current->status:%d\n", co_current->status);
+        co_current->status = CO_RUNNING;
     }
     else
     {
-        co->prev->next = co->next;
-        co->next->prev = co->prev;
+        struct co *co_temp = co_list_head;
+
+        if (co == co_list_head)
+            co_list_head = co->prev;
+        else
+        {
+            while (co_temp->prev != co)
+                co_temp = co_temp->prev;
+            co_temp->prev = co->prev;
+        }
+        co_temp = co_list_head;
+
+        co_group_cnt--;
+        free(co);
     }
-*/
-    co_group_cnt--;
-    free(co);
 }
 
 void co_yield()
