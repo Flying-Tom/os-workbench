@@ -26,7 +26,7 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    struct co *prev;
+    struct co *prev,*next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
