@@ -151,12 +151,6 @@ void co_yield()
             break;
         }
     }
-    else
-    {
-        // return from longjmp
-        // printf("co_group[0]->status:%d\n", co_group[0]->status);
-        return;
-    }
 }
 
 void __attribute__((constructor)) co_init()
@@ -165,4 +159,9 @@ void __attribute__((constructor)) co_init()
     co_group[0].status = CO_RUNNING;
     co_current = &co_group[0];
     co_group_cnt = 1;
+}
+
+void __attribute__((destructor)) co_end()
+{
+    printf("co_group_cnt:%d\n", co_group_cnt);
 }
