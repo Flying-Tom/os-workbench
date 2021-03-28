@@ -88,6 +88,7 @@ void co_wait(struct co *co)
 
     //*co = *co_group[co_group_cnt];
     //if (co != co_group[co_group_cnt - 1])
+    assert(co_group[co_group_cnt - 1].status != CO_DEAD);
     memmove(&co, &co_group[co_group_cnt - 1], sizeof(struct co));
     co_group_cnt--;
     //puts("free");
