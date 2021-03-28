@@ -68,7 +68,7 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-    //puts("co_start");
+    puts("co_start");
     struct co *new_co = malloc(sizeof(struct co));
     new_co->name = (char *)name;
     new_co->func = func;
@@ -91,7 +91,7 @@ void co_wait(struct co *co)
     co_current->status = CO_RUNNING;
 
     //*co = *co_group[co_group_cnt];
-    assert(co_group_cnt > 0);
+    assert(co != co_group[co_group_cnt - 1]);
     memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
     //puts("free");
     free(co_group[co_group_cnt--]);
