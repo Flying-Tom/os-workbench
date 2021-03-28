@@ -92,6 +92,10 @@ void co_wait(struct co *co)
     co_group_cnt--;
     //puts("free");
     //free(co_group[co_group_cnt--]);
+    for (int i = 0; i < co_group_cnt; i++)
+    {
+        printf("%s status:%d \n", co_group[i].name, co_group[i].status);
+    }
     printf("co_group_cnt:%d\n", co_group_cnt);
     //puts("free end");
 }
@@ -110,7 +114,6 @@ void co_yield()
         {
             int next_co_id = rand() % co_group_cnt;
             next_co = &co_group[next_co_id];
-            puts("fuck");
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(next_co != NULL);
