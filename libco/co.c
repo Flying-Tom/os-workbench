@@ -83,18 +83,23 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
-
-    co_current->status = CO_WAITING;
-    co->waiter = co_current;
-    while (co->status != CO_DEAD)
-        co_yield();
-    //printf("co_current->status:%d\n", co_current->status);
-    co_current->status = CO_RUNNING;
-    //*co = *co_group[co_group_cnt];
-    memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
-    //puts("free");
-    free(co_group[co_group_cnt--]);
-    //puts("free end");
+    if (co->status != CO_DEAD)
+    {
+        co_current->status = CO_WAITING;
+        co->waiter = co_current;
+        while (co->status != CO_DEAD)
+            co_yield();
+        //printf("co_current->status:%d\n", co_current->status);
+        co_current->status = CO_RUNNING;
+    }
+    else
+    {
+        //*co = *co_group[co_group_cnt];
+        memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
+        //puts("free");
+        free(co_group[co_group_cnt--]);
+        //puts("free end");
+    }
 }
 
 void co_yield()
