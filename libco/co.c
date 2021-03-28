@@ -62,6 +62,7 @@ void co_del(struct co *co)
         while (co_group[co_group_cnt - 1].status == CO_DEAD)
         {
             co_group_cnt--;
+            pust("fucks");
         }
 
         memmove(co, &co_group[co_group_cnt - 1], sizeof(struct co));
@@ -82,7 +83,6 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
-    //co_del(co);
     co_yield();
 }
 
