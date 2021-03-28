@@ -97,9 +97,9 @@ void co_wait(struct co *co)
     {
         //*co = *co_group[co_group_cnt];
         memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
-        puts("free");
+        //puts("free");
         free(co_group[co_group_cnt--]);
-        puts("free end");
+        //puts("free end");
     }
 }
 
