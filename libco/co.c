@@ -115,7 +115,7 @@ void co_yield()
             int next_co_id = rand() % co_group_cnt;
             next_co = &co_group[next_co_id];
             printf("%d\n", next_co->status);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
+        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW && next_co->status != CO_WAITING);
 
         assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
