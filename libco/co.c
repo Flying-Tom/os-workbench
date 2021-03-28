@@ -62,7 +62,7 @@ void co_del(struct co *co)
         while (co_group[co_group_cnt - 1].status == CO_DEAD)
         {
             co_group_cnt--;
-            pust("fucks");
+            puts("fucks");
         }
 
         memmove(co, &co_group[co_group_cnt - 1], sizeof(struct co));
