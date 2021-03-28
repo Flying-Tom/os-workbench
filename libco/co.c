@@ -91,7 +91,7 @@ void co_wait(struct co *co)
     co_current->status = CO_RUNNING;
 
     //*co = *co_group[co_group_cnt];
-    if (co != co_group[co_group_cnt - 1])
+    //if (co != co_group[co_group_cnt - 1])
         memmove(co, co_group[co_group_cnt - 1], sizeof(struct co));
     //puts("free");
     free(co_group[co_group_cnt--]);
