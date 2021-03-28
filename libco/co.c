@@ -140,6 +140,7 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
+    co_group[0] = malloc(sizeof(struct co));
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_group_cnt = 1;
