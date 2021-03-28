@@ -88,7 +88,8 @@ void co_wait(struct co *co)
 
     //*co = *co_group[co_group_cnt];
     //if (co != co_group[co_group_cnt - 1])
-    //memmove(co, co_group[co_group_cnt - 1], sizeof(struct co));
+    memmove(co, co_group[co_group_cnt - 1], sizeof(struct co));
+    co_group_cnt--;
     //puts("free");
     //free(co_group[co_group_cnt--]);
     //printf("co_group_cnt:%d\n", co_group_cnt);
