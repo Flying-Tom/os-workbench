@@ -77,7 +77,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
-    co_del(co);
+    //co_del(co);
     co_yield();
 }
 
