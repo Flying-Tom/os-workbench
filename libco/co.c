@@ -92,11 +92,12 @@ void co_wait(struct co *co)
     co_group_cnt--;
     //puts("free");
     //free(co_group[co_group_cnt--]);
+    /*
     for (int i = 0; i < co_group_cnt; i++)
     {
         printf("%s status:%d \n", co_group[i].name, co_group[i].status);
     }
-    printf("co_group_cnt:%d\n", co_group_cnt);
+    printf("co_group_cnt:%d\n", co_group_cnt);*/
     //puts("free end");
 }
 
