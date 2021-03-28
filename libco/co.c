@@ -52,6 +52,20 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
     );
 }
 
+void co_del(struct co *co)
+{
+    if (*co != co_group[co_group_cnt - 1])
+    {
+        assert(co_group[co_group_cnt - 1].status != CO_DEAD);
+        memmove(co, &co_group[co_group_cnt - 1], sizeof(struct co));
+        co_group_cnt--;
+    }
+    else
+    {
+        co_group_cnt--;
+    }
+}
+
 void coroutine_entry(struct co *co)
 {
     //puts("coroutine_entry");
@@ -61,6 +75,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
+    co_del(co);
     co_yield();
 }
 
@@ -84,25 +99,7 @@ void co_wait(struct co *co)
     //printf("co_current->status:%d\n", co_current->status);
     co_current->status = CO_RUNNING;
 
-    //*co = *co_group[co_group_cnt];
-    //if (co != co_group[co_group_cnt - 1])
-    //assert(co_group[co_group_cnt - 1].status != CO_DEAD);
-    /*
-    while (co_group[co_group_cnt - 1].status == CO_DEAD)
-    {
-        co_group_cnt--;
-    }
-
-    memmove(&co, &co_group[co_group_cnt - 1], sizeof(struct co));
-    co_group_cnt--;*/
-    //puts("free");
-    //free(co_group[co_group_cnt--]);
-    /*
-    for (int i = 0; i < co_group_cnt; i++)
-    {
-        printf("%s status:%d \n", co_group[i].name, co_group[i].status);
-    }
-    printf("co_group_cnt:%d\n", co_group_cnt);*/
+    co_del(co);
     //puts("free end");
 }
 
@@ -129,9 +126,6 @@ void co_yield()
         switch (co_current->status)
         {
         case CO_NEW:
-            //puts("co_new");
-            //printf("co_current->stack:%p\n", co_current->stack);
-            //printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
             stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
             //stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
