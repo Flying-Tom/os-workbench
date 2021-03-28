@@ -59,7 +59,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    //puts("func finished");
+    puts("func finished");
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
@@ -127,7 +127,7 @@ void co_yield()
             //puts("co_new");
             //printf("co_current->stack:%p\n", co_current->stack);
             //printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
-            stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE - 16), coroutine_entry, (uintptr_t)co_current);
+            stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
             //stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
             break;
