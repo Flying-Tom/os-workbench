@@ -121,9 +121,9 @@ void co_yield()
         {
         case CO_NEW:
             puts("co_new");
-            printf("co_current->stack:%p\n", co_current->stack);
-            printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
-            stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
+            //printf("co_current->stack:%p\n", co_current->stack);
+            //printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
+            stack_switch_call((void *)(uintptr_t)co_current->stack+ STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
             break;
