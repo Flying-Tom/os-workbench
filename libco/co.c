@@ -116,9 +116,12 @@ void co_yield()
     {
         struct co *next_co = NULL;
 
-        int next_co_id = rand() % co_group_cnt;
-        next_co = &co_group[next_co_id];
-        //printf("%d\n", next_co->status);
+        do
+        {
+            int next_co_id = rand() % co_group_cnt;
+            next_co = &co_group[next_co_id];
+            //printf("%d\n", next_co->status);
+        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
@@ -138,6 +141,7 @@ void co_yield()
             break;
         default:
             //printf("%s %d\n", co_current->name, co_current->status);
+            assert(0);
             break;
         }
     }
