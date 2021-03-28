@@ -7,7 +7,7 @@
 #include <assert.h>
 
 #define STACK_SIZE 64 * 1024
-#define CO_MAXNUM 65536
+#define CO_MAXNUM 128
 
 enum co_status
 {
