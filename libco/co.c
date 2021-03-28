@@ -138,7 +138,6 @@ void co_yield()
             break;
         default:
             //printf("%s %d\n", co_current->name, co_current->status);
-            assert(0);
             break;
         }
     }
