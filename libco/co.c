@@ -98,6 +98,7 @@ void co_wait(struct co *co)
         puts("free");
         *co = *co_group[co_group_cnt];
         free(co_group[co_group_cnt--]);
+        puts("free end");
     }
 }
 
