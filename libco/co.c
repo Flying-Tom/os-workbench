@@ -118,6 +118,7 @@ void co_yield()
         switch (co_current->status)
         {
         case CO_NEW:
+            puts("co_new");
             stack_switch_call((void *)(co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
             break;
