@@ -108,7 +108,7 @@ void co_yield()
         do
         {
             int next_co_id = rand() % co_group_cnt;
-            next_co = co_group[next_co_id];
+            next_co = &co_group[next_co_id];
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(next_co != NULL);
