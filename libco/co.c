@@ -32,7 +32,6 @@ struct co
     uint8_t stack[STACK_SIZE];
 } co_main; // root coroutine
 
-struct co *co_list_head = &co_main;
 struct co *co_current = &co_main;
 
 int co_group_cnt;
@@ -73,8 +72,8 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->arg = arg;
     new_co->status = CO_NEW;
 
-    co_list_head->next = new_co;
-    co_list_head = co_list_head->next;
+    co_current->next = new_co;
+    co_current = co_current->next;
 
     co_group_cnt++;
     return new_co;
@@ -98,8 +97,8 @@ void co_wait(struct co *co)
 
         while (co_temp->next != co)
             co_temp = co_temp->next;
-        if (co == co_list_head)
-            co_list_head = co_temp;
+        if (co == co_current)
+            co_current = co_temp;
         co_temp->next = co->next;
         co_group_cnt--;
         free(co);
@@ -120,7 +119,7 @@ void co_yield()
         {
             next_co_id = rand() % co_group_cnt + 1;
             //printf("next_co_id:%d\n", next_co_id);
-            next_co = co_current;
+            next_co = &co_main;
             while (--next_co_id)
             {
                 next_co = next_co->next;
