@@ -55,12 +55,12 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 
 void coroutine_entry(struct co *co)
 {
-    puts("coroutine_entry");
-    printf("%s\n", co->name);
+    //puts("coroutine_entry");
+    //printf("%s\n", co->name);
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    puts("func finished");
+    //puts("func finished");
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
@@ -69,7 +69,7 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-    puts("co_start");
+    //puts("co_start");
     struct co *new_co = malloc(sizeof(struct co));
     new_co->name = (char *)name;
     new_co->func = func;
@@ -77,13 +77,13 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     co_group[co_group_cnt++] = new_co;
-    puts("co_start finished");
+    //puts("co_start finished");
     return new_co;
 }
 
 void co_wait(struct co *co)
 {
-    printf("co_wait(%s) status:%d\n", co->name, co->status);
+    //printf("co_wait(%s) status:%d\n", co->name, co->status);
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
@@ -95,6 +95,7 @@ void co_wait(struct co *co)
     }
     else
     {
+        puts("free");
         *co = *co_group[co_group_cnt];
         free(co_group[co_group_cnt--]);
     }
