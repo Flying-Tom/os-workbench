@@ -32,7 +32,7 @@ struct co
 }; // root coroutine
 
 struct co *co_current;
-struct co *co_group[CO_MAXNUM];
+struct co co_group[CO_MAXNUM];
 
 int co_group_cnt;
 
@@ -68,16 +68,12 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-    puts("co_start");
-    struct co *new_co = malloc(sizeof(struct co));
-    new_co->name = (char *)name;
-    new_co->func = func;
-    new_co->arg = arg;
-    new_co->status = CO_NEW;
-
-    co_group[co_group_cnt++] = new_co;
+    co_group[co_group_cnt].name = (char *)name;
+    co_group[co_group_cnt].func = func;
+    co_group[co_group_cnt].arg = arg;
+    co_group[co_group_cnt].status = CO_NEW;
     //puts("co_start finished");
-    return new_co;
+    return &co_group[co_group_cnt++];
 }
 
 void co_wait(struct co *co)
@@ -147,9 +143,8 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
-    co_group[0] = malloc(sizeof(struct co));
-    co_group[0]->name = "main"; // main will be always waiting for other routines
-    co_group[0]->status = CO_RUNNING;
-    co_current = co_group[0];
+    co_group[0].name = "main"; // main will be always waiting for other routines
+    co_group[0].status = CO_RUNNING;
+    co_current = &co_group[0];
     co_group_cnt = 1;
 }
