@@ -79,7 +79,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
 void co_wait(struct co *co)
 {
-    //printf("co_wait(%s) status:%d\n", co->name, co->status);
+    printf("co_wait(%s) status:%d\n", co->name, co->status);
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
