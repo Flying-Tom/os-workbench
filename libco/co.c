@@ -59,8 +59,6 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    //puts("func finished");
-    //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
     co_yield();
@@ -118,12 +116,9 @@ void co_yield()
     {
         struct co *next_co = NULL;
 
-        do
-        {
-            int next_co_id = rand() % co_group_cnt;
-            next_co = &co_group[next_co_id];
-            //printf("%d\n", next_co->status);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW && next_co->status != CO_WAITING);
+        int next_co_id = rand() % co_group_cnt;
+        next_co = &co_group[next_co_id];
+        //printf("%d\n", next_co->status);
 
         assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
@@ -139,10 +134,6 @@ void co_yield()
             //puts("out");
             break;
         case CO_RUNNING:
-            longjmp(co_current->context, 1);
-            break;
-        case CO_WAITING:
-            co_current->status = CO_RUNNING;
             longjmp(co_current->context, 1);
             break;
         default:
