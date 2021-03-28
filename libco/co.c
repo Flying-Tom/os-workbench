@@ -59,7 +59,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    puts("func finished");
+    //puts("func finished");
     //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
@@ -92,14 +92,11 @@ void co_wait(struct co *co)
         //printf("co_current->status:%d\n", co_current->status);
         co_current->status = CO_RUNNING;
     }
-    else
-    {
-        //*co = *co_group[co_group_cnt];
-        memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
-        //puts("free");
-        free(co_group[co_group_cnt--]);
-        //puts("free end");
-    }
+    //*co = *co_group[co_group_cnt];
+    memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
+    //puts("free");
+    free(co_group[co_group_cnt--]);
+    //puts("free end");
 }
 
 void co_yield()
