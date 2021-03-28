@@ -26,14 +26,13 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    struct co *prev, *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-} co_main; // root coroutine
+}; // root coroutine
 
-struct co *co_list_head = &co_main;
-struct co *co_current = &co_main;
+struct co *co_current;
+struct co *co_group[CO_MAXNUM];
 
 int co_group_cnt;
 
@@ -66,18 +65,13 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
-
     struct co *new_co = malloc(sizeof(struct co));
     new_co->name = (char *)name;
     new_co->func = func;
     new_co->arg = arg;
     new_co->status = CO_NEW;
 
-    new_co->next = NULL;
-    new_co->prev = co_list_head;
-    co_list_head = new_co;
-
-    co_group_cnt++;
+    co_group[co_group_cnt++] = new_co;
     return new_co;
 }
 
@@ -95,52 +89,27 @@ void co_wait(struct co *co)
     }
     else
     {
-        struct co *co_temp = co_list_head;
-
-        if (co == co_list_head)
-            co_list_head = co->prev;
-        else
-        {
-            while (co_temp->prev != co)
-                co_temp = co_temp->prev;
-            co_temp->prev = co->prev;
-        }
-        co_temp = co_list_head;
-
-        co_group_cnt--;
-        free(co);
+        *co = *co_group[co_group_cnt];
+        free(co_group[co_group_cnt--]);
     }
 }
 
 void co_yield()
 {
     //puts("co_yield");
-    //printf("%s status:%d\n", co_main.name, co_main.status);
+    //printf("%s status:%d\n", co_group[0].name, co_group[0].status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
-        int next_co_id, valid_co_num = 0;
-        struct co *next_co = co_list_head;
-        while (next_co != NULL)
-        {
-            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
-                valid_co_num++;
-            next_co = next_co->prev;
-        }
+        struct co *next_co = NULL;
 
-        next_co = co_list_head;
-        next_co_id = rand() % valid_co_num + 1;
-
-        //printf("next_co_id:%d\n", next_co_id);
-        while (next_co != NULL)
+        do
         {
-            if (next_co->status == CO_RUNNING || next_co->status == CO_NEW)
-                next_co_id--;
-            if (next_co_id == 0)
-                break;
-            next_co = next_co->prev;
-        }
+            int next_co_id = rand() % co_group_cnt;
+            next_co = co_group[next_co_id];
+        } while (next_co->status == CO_RUNNING || next_co->status == CO_NEW);
+
         assert(next_co != NULL);
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
@@ -162,16 +131,14 @@ void co_yield()
     else
     {
         // return from longjmp
-        // printf("co_main.status:%d\n", co_main.status);
+        // printf("co_group[0].status:%d\n", co_group[0].status);
         return;
     }
 }
 
 void __attribute__((constructor)) co_init()
 {
-    co_main.name = "main"; // main will be always waiting for other routines
-    co_main.status = CO_RUNNING;
-    co_main.next = NULL;
-    co_main.prev = NULL;
+    co_group[0].name = "main"; // main will be always waiting for other routines
+    co_group[0].status = CO_RUNNING;
     co_group_cnt = 1;
 }
