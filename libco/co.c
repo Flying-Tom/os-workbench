@@ -121,7 +121,7 @@ void co_yield()
         {
         case CO_NEW:
             puts("co_new");
-            stack_switch_call((void *)(co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
+            stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
             break;
         case CO_RUNNING:
