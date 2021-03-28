@@ -54,6 +54,8 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 
 void co_del(struct co *co)
 {
+    if (co_group_cnt == 0)
+        return;
     if (co != &co_group[co_group_cnt - 1])
     {
         assert(co_group[co_group_cnt - 1].status != CO_DEAD);
