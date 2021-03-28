@@ -97,7 +97,7 @@ void co_wait(struct co *co)
 void co_yield()
 {
     //puts("co_yield");
-    //printf("%s status:%d\n", co_group[0].name, co_group[0].status);
+    //printf("%s status:%d\n", co_group[0]->name, co_group[0]->status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
@@ -131,14 +131,14 @@ void co_yield()
     else
     {
         // return from longjmp
-        // printf("co_group[0].status:%d\n", co_group[0].status);
+        // printf("co_group[0]->status:%d\n", co_group[0]->status);
         return;
     }
 }
 
 void __attribute__((constructor)) co_init()
 {
-    co_group[0].name = "main"; // main will be always waiting for other routines
-    co_group[0].status = CO_RUNNING;
+    co_group[0]->name = "main"; // main will be always waiting for other routines
+    co_group[0]->status = CO_RUNNING;
     co_group_cnt = 1;
 }
