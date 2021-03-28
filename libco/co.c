@@ -98,6 +98,8 @@ void co_wait(struct co *co)
 
         while (co_temp->next != co)
             co_temp = co_temp->next;
+        if (co == co_list_head)
+            co_list_head = co_temp;
         co_temp->next = co->next;
         co_group_cnt--;
         free(co);
