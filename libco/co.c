@@ -26,7 +26,6 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    //struct co *prev;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
@@ -128,7 +127,7 @@ void co_yield()
             //puts("co_new");
             //printf("co_current->stack:%p\n", co_current->stack);
             //printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
-            stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
+            stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE - 4), coroutine_entry, (uintptr_t)co_current);
             //stack_switch_call((void *)((((uintptr_t)co_current->stack >> 4) << 4) + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
             //puts("out");
             break;
