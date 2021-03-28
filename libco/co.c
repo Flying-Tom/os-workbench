@@ -59,6 +59,11 @@ void co_del(struct co *co)
     if (co != &co_group[co_group_cnt - 1])
     {
         assert(co_group[co_group_cnt - 1].status != CO_DEAD);
+        while (co_group[co_group_cnt - 1].status == CO_DEAD)
+        {
+            co_group_cnt--;
+        }
+
         memmove(co, &co_group[co_group_cnt - 1], sizeof(struct co));
         co_group_cnt--;
     }
