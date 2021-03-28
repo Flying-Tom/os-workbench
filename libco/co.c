@@ -83,6 +83,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
+    co_del(co);
     co_yield();
 }
 
@@ -113,13 +114,10 @@ void co_wait(struct co *co)
 void co_yield()
 {
     //puts("co_yield");
-    //printf("%s status:%d\n", co_group[0]->name, co_group[0]->status);
     int val = setjmp(co_current->context);
-    //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
         struct co *next_co = NULL;
-
         do
         {
             int next_co_id = rand() % co_group_cnt;
