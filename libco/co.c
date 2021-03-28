@@ -54,6 +54,7 @@ static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 
 void coroutine_entry(struct co *co)
 {
+    puts("coroutine_entry");
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
