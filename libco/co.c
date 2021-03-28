@@ -91,9 +91,10 @@ void co_wait(struct co *co)
     co_current->status = CO_RUNNING;
 
     //*co = *co_group[co_group_cnt];
-    //memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
+    assert(co_group_cnt > 0);
+    memcpy(co, co_group[--co_group_cnt], sizeof(struct co));
     //puts("free");
-    //free(co_group[co_group_cnt--]);
+    free(co_group[co_group_cnt--]);
     //puts("free end");
 }
 
