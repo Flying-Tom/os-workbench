@@ -103,7 +103,7 @@ void co_wait(struct co *co)
 
 void co_yield()
 {
-    puts("co_yield");
+    //puts("co_yield");
     //printf("%s status:%d\n", co_group[0]->name, co_group[0]->status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
@@ -118,12 +118,12 @@ void co_yield()
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(next_co != NULL);
-        printf("switch to: %s %d\n", next_co->name, next_co->status);
+        //printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
         switch (co_current->status)
         {
         case CO_NEW:
-            puts("co_new");
+            //puts("co_new");
             //printf("co_current->stack:%p\n", co_current->stack);
             //printf("(((uintptr_t)co_current->stack >> 4) << 4):%p\n", (void *)(((uintptr_t)co_current->stack >> 4) << 4));
             stack_switch_call((void *)((uintptr_t)co_current->stack + STACK_SIZE), coroutine_entry, (uintptr_t)co_current);
