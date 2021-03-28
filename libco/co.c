@@ -113,7 +113,7 @@ void co_yield()
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(next_co != NULL);
-        //printf("switch to: %s %d\n", next_co->name, next_co->status);
+        printf("switch to: %s %d\n", next_co->name, next_co->status);
         co_current = next_co;
         switch (co_current->status)
         {
