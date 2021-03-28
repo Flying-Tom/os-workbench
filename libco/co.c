@@ -133,6 +133,10 @@ void co_yield()
         case CO_RUNNING:
             longjmp(co_current->context, 1);
             break;
+        case CO_WAITING:
+            co_current->status = CO_RUNNING;
+            longjmp(co_current->context, 1);
+            break;
         default:
             //printf("%s %d\n", co_current->name, co_current->status);
             assert(0);
