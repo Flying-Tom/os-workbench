@@ -65,6 +65,7 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
+    puts("co_start");
     struct co *new_co = malloc(sizeof(struct co));
     new_co->name = (char *)name;
     new_co->func = func;
@@ -72,6 +73,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
     new_co->status = CO_NEW;
 
     co_group[co_group_cnt++] = new_co;
+    puts("co_start finished");
     return new_co;
 }
 
