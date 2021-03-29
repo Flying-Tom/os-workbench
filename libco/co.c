@@ -59,11 +59,10 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
             co_group[i].func = func;
             co_group[i].arg = arg;
             co_group[i].status = CO_NEW;
-
             return &co_group[i];
         }
     }
-    return NULL;
+    //return NULL;
 }
 
 void co_wait(struct co *co)
