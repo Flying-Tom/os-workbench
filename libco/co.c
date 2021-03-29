@@ -65,7 +65,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        puts("%d\n",i);
+        printf("%d\n",i);
         if (co_group[i] == NULL)
         {
             co_group[i] = malloc(sizeof(struct co));
