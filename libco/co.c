@@ -106,20 +106,27 @@ void co_yield()
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
-        int next_co_id;
-        struct co *next_co;
-        do
+        int next_co_id, valid_co_num = 0;
+        struct co *next_co = NULL;
+        for (int i = 0; i < CO_MAXNUM; i++)
         {
-            next_co_id = rand() % CO_MAXNUM;
-            //printf("next_co_id:%d\n", next_co_id);
-            next_co = co_group[next_co_id];
+            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
+                valid_co_num++;
+        }
+        next_co_id = rand() % valid_co_num;
 
-            //printf("next_co->status:%d\n", next_co->status);
-            //printf("co_group_cnt:%d\n", co_group_cnt);
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
+        for (int i = 0; i < CO_MAXNUM; i++)
+        {
+            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
+            {
+                if (valid_co_num == 0)
+                    co_current = co_group[i];
+                valid_co_num--;
+            }
+        }
 
         //printf("switch to: %s %d\n", next_co->name, next_co->status);
-        co_current = next_co;
+        assert(co_current);
         switch (co_current->status)
         {
         case CO_NEW:
