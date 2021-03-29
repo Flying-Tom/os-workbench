@@ -28,7 +28,7 @@ struct co
     uint8_t stack[STACK_SIZE];
 };
 
-struct co *co_group[CO_MAXNUM];
+struct co co_group[CO_MAXNUM];
 struct co *co_current;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
@@ -110,11 +110,9 @@ void __attribute__((constructor)) co_init()
 {
     for (int i = 1; i < CO_MAXNUM; i++)
     {
-        co_group[i] = malloc(sizeof(struct co));
         co_group[i]->status = CO_DEAD;
     }
 
-    co_group[0] = malloc(sizeof(struct co));
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_current = co_group[0];
