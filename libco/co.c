@@ -57,7 +57,7 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
-    //co_yield();
+    co_yield();
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
@@ -118,7 +118,7 @@ void co_yield()
         {
         case CO_NEW:
             //puts("in");
-            stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
+            stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t) + 8), coroutine_entry, (uintptr_t)co_current);
             break;
         case CO_RUNNING:
             longjmp(co_current->context, 1);
