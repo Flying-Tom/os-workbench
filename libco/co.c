@@ -113,15 +113,16 @@ void co_yield()
             if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
                 valid_co_num++;
         }
+
         next_co_id = rand() % valid_co_num;
 
         for (int i = 0; i < CO_MAXNUM; i++)
         {
             if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
             {
-                if (valid_co_num == 0)
+                if (next_co_id == 0)
                     co_current = co_group[i];
-                valid_co_num--;
+                next_co_id--;
             }
         }
 
