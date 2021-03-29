@@ -115,7 +115,7 @@ void co_yield()
         {
             next_co = co_group[rand() % CO_MAXNUM];
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
-
+        co_current = next_co;
         assert(co_current);
         switch (co_current->status)
         {
