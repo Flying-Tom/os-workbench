@@ -65,7 +65,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        if (co_group[i] == NULL)
+        if (co_group[i]->status == CO_UNDEFINE)
         {
             co_group[i]->name = (char *)name;
             co_group[i]->func = func;
