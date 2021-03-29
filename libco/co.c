@@ -118,7 +118,7 @@ void co_yield()
         {
         case CO_NEW:
             //puts("in");
-            stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t) + 8), coroutine_entry, (uintptr_t)co_current);
+            stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
             break;
         case CO_RUNNING:
             longjmp(co_current->context, 1);
