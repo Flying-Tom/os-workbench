@@ -9,10 +9,10 @@
 
 enum co_status
 {
-    CO_DEAD,
     CO_NEW,
     CO_RUNNING,
     CO_WAITING,
+    CO_DEAD
 };
 
 struct co
@@ -90,7 +90,7 @@ void co_yield()
         do
         {
             co_current = co_group[rand() % CO_MAXNUM];
-        } while (co_current->status != CO_RUNNING && co_current->status != CO_NEW);
+        } while (co_current->status > CO_RUNNING);
 
         switch (co_current->status)
         {
