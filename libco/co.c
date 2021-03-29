@@ -65,8 +65,9 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        if (co_group[i]->status == CO_UNDEFINE)
+        if (co_group[i] == NULL)
         {
+            co_group[i] = malloc(sizeof(struct co));
             co_group[i]->name = (char *)name;
             co_group[i]->func = func;
             co_group[i]->arg = arg;
@@ -105,7 +106,7 @@ void co_yield()
         struct co *next_co = NULL;
         for (int i = 0; i < CO_MAXNUM; i++)
         {
-            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
+            if (co_group[i] != NULL && (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING))
                 valid_co_num++;
         }
 
