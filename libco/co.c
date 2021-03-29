@@ -51,9 +51,9 @@ void coroutine_entry(struct co *co)
 {
     co->status = CO_RUNNING;
     co->func(co->arg);
-    co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
+    co->status = CO_DEAD;
     co_yield();
 }
 
@@ -109,11 +109,9 @@ void co_yield()
 void __attribute__((constructor)) co_init()
 {
     for (int i = 1; i < CO_MAXNUM; i++)
-    {
         co_group[i]->status = CO_DEAD;
-    }
 
-    co_group[0]->name = "main"; // main will be always waiting for other routines
-    co_group[0]->status = CO_RUNNING;
+    co_group[0].name = "main"; // main will be always waiting for other routines
+    co_group[0].status = CO_RUNNING;
     co_current = co_group[0];
 }
