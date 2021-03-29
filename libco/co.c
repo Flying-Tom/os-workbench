@@ -94,7 +94,8 @@ void co_yield()
         do
         {
             co_current = co_group[rand() % CO_MAXNUM];
-            puts("fuck");
+            printf("status:%d\n", co_current->status);
+            //puts("fuck");
         } while (co_current->status != CO_RUNNING && co_current->status != CO_NEW);
 
         switch (co_current->status)
