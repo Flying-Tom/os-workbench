@@ -55,6 +55,8 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
+    else
+        co->status = CO_UNDEFINE;
     co_yield();
 }
 
@@ -79,7 +81,7 @@ void co_wait(struct co *co)
 {
     co_current->status = CO_WAITING;
     co->waiter = co_current;
-    while (co->status != CO_DEAD)
+    while (co->status != CO_DEAD || co->status != CO_UNDEFINE)
         co_yield();
     co_current->status = CO_RUNNING;
     co->status = CO_UNDEFINE;
