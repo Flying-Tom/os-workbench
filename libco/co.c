@@ -125,7 +125,6 @@ void co_yield()
         case CO_NEW:
             puts("in");
             stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
-            //puts("out");
             break;
         case CO_RUNNING:
             longjmp(co_current->context, 1);
@@ -149,6 +148,7 @@ void __attribute__((constructor)) co_init()
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_current = co_group[0];
+    puts("co_init finished");
 }
 
 void __attribute__((destructor)) co_end()
