@@ -112,7 +112,7 @@ void co_yield()
         {
             next_co_id = rand() % CO_MAXNUM;
             //printf("next_co_id:%d\n", next_co_id);
-            next_co = &co_group[next_co_id];
+            next_co = co_group[next_co_id];
 
             //printf("next_co->status:%d\n", next_co->status);
             //printf("co_group_cnt:%d\n", co_group_cnt);
