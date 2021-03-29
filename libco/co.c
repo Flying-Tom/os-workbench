@@ -65,10 +65,8 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        printf("%d\n",i);
-        if (co_group[i] == NULL)
+        if (co_group[i]->status == CO_UNDEFINE)
         {
-            co_group[i] = malloc(sizeof(struct co));
             co_group[i]->name = (char *)name;
             co_group[i]->func = func;
             co_group[i]->arg = arg;
@@ -107,7 +105,7 @@ void co_yield()
         struct co *next_co = NULL;
         for (int i = 0; i < CO_MAXNUM; i++)
         {
-            if (co_group[i] != NULL && (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING))
+            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
                 valid_co_num++;
         }
 
@@ -143,13 +141,12 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
-    /*
     for (int i = 1; i < CO_MAXNUM; i++)
     {
         co_group[i] = malloc(sizeof(struct co));
         co_group[i]->status = CO_UNDEFINE;
     }
-*/
+
     co_group[0] = malloc(sizeof(struct co));
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
