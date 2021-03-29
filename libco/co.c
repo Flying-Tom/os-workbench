@@ -142,12 +142,13 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
+    /*
     for (int i = 1; i < CO_MAXNUM; i++)
     {
         co_group[i] = malloc(sizeof(struct co));
         co_group[i]->status = CO_UNDEFINE;
     }
-
+*/
     co_group[0] = malloc(sizeof(struct co));
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
