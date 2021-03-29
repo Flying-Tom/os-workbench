@@ -81,7 +81,6 @@ void co_wait(struct co *co)
     while (co->status != CO_DEAD)
         co_yield();
     co_current->status = CO_RUNNING;
-    co->status = CO_DEAD;
 }
 
 void co_yield()
