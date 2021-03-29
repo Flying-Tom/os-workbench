@@ -65,6 +65,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
+        puts("fuck");
         if (co_group[i] == NULL)
         {
             co_group[i] = malloc(sizeof(struct co));
@@ -153,7 +154,7 @@ void __attribute__((constructor)) co_init()
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_current = co_group[0];
-    puts("co_init finished");
+    //puts("co_init finished");
 }
 
 void __attribute__((destructor)) co_end()
