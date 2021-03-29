@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <setjmp.h>
-#include <string.h>
-#include <assert.h>
 
 #define STACK_SIZE 64 * 1024
 #define CO_MAXNUM 128
@@ -29,7 +27,7 @@ struct co
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-}; // root coroutine
+};
 
 struct co *co_group[CO_MAXNUM];
 struct co *co_current;
@@ -91,32 +89,11 @@ void co_yield()
 {
     if (setjmp(co_current->context) == 0)
     {
-        int next_co_id, valid_co_num = 0;
-        struct co *next_co = NULL;
-        /*
-        for (int i = 0; i < CO_MAXNUM; i++)
-        {
-            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
-                valid_co_num++;
-        }
-
-        next_co_id = rand() % valid_co_num;
-
-        for (int i = 0; i < CO_MAXNUM; i++)
-        {
-            if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
-            {
-                if (next_co_id == 0)
-                    co_current = co_group[i];
-                next_co_id--;
-            }
-        }*/
         do
         {
-            next_co = co_group[rand() % CO_MAXNUM];
-        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
-        co_current = next_co;
-        assert(co_current);
+            co_current = co_group[rand() % CO_MAXNUM];
+        } while (co_current->status != CO_RUNNING && co_current->status != CO_NEW);
+
         switch (co_current->status)
         {
         case CO_NEW:
@@ -126,7 +103,7 @@ void co_yield()
             longjmp(co_current->context, 1);
             break;
         default:
-            assert(0);
+            break;
         }
     }
 }
