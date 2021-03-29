@@ -5,7 +5,7 @@
 #include <setjmp.h>
 
 #define STACK_SIZE 64 * 1024
-#define CO_MAXNUM 128
+#define CO_MAXNUM 65536
 
 enum co_status
 {
