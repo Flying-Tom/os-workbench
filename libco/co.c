@@ -89,8 +89,7 @@ void co_wait(struct co *co)
 
 void co_yield()
 {
-    int val = setjmp(co_current->context);
-    if (val == 0)
+    if (setjmp(co_current->context) == 0)
     {
         int next_co_id, valid_co_num = 0;
         struct co *next_co = NULL;
@@ -112,20 +111,16 @@ void co_yield()
             }
         }
 
-        //printf("switch to: %s %d\n", next_co->name, next_co->status);
         assert(co_current);
         switch (co_current->status)
         {
         case CO_NEW:
-            //puts("in");
-            printf("%p\n", co_current->stack);
             stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
             break;
         case CO_RUNNING:
             longjmp(co_current->context, 1);
             break;
         default:
-            //printf("%s %d\n", co_current->name, co_current->status);
             assert(0);
         }
     }
@@ -143,10 +138,4 @@ void __attribute__((constructor)) co_init()
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_current = co_group[0];
-    //puts("co_init finished");
-}
-
-void __attribute__((destructor)) co_end()
-{
-    //printf("co_group_cnt:%d\n", co_group_cnt);
 }
