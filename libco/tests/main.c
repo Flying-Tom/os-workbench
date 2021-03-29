@@ -135,47 +135,10 @@ static void test_2()
     q_free(queue);
 }
 
-///////////
-
-static void do_test3(void *arg)
-{
-    for (int i = 0; i < 100; i++)
-    {
-        printf("%s %d %d\n", arg, i, get_count());
-        add_count();
-        if (rand() % 2 == 0)
-            co_yield();
-    }
-}
-
-struct co *thd[128];
-char tmp[128][2];
-static void test_3()
-{
-    for (int j = 0; j < 100; j++)
-    {
-        for (int i = 1; i <= 127; i++)
-        {
-            tmp[i][0] = i + '0';
-            tmp[i][1] = '\0';
-            printf("%s\n", tmp[i]);
-            thd[i] = co_start(tmp[i], do_test3, tmp[i]);
-        }
-
-        for (int i = 127; i >= 1; i--)
-        {
-            co_wait(thd[i]);
-        }
-    }
-    printf("success test 3\n");
-}
-
-////////////
-
 int main()
 {
     setbuf(stdout, NULL);
-    /*
+
     printf("Test #1. Expect: (X|Y){0, 1, 2, ..., 199}\n");
     test_1();
 
@@ -183,7 +146,6 @@ int main()
     test_2();
 
     printf("\n\n");
-    */
-    do_test3("fuck");
+
     return 0;
 }
