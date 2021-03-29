@@ -56,8 +56,8 @@ void coroutine_entry(struct co *co)
     co->func(co->arg);
     co->status = CO_DEAD;
     if (co->waiter)
-        co->waiter->status = co->waiter != NULL ? CO_RUNNING;
-    co_yield();
+        co->waiter->status = CO_RUNNING;
+    //co_yield();
 }
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
