@@ -118,7 +118,7 @@ void co_yield()
         {
         case CO_NEW:
             //puts("in");
-            printf("%p", co_current->stack);
+            printf("%p\n", co_current->stack);
             stack_switch_call((void *)(co_current->stack + STACK_SIZE - sizeof(uintptr_t)), coroutine_entry, (uintptr_t)co_current);
             break;
         case CO_RUNNING:
