@@ -184,6 +184,6 @@ int main()
 
     printf("\n\n");
     */
-    do_test3();
+    do_test3("fuck");
     return 0;
 }
