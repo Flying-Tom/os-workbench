@@ -55,9 +55,8 @@ void coroutine_entry(struct co *co)
     co->status = CO_RUNNING;
     co->func(co->arg);
     co->status = CO_DEAD;
-    //co_group_cnt--; can't be there because the list need co_group_cnt to determine the specific element, and here co isn't released yet
     if (co->waiter)
-        co->waiter->status = CO_RUNNING;
+        co->waiter->status = co->waiter != NULL ? CO_RUNNING;
     co_yield();
 }
 
@@ -80,25 +79,17 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 
 void co_wait(struct co *co)
 {
-    //printf("co_wait(%s) status:%d\n", co->name, co->status);
-
     co_current->status = CO_WAITING;
     co->waiter = co_current;
     while (co->status != CO_DEAD)
         co_yield();
-    //printf("co_current->status:%d\n", co_current->status);
     co_current->status = CO_RUNNING;
-
     co->status = CO_UNDEFINE;
-    //free(co);
 }
 
 void co_yield()
 {
-    //puts("co_yield");
-    //printf("%s status:%d\n", co_group[0].name, co_group[0].status);
     int val = setjmp(co_current->context);
-    //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
     {
         int next_co_id, valid_co_num = 0;
