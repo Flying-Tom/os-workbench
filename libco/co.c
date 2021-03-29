@@ -55,6 +55,8 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
+    else
+        co->status = CO_UNDEFINE;
     co_yield();
 }
 
@@ -101,6 +103,8 @@ void co_yield()
             break;
         case CO_RUNNING:
             longjmp(co_current->context, 1);
+            break;
+        default:
             break;
         }
     }
