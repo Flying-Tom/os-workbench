@@ -9,11 +9,10 @@
 
 enum co_status
 {
-    CO_UNDEFINE,
+    CO_DEAD,
     CO_NEW,
     CO_RUNNING,
     CO_WAITING,
-    CO_DEAD,
 };
 
 struct co
@@ -55,8 +54,6 @@ void coroutine_entry(struct co *co)
     co->status = CO_DEAD;
     if (co->waiter)
         co->waiter->status = CO_RUNNING;
-    else
-        co->status = CO_UNDEFINE;
     co_yield();
 }
 
@@ -64,7 +61,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        if (co_group[i]->status == CO_UNDEFINE)
+        if (co_group[i]->status == CO_DEAD)
         {
             co_group[i]->name = (char *)name;
             co_group[i]->func = func;
@@ -81,10 +78,10 @@ void co_wait(struct co *co)
 {
     co_current->status = CO_WAITING;
     co->waiter = co_current;
-    while (co->status != CO_DEAD && co->status != CO_UNDEFINE)
+    while (co->status != CO_DEAD)
         co_yield();
     co_current->status = CO_RUNNING;
-    co->status = CO_UNDEFINE;
+    co->status = CO_DEAD;
 }
 
 void co_yield()
@@ -94,8 +91,6 @@ void co_yield()
         do
         {
             co_current = co_group[rand() % CO_MAXNUM];
-            printf("status:%d\n", co_current->status);
-            //puts("fuck");
         } while (co_current->status != CO_RUNNING && co_current->status != CO_NEW);
 
         switch (co_current->status)
@@ -117,7 +112,7 @@ void __attribute__((constructor)) co_init()
     for (int i = 1; i < CO_MAXNUM; i++)
     {
         co_group[i] = malloc(sizeof(struct co));
-        co_group[i]->status = CO_UNDEFINE;
+        co_group[i]->status = CO_DEAD;
     }
 
     co_group[0] = malloc(sizeof(struct co));
