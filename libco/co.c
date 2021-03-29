@@ -93,6 +93,7 @@ void co_yield()
     {
         int next_co_id, valid_co_num = 0;
         struct co *next_co = NULL;
+        /*
         for (int i = 0; i < CO_MAXNUM; i++)
         {
             if (co_group[i]->status == CO_NEW || co_group[i]->status == CO_RUNNING)
@@ -109,7 +110,11 @@ void co_yield()
                     co_current = co_group[i];
                 next_co_id--;
             }
-        }
+        }*/
+        do
+        {
+            next_co = co_group[rand() % CO_MAXNUM];
+        } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
 
         assert(co_current);
         switch (co_current->status)
