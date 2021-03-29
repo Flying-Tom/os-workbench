@@ -67,7 +67,7 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
             co_group[i].arg = arg;
             co_group[i].status = CO_NEW;
 
-            return co_group[i];
+            return &co_group[i];
         }
     }
     return NULL;
@@ -88,7 +88,7 @@ void co_yield()
     {
         do
         {
-            co_current = co_group[rand() % CO_MAXNUM];
+            co_current = &co_group[rand() % CO_MAXNUM];
         } while (co_current->status > CO_RUNNING);
 
         switch (co_current->status)
