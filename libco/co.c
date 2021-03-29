@@ -26,15 +26,13 @@ struct co
 
     enum co_status status;
     struct co *waiter;
-    struct co *next;
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-} co_main; // root coroutine
+}; // root coroutine
 
-struct co *co_current = &co_main;
-
-int co_group_cnt;
+struct co *co_group[CO_MAXNUM];
+struct co *co_current;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
@@ -65,23 +63,25 @@ void coroutine_entry(struct co *co)
 
 struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
+    for (int i = 0; i < CO_MAXNUM; i++)
+    {
+        if (co_group[i] == NULL)
+        {
+            co_group[i]->name = (char *)name;
+            co_group[i]->func = func;
+            co_group[i]->arg = arg;
+            co_group[i]->status = CO_NEW;
 
-    struct co *new_co = malloc(sizeof(struct co));
-    new_co->name = (char *)name;
-    new_co->func = func;
-    new_co->arg = arg;
-    new_co->status = CO_NEW;
-
-    co_current->next = new_co;
-    co_current = co_current->next;
-
-    co_group_cnt++;
-    return new_co;
+            return co_group[i];
+        }
+    }
+    return NULL;
 }
 
 void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
+
     if (co->status != CO_DEAD)
     {
         co_current->status = CO_WAITING;
@@ -93,22 +93,15 @@ void co_wait(struct co *co)
     }
     else
     {
-        struct co *co_temp = &co_main;
-
-        while (co_temp->next != co)
-            co_temp = co_temp->next;
-        if (co == co_current)
-            co_current = co_temp;
-        co_temp->next = co->next;
-        co_group_cnt--;
-        free(co);
+        co->status = CO_UNDEFINE;
+        //free(co);
     }
 }
 
 void co_yield()
 {
-    puts("co_yield");
-    //printf("%s status:%d\n", co_main.name, co_main.status);
+    //puts("co_yield");
+    //printf("%s status:%d\n", co_group[0].name, co_group[0].status);
     int val = setjmp(co_current->context);
     //printf("%s %d  val:%d\n", co_current->name, co_current->status, val);
     if (val == 0)
@@ -117,13 +110,10 @@ void co_yield()
         struct co *next_co;
         do
         {
-            next_co_id = rand() % co_group_cnt + 1;
+            next_co_id = rand() % CO_MAXNUM;
             //printf("next_co_id:%d\n", next_co_id);
-            next_co = co_current;
-            while (--next_co_id)
-            {
-                next_co = next_co->next;
-            }
+            next_co = &co_group[next_co_id];
+
             //printf("next_co->status:%d\n", next_co->status);
             //printf("co_group_cnt:%d\n", co_group_cnt);
         } while (next_co->status != CO_RUNNING && next_co->status != CO_NEW);
@@ -148,9 +138,16 @@ void co_yield()
 
 void __attribute__((constructor)) co_init()
 {
-    co_main.name = "main"; // main will be always waiting for other routines
-    co_main.status = CO_RUNNING;
-    co_group_cnt = 1;
+    for (int i = 1; i < CO_MAXNUM; i++)
+    {
+        co_group[i] = malloc(sizeof(struct co));
+        co_group[i]->status = CO_UNDEFINE;
+    }
+
+    co_group[0] = malloc(sizeof(struct co));
+    co_group[0].name = "main"; // main will be always waiting for other routines
+    co_group[0].status = CO_RUNNING;
+    co_current = co_group[0];
 }
 
 void __attribute__((destructor)) co_end()
