@@ -82,20 +82,15 @@ void co_wait(struct co *co)
 {
     //printf("co_wait(%s) status:%d\n", co->name, co->status);
 
-    if (co->status != CO_DEAD)
-    {
-        co_current->status = CO_WAITING;
-        co->waiter = co_current;
-        while (co->status != CO_DEAD)
-            co_yield();
-        //printf("co_current->status:%d\n", co_current->status);
-        co_current->status = CO_RUNNING;
-    }
-    else
-    {
-        co->status = CO_UNDEFINE;
-        //free(co);
-    }
+    co_current->status = CO_WAITING;
+    co->waiter = co_current;
+    while (co->status != CO_DEAD)
+        co_yield();
+    //printf("co_current->status:%d\n", co_current->status);
+    co_current->status = CO_RUNNING;
+
+    co->status = CO_UNDEFINE;
+    //free(co);
 }
 
 void co_yield()
