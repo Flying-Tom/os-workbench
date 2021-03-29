@@ -26,9 +26,8 @@ struct co
 
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
-};
+} co_group[CO_MAXNUM];
 
-struct co co_group[CO_MAXNUM];
 struct co *co_current;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
@@ -61,12 +60,12 @@ struct co *co_start(const char *name, void (*func)(void *), void *arg)
 {
     for (int i = 0; i < CO_MAXNUM; i++)
     {
-        if (co_group[i]->status == CO_DEAD)
+        if (co_group[i].status == CO_DEAD)
         {
-            co_group[i]->name = (char *)name;
-            co_group[i]->func = func;
-            co_group[i]->arg = arg;
-            co_group[i]->status = CO_NEW;
+            co_group[i].name = (char *)name;
+            co_group[i].func = func;
+            co_group[i].arg = arg;
+            co_group[i].status = CO_NEW;
 
             return co_group[i];
         }
@@ -109,7 +108,7 @@ void co_yield()
 void __attribute__((constructor)) co_init()
 {
     for (int i = 1; i < CO_MAXNUM; i++)
-        co_group[i]->status = CO_DEAD;
+        co_group[i].status = CO_DEAD;
 
     co_group[0].name = "main"; // main will be always waiting for other routines
     co_group[0].status = CO_RUNNING;
