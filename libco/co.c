@@ -20,10 +20,8 @@ struct co
     char *name;
     void (*func)(void *);
     void *arg;
-
     enum co_status status;
     struct co *waiter;
-
     jmp_buf context;
     uint8_t stack[STACK_SIZE];
 } co_group[CO_MAXNUM];
@@ -32,11 +30,9 @@ struct co *co_current;
 
 static inline void stack_switch_call(void *sp, void *entry, uintptr_t arg)
 {
-    // restore the stack pointer, and move arg to %rdi( the first parameter register), then call the function "entry"
     asm volatile(
 #if __x86_64__
         "movq %0, %%rsp; movq %2, %%rdi; jmp *%1"
-        :
         : "b"((uintptr_t)sp), "d"(entry), "a"(arg)
 #else
         "movl %0, %%esp; movl %2, 4(%0); jmp *%1"
