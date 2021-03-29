@@ -153,7 +153,7 @@ void __attribute__((constructor)) co_init()
     co_group[0]->name = "main"; // main will be always waiting for other routines
     co_group[0]->status = CO_RUNNING;
     co_current = co_group[0];
-    //puts("co_init finished");
+    puts("co_init finished");
 }
 
 void __attribute__((destructor)) co_end()
