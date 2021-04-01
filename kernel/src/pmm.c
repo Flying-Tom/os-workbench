@@ -1,14 +1,19 @@
 #include <common.h>
 
-#define lock_t uint8_t
-
-static lock(lock_t *lk)
+typedef struct
 {
-}
+    int locked;
+} lock_t;
 
-static unlock(lock_t *lk)
+#define LOCK_INIT() ((lock_t){.locked = 0})
+void lock(lock_t *lk)
 {
+    while (atomic_xchg(&lk->locked, 1))
+        ;
 }
+void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
+
+static lock_t lk = LOCK_INIT();
 
 static void *kalloc(size_t size)
 {
