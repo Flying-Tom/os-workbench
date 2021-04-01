@@ -2,6 +2,14 @@
 
 #define lock_t uint8_t
 
+static lock(lock_t *lk)
+{
+}
+
+static unlock(lock_t *lk)
+{
+}
+
 static void *kalloc(size_t size)
 {
     return NULL;
