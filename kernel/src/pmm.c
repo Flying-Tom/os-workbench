@@ -17,6 +17,8 @@ static lock_t lk = LOCK_INIT();
 
 static void *kalloc(size_t size)
 {
+    lock(&lk);
+    unlock(&lk);
     return NULL;
 }
 
