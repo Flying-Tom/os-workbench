@@ -17,9 +17,10 @@ static lock_t lk = LOCK_INIT();
 
 static void *kalloc(size_t size)
 {
+    void *ret = NULL;
     lock(&lk);
     unlock(&lk);
-    return NULL;
+    return ret;
 }
 
 static void kfree(void *ptr)
