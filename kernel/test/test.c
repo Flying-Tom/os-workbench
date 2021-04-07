@@ -1,4 +1,3 @@
-#include <common.h>
 #include <threads.h>
 
 static void entry(int tid) { pmm->alloc(128); }
