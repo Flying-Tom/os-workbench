@@ -1,5 +1,5 @@
 #include <am.h>
-#include <stddef.h>
+#include <stddef.h> // is it needed?
 
 #define MODULE(mod) \
   typedef struct mod_##mod##_t mod_##mod##_t; \

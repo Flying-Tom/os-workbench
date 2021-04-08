@@ -2,6 +2,8 @@
 
 #define HEAP_SIZE 128 * 1024 * 1024
 
+extern struct heap;
+
 typedef struct
 {
     int locked;
