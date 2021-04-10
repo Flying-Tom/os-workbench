@@ -59,7 +59,7 @@ static void *kalloc(size_t size)
     {
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
         {
-            node_t *new_node = (node_t *)((uintptr_t)cur + cur->size - size);
+            node_t *new_node = (node_t *)((((uintptr_t)cur + sizeof(node_t) + cur->size - size) >> size) << size) - sizeof(node_t);
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
