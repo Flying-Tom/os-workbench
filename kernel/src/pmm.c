@@ -36,7 +36,7 @@ enum
 
 static void *kalloc(size_t size)
 {
-    printf("kalloc\n");
+    //printf("kalloc\n");
     node_t *cur;
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
@@ -60,6 +60,17 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
+}
+
+static void kstat()
+{
+    node_t *cur;
+    int node_cnt = 0;
+    for (cur = root_node; cur != NULL; cur = cur->next)
+    {
+
+        printf("Node %d | status:%d  size:%d MB ", node_cnt++, cur->status, cur->size / (1024 * 1024));
+    }
 }
 
 #ifndef TEST

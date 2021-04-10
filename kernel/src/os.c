@@ -20,6 +20,7 @@ static void os_run()
     pmm->alloc(6 MB);
     pmm->alloc(7 MB);
     pmm->alloc(128 MB);
+    kstat()
     while (1)
         ;
 }
