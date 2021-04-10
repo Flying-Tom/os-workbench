@@ -132,5 +132,4 @@ MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,
     .free = kfree,
-    .stat = pmm_stat,
 };
