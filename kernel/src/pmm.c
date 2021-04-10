@@ -15,7 +15,7 @@ void lock(lock_t *lk)
 }
 void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 
-//static lock_t lk = LOCK_INIT();
+static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
 
@@ -53,7 +53,7 @@ static void list_insert(node_t *x, node_t *y)
 
 static void *kalloc(size_t size)
 {
-    //printf("kalloc\n");
+    lock(&lk);
     node_t *cur;
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
@@ -68,10 +68,12 @@ static void *kalloc(size_t size)
 
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
             printf("ret:%p\n", ret);
+            unlock(&lk);
             return ret;
         }
     }
     printf("Fail to alloc\n");
+    unlock(&lk);
     return NULL;
 }
 
