@@ -69,7 +69,7 @@ static void pmm_stat()
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
 
-        printf("Node %d | status:%d  size:%d MB ", node_cnt++, cur->status, cur->size / (1024 * 1024));
+        printf("Node %d | status:%d  size:%d MB\n", node_cnt++, cur->status, cur->size / (1024 * 1024));
     }
 }
 
