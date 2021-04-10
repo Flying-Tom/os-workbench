@@ -82,12 +82,8 @@ static void kfree(void *ptr)
     cur->status = NODE_FREE;
     while (Lfree_section->prev != NULL && Lfree_section->prev->status == NODE_FREE)
         Lfree_section = Lfree_section->prev;
+    
 
-    if (Lfree_section == cur)
-    {    
-        printf("Cannot merge nodes\n");
-        return;
-    }
     cur = Lfree_section->next;
     for (; cur->status == NODE_FREE; cur = cur->next)
     {
