@@ -18,6 +18,8 @@ static void os_run()
     }
     pmm->alloc(128 MB);
 
+    pmm->stat();
+
     pmm->free(a[5]);
 
     pmm->stat();
