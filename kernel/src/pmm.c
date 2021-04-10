@@ -47,7 +47,7 @@ static void *kalloc(size_t size)
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
-
+            BREAKPOINT(2)
             new_node->next = cur->next;
             cur->next->prev = new_node;
             new_node->prev = cur;
