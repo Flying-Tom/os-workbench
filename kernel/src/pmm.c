@@ -1,6 +1,6 @@
 #include <common.h>
 
-#define BREAKPOINT(a) printf("BREAKPOINT:%s\n", " ## a ##");
+#define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
 
 typedef struct
 {
