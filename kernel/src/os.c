@@ -21,6 +21,7 @@ static void os_run()
     pmm->stat();
 
     pmm->free(a[4]);
+    pmm->stat();
     pmm->free(a[5]);
 
     pmm->stat();
