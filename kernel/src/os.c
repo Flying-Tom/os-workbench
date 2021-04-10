@@ -11,16 +11,15 @@ static void os_run()
     {
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
-    pmm->alloc(0 MB);
-    pmm->alloc(1 MB);
-    pmm->alloc(2 MB);
-    pmm->alloc(3 MB);
-    pmm->alloc(4 MB);
-    pmm->alloc(5 MB);
-    pmm->alloc(6 MB);
-    pmm->alloc(7 MB);
+    int *a[10];
+    for (int i = 0; i <= 7; i++)
+    {
+        a[i] = pmm->alloc(i MB);
+    }
     pmm->alloc(128 MB);
-    
+
+    pmm->free(a[5]);
+
     pmm->stat();
     while (1)
         ;

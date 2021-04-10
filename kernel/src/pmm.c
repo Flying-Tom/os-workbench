@@ -23,6 +23,7 @@ typedef struct node_t
 {
     int size;
     int status;
+    struct node_t *prev;
     struct node_t *next;
 } node_t;
 
@@ -43,13 +44,13 @@ static void *kalloc(size_t size)
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
         {
             node_t *new_node = (node_t *)((uintptr_t)cur + cur->size - size);
-            //BREAKPOINT(1)
             new_node->size = size;
-            //BREAKPOINT(2)
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
             new_node->next = cur->next;
+            new_node->prev = cur;
             cur->next = new_node;
+            cur->next->prev = new_node;
             printf("ret:%p\n", new_node);
             return new_node;
         }
@@ -60,6 +61,19 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
+    node_t *cur = (node_t *)ptr, *new_free_node = cur;
+    cur->status = NODE_FREE;
+    if (cur->prev->status == NODE_FREE)
+        new_free_node = cur->prev;
+    else
+        cur = cur->next;
+
+    for (; cur->status == NODE_FREE; cur = cur->next)
+    {
+        new_free_node->size += sizeof(node_t) + cur->size;
+    }
+    new_free_node->next = cur;
+    cur->prev = new_free_node;
 }
 
 static void pmm_stat()
