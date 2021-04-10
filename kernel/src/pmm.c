@@ -36,9 +36,9 @@ enum
 
 static void *kalloc(size_t size)
 {
-    printf("kalloc");
+    printf("kalloc\n");
     node_t *cur;
-    for (cur = root_node; cur == NULL; cur = cur->next)
+    for (cur = root_node; cur != NULL; cur = cur->next)
     {
         printf("?");
         if (cur->status == NODE_FREE && size >= size + sizeof(node_t))
