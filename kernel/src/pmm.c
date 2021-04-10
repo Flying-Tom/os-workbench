@@ -47,13 +47,14 @@ static void *kalloc(size_t size)
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
-            BREAKPOINT(2)
+            
             new_node->next = cur->next;
+            BREAKPOINT(1)
             cur->next->prev = new_node;
+            BREAKPOINT(2)
             new_node->prev = cur;
             cur->next = new_node;
 
-            BREAKPOINT(1)
             void *ret = (void *)((uintptr_t)cur + sizeof(node_t));
             printf("ret:%p\n", ret);
             return ret;
