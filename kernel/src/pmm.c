@@ -62,7 +62,7 @@ static void kfree(void *ptr)
 {
 }
 
-void kstat()
+static void pmm_stat()
 {
     node_t *cur;
     int node_cnt = 0;
@@ -96,4 +96,5 @@ MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,
     .free = kfree,
+    .stat = pmm_stat,
 };
