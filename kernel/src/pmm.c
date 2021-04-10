@@ -18,7 +18,7 @@ void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
-
+typedef struct node_t node_t;
 typedef struct node_t
 {
     int size;
