@@ -67,6 +67,7 @@ static void kfree(void *ptr)
     while (Lfree_section->prev->status == NODE_FREE)
     {
         Lfree_section = Lfree_section->prev;
+        assert(Lfree_section->prev != Lfree_section);
         //printf("%d\n",Lfree_section->size / (1024*1024));
     }
 
