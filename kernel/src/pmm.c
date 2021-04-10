@@ -42,7 +42,7 @@ static void *kalloc(size_t size)
     {
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
         {
-            node_t *new_node = (node_t)(cur + cur->size - size);
+            node_t *new_node = (node_t)((uintptr_t)cur + cur->size - size);
             BREAKPOINT(1)
             new_node->size = size;
             BREAKPOINT(2)
