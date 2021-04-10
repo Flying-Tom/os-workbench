@@ -23,7 +23,7 @@ typedef struct node_t
 {
     int size;
     node_t *next;
-} node_t;
+};
 
 static void *kalloc(size_t size)
 {
