@@ -36,6 +36,7 @@ enum
 
 static void *kalloc(size_t size)
 {
+    printf("kalloc");
     node_t *cur;
     for (cur = root_node; cur == NULL; cur = cur->next)
     {
