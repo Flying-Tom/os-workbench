@@ -50,10 +50,11 @@ static void *kalloc(size_t size)
             cur->size = cur->size - size - sizeof(node_t);
             new_node->next = cur->next;
             cur->next = new_node;
-            printf("ret:%p", new_node);
+            printf("ret:%p\n", new_node);
             return new_node;
         }
     }
+    printf("Fail to alloc\n");
     return NULL;
 }
 
