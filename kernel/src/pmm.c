@@ -96,6 +96,7 @@ static void kfree(void *ptr)
     unlock(&lk);
 }
 
+/*
 static void pmm_stat()
 {
     node_t *cur;
@@ -107,6 +108,7 @@ static void pmm_stat()
     }
     printf("============================\n");
 }
+*/
 
 #ifndef TEST
 static void pmm_init()
