@@ -65,8 +65,11 @@ static void kfree(void *ptr)
     node_t *Lfree_section = cur;
     cur->status = NODE_FREE;
     while (Lfree_section->prev->status == NODE_FREE)
+    {
         Lfree_section = Lfree_section->prev;
-    BREAKPOINT(?)
+        BREAKPOINT(fuck);
+    }
+
     if (Lfree_section == cur)
         return;
     cur = Lfree_section->next;
