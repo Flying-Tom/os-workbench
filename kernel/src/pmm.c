@@ -35,6 +35,22 @@ enum
     NODE_USED
 };
 
+static void list_insert(node_t *x, node_t *y)
+{
+    if (x->next == NULL)
+    {
+        x->next = y;
+        y->prev = x;
+    }
+    else
+    {
+        x->next->prev = y;
+        y->next = x->next;
+        x->next = y;
+        y->prev = x;
+    }
+}
+
 static void *kalloc(size_t size)
 {
     //printf("kalloc\n");
@@ -47,13 +63,8 @@ static void *kalloc(size_t size)
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
-            
-            new_node->next = cur->next;
-            BREAKPOINT(1)
-            cur->next->prev = new_node;
-            BREAKPOINT(2)
-            new_node->prev = cur;
-            cur->next = new_node;
+
+            list_insert(cur, new_node);
 
             void *ret = (void *)((uintptr_t)cur + sizeof(node_t));
             printf("ret:%p\n", ret);
@@ -106,8 +117,7 @@ static void pmm_init()
     root_node = (node_t *)heap.start;
     root_node->size = pmsize - sizeof(node_t);
     root_node->status = NODE_FREE;
-    root_node->next = root_node;
-    root_node->prev = root_node;
+    root_node->next = root_node->prev = NULL;
     printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 }
 #else
