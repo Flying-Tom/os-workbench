@@ -11,6 +11,7 @@ static void os_run()
     {
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
+    pmm->alloc(5 MB);
     while (1)
         ;
 }
