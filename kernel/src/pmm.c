@@ -78,9 +78,6 @@ static void *kalloc(size_t size)
 static void kfree(void *ptr)
 {
     node_t *cur = (node_t *)((uintptr_t)ptr - sizeof(node_t));
-
-    printf("Node %d | status:%d  size:%d MB\n", 0, cur->status, cur->size / (1024 * 1024));
-
     node_t *Lfree_section = cur;
     cur->status = NODE_FREE;
     while (Lfree_section->prev != NULL && Lfree_section->prev->status == NODE_FREE)
