@@ -1,6 +1,6 @@
 #include <common.h>
 
-#define HEAP_SIZE 128 * 1024 * 1024
+#define BREAKPOINT(a) printf("BREAKPOINT:"##a##"\n");
 
 typedef struct
 {
@@ -43,6 +43,7 @@ static void *kalloc(size_t size)
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
         {
             node_t *new_node = cur + cur->size - size;
+            BREAKPOINT(1)
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
