@@ -40,8 +40,7 @@ static void *kalloc(size_t size)
     node_t *cur;
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
-        printf("?");
-        if (cur->status == NODE_FREE && size >= size + sizeof(node_t))
+        if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
         {
             node_t *new_node = cur + cur->size - size;
             new_node->size = size;
