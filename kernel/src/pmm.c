@@ -66,7 +66,7 @@ static void *kalloc(size_t size)
 
             list_insert(cur, new_node);
 
-            void *ret = (void *)((uintptr_t)cur + sizeof(node_t));
+            void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
             printf("ret:%p\n", ret);
             return ret;
         }
