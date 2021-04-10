@@ -61,17 +61,21 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    node_t *cur = (node_t *)ptr, *new_free_node = cur;
+    node_t *cur = (node_t *)ptr;
+    node_t *Lfree_section = cur, *Rfree_section = cur;
     cur->status = NODE_FREE;
-    if (cur->next->status == NODE_USED)
-        return;
+    while (Lfree_section->prev->status == NODE_FREE)
+        Lfree_section = Lfree_section->prev;
 
+    if (Lfree_section == cur)
+        return;
+    cur = Lfree_section->next;
     for (; cur->status == NODE_FREE; cur = cur->next)
     {
-        new_free_node->size += sizeof(node_t) + cur->size;
+        Lfree_section->size += sizeof(node_t) + cur->size;
     }
-    new_free_node->next = cur;
-    cur->prev = new_free_node;
+    Lfree_section->next = cur;
+    cur->prev = Lfree_section;
 }
 
 static void pmm_stat()
