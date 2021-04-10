@@ -15,7 +15,7 @@ void lock(lock_t *lk)
 }
 void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 
-static lock_t lk = LOCK_INIT();
+//static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
 
