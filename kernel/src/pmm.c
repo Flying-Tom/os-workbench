@@ -62,7 +62,7 @@ static void *kalloc(size_t size)
 static void kfree(void *ptr)
 {
     node_t *cur = (node_t *)ptr;
-    node_t *Lfree_section = cur, *Rfree_section = cur;
+    node_t *Lfree_section = cur;
     cur->status = NODE_FREE;
     while (Lfree_section->prev->status == NODE_FREE)
         Lfree_section = Lfree_section->prev;
