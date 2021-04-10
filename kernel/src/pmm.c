@@ -63,10 +63,8 @@ static void kfree(void *ptr)
 {
     node_t *cur = (node_t *)ptr, *new_free_node = cur;
     cur->status = NODE_FREE;
-    if (cur->prev->status == NODE_FREE)
-        new_free_node = cur->prev;
-    else
-        cur = cur->next;
+    if (cur->next->status == NODE_USED)
+        return;
 
     for (; cur->status == NODE_FREE; cur = cur->next)
     {
