@@ -2,7 +2,6 @@
 
 #define HEAP_SIZE 128 * 1024 * 1024
 
-
 typedef struct
 {
     int locked;
@@ -17,6 +16,14 @@ void lock(lock_t *lk)
 void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 
 static lock_t lk = LOCK_INIT();
+
+/////////////////////////////
+
+typedef struct node_t
+{
+    int size;
+    node_t *next;
+} node_t;
 
 static void *kalloc(size_t size)
 {
