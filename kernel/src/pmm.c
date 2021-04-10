@@ -18,18 +18,39 @@ void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
+
 typedef struct node_t
 {
     int size;
+    int status;
     struct node_t *next;
 } node_t;
 
+node_t *root_node;
+
+enum
+{
+    NODE_FREE,
+    NODE_USED
+};
+
 static void *kalloc(size_t size)
 {
-    void *ret = NULL;
-    lock(&lk);
-    unlock(&lk);
-    return ret;
+    node_t *cur;
+    for (cur = root_node; cur == NULL; cur = cur->next)
+    {
+        if (cur->status == NODE_FREE && size >= size + sizeof(node_t))
+        {
+            node_t *new_node = cur + cur->size - size;
+            new_node->size = size;
+            new_node->status = NODE_USED;
+            cur->size = cur->size - size - sizeof(node_t);
+            new_node->next = cur->next;
+            cur->next = new_node;
+            return new_node;
+        }
+    }
+    return NULL;
 }
 
 static void kfree(void *ptr)
@@ -40,6 +61,9 @@ static void kfree(void *ptr)
 static void pmm_init()
 {
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
+    root_node = (node_t *)heap.start;
+    root_node->size = pmsize - sizeof(node_t);
+    root_node->status = NODE_FREE;
     printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 }
 #else
