@@ -67,24 +67,24 @@ static void *kalloc(size_t size)
             list_insert(cur, new_node);
 
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
-            printf("ret:%p\n", ret);
+            //printf("ret:%p\n", ret);
             unlock(&lk);
             return ret;
         }
     }
-    printf("Fail to alloc\n");
+    //printf("Fail to alloc\n");
     unlock(&lk);
     return NULL;
 }
 
 static void kfree(void *ptr)
 {
+    lock(&lk);
     node_t *cur = (node_t *)((uintptr_t)ptr - sizeof(node_t));
     node_t *Lfree_section = cur;
     cur->status = NODE_FREE;
     while (Lfree_section->prev != NULL && Lfree_section->prev->status == NODE_FREE)
         Lfree_section = Lfree_section->prev;
-    
 
     cur = Lfree_section->next;
     for (; cur->status == NODE_FREE; cur = cur->next)
@@ -93,6 +93,7 @@ static void kfree(void *ptr)
     }
     Lfree_section->next = cur;
     cur->prev = Lfree_section;
+    unlock(&lk);
 }
 
 static void pmm_stat()
