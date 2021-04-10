@@ -62,7 +62,7 @@ static void kfree(void *ptr)
 {
 }
 
-static void kstat()
+void kstat()
 {
     node_t *cur;
     int node_cnt = 0;
