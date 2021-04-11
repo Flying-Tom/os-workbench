@@ -85,7 +85,9 @@ static void pmm_init()
     assert(cpu_num <= MAX_CPU_NUM);
 
     pm_start = (uintptr_t)heap.start;
+    printf("pm_start:%p\n", pm_start);
     pm_start = align(pm_start, PAGE_SIZE);
+    printf("aligned pm_start:%p\n", pm_start);
     pm_end = (uintptr_t)heap.end;
     BREAKPOINT(Fuck);
     global_nodelist = (node_t *)pm_start;
