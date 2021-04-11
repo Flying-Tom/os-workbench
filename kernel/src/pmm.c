@@ -33,7 +33,7 @@ static void *kalloc(size_t size)
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = NULL, *new_node = NULL;
     BREAKPOINT(kalloc);
-    for (cur = local_nodelist[cpu_id]; cur != NULL; cur_prev = cur, cur = cur->next)
+    for (cur = &local_nodelist[cpu_id]; cur != NULL; cur_prev = cur, cur = cur->next)
     {
         if (cur->size >= size + sizeof(node_t))
         {
