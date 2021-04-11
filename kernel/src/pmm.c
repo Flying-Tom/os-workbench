@@ -24,6 +24,7 @@ node_t *global_nodelist;
 
 static node_t *global_application(size_t size)
 {
+    return NULL;
 }
 
 static void *kalloc(size_t size)
