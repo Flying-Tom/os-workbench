@@ -22,27 +22,6 @@ typedef struct node_t
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
-enum
-{
-    NODE_FREE,
-    NODE_USED
-};
-
-static void list_insert(node_t *x, node_t *y)
-{
-    if (x->next == NULL)
-    {
-        x->next = y;
-        y->prev = x;
-    }
-    else
-    {
-        x->next->prev = y;
-        y->next = x->next;
-        x->next = y;
-        y->prev = x;
-    }
-}
 
 static node_t *global_application(size_t size)
 {
