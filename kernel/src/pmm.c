@@ -22,7 +22,6 @@ typedef struct node_t
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
-
 static node_t *global_application(size_t size)
 {
 }
@@ -36,12 +35,9 @@ static void *kalloc(size_t size)
     {
         if (cur->size >= size + sizeof(node_t))
         {
-            new_node = (node_t *)( align(((uintptr_t)cur + sizeof(node_t) + cur->size - size),size) - sizeof(node_t));
+            new_node = (node_t *)(align(((uintptr_t)cur + sizeof(node_t) + cur->size - size), size) - sizeof(node_t));
             new_node->size = size;
-            new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
-
-            list_insert(cur, new_node);
 
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
             //printf("ret:%p\n", ret);
