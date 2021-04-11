@@ -47,7 +47,7 @@ static void *kalloc(size_t size)
             return ret;
         }
     }
-    //BREAKPOINT(local memory is insuffcient);
+    BREAKPOINT(local memory is insuffcient);
     int pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
 
