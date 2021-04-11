@@ -4,7 +4,7 @@
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? a : b)
-#define PAGE_SIZE 4 KB
+#define PAGE_SIZE (4 KB)
 #define MAX_CPU_NUM 8
 
 static lock_t lk = LOCK_INIT();
@@ -87,7 +87,7 @@ static void pmm_init()
     pm_start = (uintptr_t)heap.start;
     printf("pm_start:%p\n", pm_start);
     //pm_start = align(pm_start, PAGE_SIZE);
-    printf("aligned pm_start:%p\n", (((pm_start + PAGE_SIZE - 1) / PAGE_SIZE )));
+    printf("aligned pm_start:%p\n", (((pm_start + PAGE_SIZE - 1) / PAGE_SIZE)));
     pm_end = (uintptr_t)heap.end;
     global_nodelist = (node_t *)pm_start;
     global_nodelist->next = NULL;
