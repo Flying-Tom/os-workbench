@@ -89,8 +89,9 @@ static void pmm_init()
     pm_end = (uintptr_t)heap.end;
     BREAKPOINT(Fuck);
     global_nodelist = (node_t *)pm_start;
-    BREAKPOINT(Fuck again);
+    BREAKPOINT(Fuck 2);
     global_nodelist->next = NULL;
+    BREAKPOINT(Fuck 3);
     global_nodelist->size = pm_end - pm_start - sizeof(node_t);
     BREAKPOINT(Finsh Init);
 }
