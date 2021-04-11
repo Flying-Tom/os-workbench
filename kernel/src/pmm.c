@@ -87,7 +87,7 @@ static void pmm_init()
     pm_start = (uintptr_t)heap.start;
     printf("pm_start:%p\n", pm_start);
     //pm_start = align(pm_start, PAGE_SIZE);
-    printf("aligned pm_start:%p\n", (((pm_start + PAGE_SIZE - 1) / PAGE_SIZE)));
+    printf("aligned pm_start:%p\n", (((pm_start + PAGE_SIZE - 1) )));
     pm_end = (uintptr_t)heap.end;
     global_nodelist = (node_t *)pm_start;
     global_nodelist->next = NULL;
