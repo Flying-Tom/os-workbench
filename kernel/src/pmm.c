@@ -4,7 +4,6 @@
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
 #define align(addr, size) addr = ((addr + size - 1) / size) * size // Right align
 
-
 static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
@@ -45,6 +44,7 @@ static void *kalloc(size_t size)
 {
     lock(&lk);
     node_t *cur;
+    printf("%d\n", cpu_count());
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))

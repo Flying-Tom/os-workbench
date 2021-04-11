@@ -2,6 +2,6 @@
 #include <klib.h>
 #include <klib-macros.h>
 
-
-#define KB * 1024
-#define MB * 1024 *1024
+#define KB *(1L << 10)
+#define MB *(1L << 20)
+#define GB *(1L << 30)
