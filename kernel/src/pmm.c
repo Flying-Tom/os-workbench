@@ -7,6 +7,7 @@
 static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
+static uintptr_t pm_start, pm_end;
 
 typedef struct node_t
 {
@@ -16,7 +17,8 @@ typedef struct node_t
     struct node_t *next;
 } node_t;
 
-node_t *root_node;
+node_t *local_nodelist[8];
+node_t *global_nodelist;
 
 enum
 {
