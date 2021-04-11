@@ -87,15 +87,11 @@ static void pmm_init()
     pm_start = (uintptr_t)heap.start;
     printf("pm_start:%p\n", pm_start);
     //pm_start = align(pm_start, PAGE_SIZE);
-    printf("aligned pm_start:%p\n", pm_start);
+    printf("aligned pm_start:%p\n", (((pm_start + PAGE_SIZE - 1) / PAGE_SIZE) * PAGE_SIZE));
     pm_end = (uintptr_t)heap.end;
-    BREAKPOINT(Fuck);
     global_nodelist = (node_t *)pm_start;
-    BREAKPOINT(Fuck 2);
     global_nodelist->next = NULL;
-    BREAKPOINT(Fuck 3);
     global_nodelist->size = pm_end - pm_start - sizeof(node_t);
-    BREAKPOINT(Finsh Init);
 }
 
 MODULE_DEF(pmm) = {
