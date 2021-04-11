@@ -44,7 +44,7 @@ static void *kalloc(size_t size)
 {
     lock(&lk);
     node_t *cur;
-    printf("%d\n", cpu_count());
+    printf("%d\n", cpu_current());
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
         if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
