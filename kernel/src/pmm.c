@@ -3,21 +3,22 @@
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
 #define align(addr, size) addr = ((addr + size - 1) / size) * size // Right align
+#define PAGE_SIZE 4 KB
+#define MAX_CPU_NUM 8
 
 static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
 static uintptr_t pm_start, pm_end;
+static cpu_id, cpu_num;
 
 typedef struct node_t
 {
     int size;
-    int status;
-    struct node_t *prev;
     struct node_t *next;
 } node_t;
 
-node_t *local_nodelist[8];
+node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
 enum
@@ -42,16 +43,20 @@ static void list_insert(node_t *x, node_t *y)
     }
 }
 
+static void global_application(size_t size)
+{
+}
+
 static void *kalloc(size_t size)
 {
     lock(&lk);
-    node_t *cur;
-    printf("%d\n", cpu_count());
-    for (cur = root_node; cur != NULL; cur = cur->next)
+    cpu_id = cpu_current();
+    node_t *cur = NULL, *new_node = NULL;
+    for (cur = local_nodelist[cpu_id].next; cur != NULL; cur = cur->next)
     {
-        if (cur->status == NODE_FREE && cur->size >= size + sizeof(node_t))
+        if (cur->size >= size + sizeof(node_t))
         {
-            node_t *new_node = (node_t *)((((uintptr_t)cur + sizeof(node_t) + cur->size - size) >> size) << size) - sizeof(node_t);
+            new_node = (node_t *)((((uintptr_t)cur + sizeof(node_t) + cur->size - size) >> size) << size) - sizeof(node_t);
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
@@ -102,27 +107,23 @@ static void pmm_stat()
 }
 */
 
-#ifndef TEST
 static void pmm_init()
 {
     /*
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
     printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
-    root_node = (node_t *)heap.start;
-    root_node->size = ((uintptr_t)heap.end - (uintptr_t)heap.start) - sizeof(node_t);
-    root_node->status = NODE_FREE;
-    root_node->next = root_node->prev = NULL;
+    cpu_num = cpu_count();
+    assert(cpu_num <= MAX_CPU_NUM);
+
+    pm_start = (uintptr_t)heap.start;
+    align(pm_start, PAGE_SIZE);
+    pm_end = (uintptr_t)heap.end;
+
+    global_nodelist = pm_start;
+    global_nodelist->next = NULL;
+    global_nodelist->size = pm_end - pm_start - sizeof(node_t);
 }
-#else
-static void pmm_init()
-{
-    char *ptr = malloc(HEAP_SIZE);
-    heap.start = ptr;
-    heap.end = ptr + HEAP_SIZE;
-    printf("Got %d MiB heap: [%p, %p)\n", HEAP_SIZE >> 20, heap.start, heap.end);
-}
-#endif
 
 MODULE_DEF(pmm) = {
     .init = pmm_init,
