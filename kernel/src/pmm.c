@@ -27,6 +27,7 @@ static node_t *global_application(size_t size)
     if (global_nodelist->size > size + sizeof(node_t))
     {
         global_nodelist->size -= size + sizeof(node_t);
+        printf("global_nodelist free size:%d\n", global_nodelist->size);
         return (node_t *)((uintptr_t)global_nodelist + global_nodelist->size - size);
     }
     printf("Kalloc Failed!\n");
