@@ -2,7 +2,7 @@
 #include <lock.h>
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
-#define align(base, offset) (base = ((base + offset - 1) / offset) * offset) // Right align
+#define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? a : b)
 #define PAGE_SIZE 4 KB
 #define MAX_CPU_NUM 8
@@ -84,7 +84,7 @@ static void pmm_init()
     assert(cpu_num <= MAX_CPU_NUM);
 
     pm_start = (uintptr_t)heap.start;
-    align(pm_start, PAGE_SIZE);
+    pm_start = align(pm_start, PAGE_SIZE);
     pm_end = (uintptr_t)heap.end;
 
     global_nodelist = (node_t *)pm_start;
