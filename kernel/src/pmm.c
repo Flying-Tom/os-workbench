@@ -31,7 +31,7 @@ static void *kalloc(size_t size)
 {
     lock(&lk);
     cpu_id = cpu_current();
-    node_t *cur = NULL, *cur_prev = NULL, *new_node = NULL;
+    node_t *cur = NULL, *cur_prev = &local_nodelist[cpu_id], *new_node = NULL;
     BREAKPOINT(kalloc);
     for (cur = &local_nodelist[cpu_id]; cur != NULL; cur_prev = cur, cur = cur->next)
     {
@@ -40,7 +40,7 @@ static void *kalloc(size_t size)
             new_node = (node_t *)(align(((uintptr_t)cur + sizeof(node_t) + cur->size - size), size) - sizeof(node_t));
             new_node->size = size;
             cur->size -= size + sizeof(node_t);
-            printf("cur->size:%d\n", cur->size);
+            //printf("cur->size:%d\n", cur->size);
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
             //printf("ret:%p\n", ret);
             unlock(&lk);
