@@ -86,7 +86,7 @@ static void pmm_init()
 
     pm_start = (uintptr_t)heap.start;
     printf("pm_start:%p\n", pm_start);
-    pm_start = align(pm_start, PAGE_SIZE);
+    //pm_start = align(pm_start, PAGE_SIZE);
     printf("aligned pm_start:%p\n", pm_start);
     pm_end = (uintptr_t)heap.end;
     BREAKPOINT(Fuck);
