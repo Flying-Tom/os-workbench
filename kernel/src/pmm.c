@@ -2,7 +2,8 @@
 #include <lock.h>
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
-#define align(addr, size) addr = ((addr + size - 1) / size) * size // Right align
+#define align(base, offset) base = ((base + offset - 1) / offset) * offset // Right align
+#define max(a, b) (a > b ? a : b)
 #define PAGE_SIZE 4 KB
 #define MAX_CPU_NUM 8
 
@@ -43,7 +44,7 @@ static void list_insert(node_t *x, node_t *y)
     }
 }
 
-static void global_application(size_t size)
+static node_t *global_application(size_t size)
 {
 }
 
@@ -51,12 +52,12 @@ static void *kalloc(size_t size)
 {
     lock(&lk);
     cpu_id = cpu_current();
-    node_t *cur = NULL, *new_node = NULL;
-    for (cur = local_nodelist[cpu_id].next; cur != NULL; cur = cur->next)
+    node_t *cur = NULL, *cur_prev = NULL, *new_node = NULL;
+    for (cur = local_nodelist[cpu_id].next; cur != NULL; cur_prev = cur, cur = cur->next)
     {
         if (cur->size >= size + sizeof(node_t))
         {
-            new_node = (node_t *)((((uintptr_t)cur + sizeof(node_t) + cur->size - size) >> size) << size) - sizeof(node_t);
+            new_node = (node_t *)( align(((uintptr_t)cur + sizeof(node_t) + cur->size - size),size) - sizeof(node_t);
             new_node->size = size;
             new_node->status = NODE_USED;
             cur->size = cur->size - size - sizeof(node_t);
@@ -69,7 +70,10 @@ static void *kalloc(size_t size)
             return ret;
         }
     }
-    //printf("Fail to alloc\n");
+    // local memory is insuffcient
+    int pm_needed = max(size, pm_needed);
+    cur_prev->next = global_application(pm_needed);
+
     unlock(&lk);
     return NULL;
 }
@@ -77,19 +81,6 @@ static void *kalloc(size_t size)
 static void kfree(void *ptr)
 {
     lock(&lk);
-    node_t *cur = (node_t *)((uintptr_t)ptr - sizeof(node_t));
-    node_t *Lfree_section = cur;
-    cur->status = NODE_FREE;
-    while (Lfree_section->prev != NULL && Lfree_section->prev->status == NODE_FREE)
-        Lfree_section = Lfree_section->prev;
-
-    cur = Lfree_section->next;
-    for (; cur->status == NODE_FREE; cur = cur->next)
-    {
-        Lfree_section->size += sizeof(node_t) + cur->size;
-    }
-    Lfree_section->next = cur;
-    cur->prev = Lfree_section;
     unlock(&lk);
 }
 
