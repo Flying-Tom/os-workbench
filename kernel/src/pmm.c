@@ -1,6 +1,7 @@
 #include <common.h>
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
+#define align(addr, size) addr = ((addr + size - 1) / size) * size // Right align
 
 typedef struct
 {
@@ -113,12 +114,14 @@ static void pmm_stat()
 #ifndef TEST
 static void pmm_init()
 {
+    /*
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
+    printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+    */
     root_node = (node_t *)heap.start;
     root_node->size = pmsize - sizeof(node_t);
     root_node->status = NODE_FREE;
     root_node->next = root_node->prev = NULL;
-    //printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
 }
 #else
 static void pmm_init()
