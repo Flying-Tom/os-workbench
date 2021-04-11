@@ -1,7 +1,7 @@
 #include <common.h>
 #include <lock.h>
 
-#define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
+#define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? a : b)
 #define PAGE_SIZE 4 KB
@@ -32,13 +32,14 @@ static void *kalloc(size_t size)
     lock(&lk);
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = NULL, *new_node = NULL;
+    BREAKPOINT(kalloc);
     for (cur = local_nodelist[cpu_id].next; cur != NULL; cur_prev = cur, cur = cur->next)
     {
         if (cur->size >= size + sizeof(node_t))
         {
             new_node = (node_t *)(align(((uintptr_t)cur + sizeof(node_t) + cur->size - size), size) - sizeof(node_t));
             new_node->size = size;
-            cur->size = cur->size - size - sizeof(node_t);
+            cur->size -= size + sizeof(node_t);
 
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
             //printf("ret:%p\n", ret);
