@@ -87,7 +87,7 @@ static void pmm_init()
     pm_start = (uintptr_t)heap.start;
     pm_start = align(pm_start, PAGE_SIZE);
     pm_end = (uintptr_t)heap.end;
-
+    BREAKPOINT(Fuck);
     global_nodelist = (node_t *)pm_start;
     global_nodelist->next = NULL;
     global_nodelist->size = pm_end - pm_start - sizeof(node_t);
