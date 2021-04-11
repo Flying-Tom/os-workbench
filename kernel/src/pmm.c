@@ -1,20 +1,9 @@
 #include <common.h>
+#include <lock.h>
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
 #define align(addr, size) addr = ((addr + size - 1) / size) * size // Right align
 
-typedef struct
-{
-    int locked;
-} lock_t;
-
-#define LOCK_INIT() ((lock_t){.locked = 0})
-void lock(lock_t *lk)
-{
-    while (atomic_xchg(&lk->locked, 1))
-        ;
-}
-void unlock(lock_t *lk) { atomic_xchg(&lk->locked, 0); }
 
 static lock_t lk = LOCK_INIT();
 
