@@ -91,6 +91,7 @@ static void pmm_init()
     global_nodelist = (node_t *)pm_start;
     global_nodelist->next = NULL;
     global_nodelist->size = pm_end - pm_start - sizeof(node_t);
+    BREAKPOINT(Finsh Init);
 }
 
 MODULE_DEF(pmm) = {
