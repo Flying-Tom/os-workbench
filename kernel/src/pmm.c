@@ -2,7 +2,7 @@
 #include <lock.h>
 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n");
-#define align(base, offset) base = ((base + offset - 1) / offset) * offset // Right align
+#define align(base, offset) (base = ((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) (a > b ? a : b)
 #define PAGE_SIZE 4 KB
 #define MAX_CPU_NUM 8
