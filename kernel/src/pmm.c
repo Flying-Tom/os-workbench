@@ -119,7 +119,7 @@ static void pmm_init()
     printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
     root_node = (node_t *)heap.start;
-    root_node->size = pmsize - sizeof(node_t);
+    root_node->size = ((uintptr_t)heap.end - (uintptr_t)heap.start) - sizeof(node_t);
     root_node->status = NODE_FREE;
     root_node->next = root_node->prev = NULL;
 }
