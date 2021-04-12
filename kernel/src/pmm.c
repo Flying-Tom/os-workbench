@@ -1,7 +1,7 @@
 #include <common.h>
 #include <lock.h>
 
-#define Log(str,args) 
+#define Log(str, args)
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
@@ -84,6 +84,7 @@ static void *slab_alloc(size_t size)
     else if (size > 64 && size <= 128)
         slab_type = 5;
 
+    printf("slab_type:%d\n", slab_type);
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
