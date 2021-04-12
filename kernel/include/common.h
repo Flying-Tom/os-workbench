@@ -6,7 +6,7 @@
 #define MB *(1L << 20)
 #define GB *(1L << 30)
 
-//#define DEBUG
+#define DEBUG
 
 /*
 #define _Log(format, ...)                           \
