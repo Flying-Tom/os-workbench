@@ -185,7 +185,7 @@ static void pmm_init()
         cur->size = PAGE_SIZE - sizeof(page_header);
     }
     //assert(0);
-    //BREAKPOINT(pmm_init finished);
+    Log("pmm_init finished");
 }
 
 MODULE_DEF(pmm) = {
