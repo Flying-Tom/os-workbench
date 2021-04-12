@@ -6,6 +6,7 @@
 #define MB *(1L << 20)
 #define GB *(1L << 30)
 
+#define DEBUG
 
 #define _Log(format, ...)                           \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
