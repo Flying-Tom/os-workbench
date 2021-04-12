@@ -1,8 +1,7 @@
 #include <common.h>
 #include <lock.h>
 
-#define Log(str, args)
-#define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
+#define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
 #define PAGE_SIZE (8 KB)
@@ -42,10 +41,10 @@ static node_t *__attribute__((used)) global_application(size_t size)
     if (global_nodelist->size > size + sizeof(node_t))
     {
         global_nodelist->size -= size + sizeof(node_t);
-        printf("global_nodelist free size:%d\n", global_nodelist->size);
+        Log("global_nodelist free size:%d\n", global_nodelist->size);
         return (node_t *)((uintptr_t)global_nodelist + global_nodelist->size - size);
     }
-    printf("Kalloc Failed!\n");
+    Log("Kalloc Failed!\n");
     return NULL;
 }
 
@@ -58,7 +57,7 @@ static page_header *get_one_page(size_t size)
         if (cur->parent_cpu_id == MAX_CPU_NUM)
         {
             cur->parent_cpu_id = cpu_id;
-            //printf("return page %d\n", i);
+            //Log("return page %d\n", i);
             return cur;
         }
     }
@@ -84,7 +83,7 @@ static void *slab_alloc(size_t size)
     else if (size > 64 && size <= 128)
         slab_type = 5;
 
-    //printf("slab_type:%d\n", slab_type);
+    Log("slab_type:%d\n", slab_type);
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
@@ -110,9 +109,9 @@ static void *buddy_alloc(size_t size)
             new_node = (node_t *)(align(((uintptr_t)cur + sizeof(node_t) + cur->size - size), size) - sizeof(node_t));
             new_node->size = size;
             cur->size -= size + sizeof(node_t);
-            //printf("cur->size:%d\n", cur->size);
+            //Log("cur->size:%d\n", cur->size);
             void *ret = (void *)((uintptr_t)new_node + sizeof(node_t));
-            //printf("ret:%p\n", ret);
+            //Log("ret:%p\n", ret);
             unlock(&lk);
             return ret;
         }
@@ -153,12 +152,12 @@ static void pmm_stat()
 {
     node_t *cur;
     int node_cnt = 0;
-    printf("============================\n");
+    Log("============================\n");
     for (cur = root_node; cur != NULL; cur = cur->next)
     {
-        printf("Node %d | status:%d  size:%d MB\n", node_cnt++, cur->status, cur->size / (1024 * 1024));
+        Log("Node %d | status:%d  size:%d MB\n", node_cnt++, cur->status, cur->size / (1024 * 1024));
     }
-    printf("============================\n");
+    Log("============================\n");
 }
 */
 
@@ -166,17 +165,17 @@ static void pmm_init()
 {
     /*
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
-    printf("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
+    Log("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
-    //printf("pm_start:%p\n", pm_start);
+    //Log("pm_start:%p\n", pm_start);
     pm_start = align(pm_start, PAGE_SIZE);
-    //printf("aligned pm_start:%p\n", pm_start);
-    //printf("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
+    //Log("aligned pm_start:%p\n", pm_start);
+    //Log("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
 
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
