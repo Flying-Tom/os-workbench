@@ -100,7 +100,7 @@ static void *slab_alloc(size_t size)
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (1 << (slab_type + 2)) * object_slab_list->inode_num);
     object_slab_list->inode_num++;
 
-    object_slab_list->size -= (1 << (slab_type + 2));
+    object_slab_list->size -= poweraligned(size);
     assert((uintptr_t)ret % poweraligned(size) == 0);
     Log("alloc size:%d", size);
     Log("minium power 2:%d", poweraligned(size));
