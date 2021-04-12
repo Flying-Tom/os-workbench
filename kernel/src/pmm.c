@@ -53,6 +53,7 @@ static page_header *get_one_page(size_t size)
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
+        printf("size:%d\n", size);
         printf("judge:%d\n", (uintptr_t)cur % (1 << size));
         if (cur->parent_cpu_id == MAX_CPU_NUM && ((uintptr_t)cur % (1 << size) == 0))
         {
