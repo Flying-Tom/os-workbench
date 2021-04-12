@@ -49,6 +49,7 @@ static node_t *__attribute__((used)) global_application(size_t size)
 
 static page_header *get_one_page()
 {
+    BREAKPOINT(get_one_page);
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
