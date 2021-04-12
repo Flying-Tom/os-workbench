@@ -6,6 +6,7 @@
 #define max(a, b) ((a > b) ? (a) : (b))
 #define PAGE_SIZE (4 KB)
 #define MAX_CPU_NUM 8
+#define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 
 static lock_t lk = LOCK_INIT();
 
@@ -149,10 +150,12 @@ static void pmm_init()
     printf("aligned pm_start:%p\n", pm_start);
     printf("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
-    global_nodelist = (node_t *)pm_start;
-    global_nodelist->next = NULL;
-    global_nodelist->size = pm_end - pm_start - sizeof(node_t);
-    assert(0);
+
+    for (int i = 0; i <= (pm_end - pm_start) / PAGE_SIZE; i++)
+    {
+        page_header *cur = PAGE_HEADER(i);
+        cur->parent_cpu_id = MAX_CPU_NUM;
+    }
 }
 
 MODULE_DEF(pmm) = {
