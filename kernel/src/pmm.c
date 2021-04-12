@@ -33,7 +33,7 @@ page_header *slab_list[MAX_CPU_NUM][7];
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
-static node_t *global_application(size_t size)(__attribute_used__ = true)
+static node_t *global_application(size_t size)(__attribute_used__)
 {
     if (global_nodelist->size > size + sizeof(node_t))
     {
