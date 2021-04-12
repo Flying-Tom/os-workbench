@@ -81,6 +81,7 @@ static void *slab_alloc(size_t size)
     object_slab_list->inode_num++;
     printf("object_slab_list->inode_num:%d\n", object_slab_list->inode_num);
     printf("ret:%p\n",ret);
+    printf("size:%d\n",size);
     object_slab_list->size -= (slab_type + 1) * 4;
     assert((uintptr_t)ret % (1 << size) == 0);
     return ret;
