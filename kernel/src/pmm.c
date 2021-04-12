@@ -62,14 +62,14 @@ static void *slab_alloc(size_t size)
         object_slab_list = get_one_page();
 
     ret = (void *)((uintptr_t *)object_slab_list + (slab_type + 1) * 4 * object_slab_list->inode_num);
-    inode_num++;
+    object_slab_list->inode_num++;
     object_slab_list->size -= (slab_type + 1) * 4;
 
     return ret;
 }
 
 static void *buddy_alloc(size_t size)
-{   /*
+{ /*
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = &local_nodelist[cpu_id], *new_node = NULL;
     BREAKPOINT(kalloc);
