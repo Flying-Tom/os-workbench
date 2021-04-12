@@ -122,7 +122,8 @@ static void *buddy_alloc(size_t size)
                 cur = PAGE_HEADER(j);
                 cur->parent_cpu_id = cpu_id;
             }
-            unlock(&lk) return (void *)PAGE(i);
+            unlock(&lk);
+            return (void *)PAGE(i);
         }
     }
     return NULL;
