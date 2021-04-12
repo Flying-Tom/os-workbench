@@ -27,7 +27,8 @@ typedef struct page_header
     int slab_type;
     struct page_header *next;
 } page_header;
-page_header *global_last_page;
+page_header *global_page_list, *global_last_page;
+int global_page_cnt;
 page_header *slab_list[MAX_CPU_NUM][7];
 
 node_t local_nodelist[MAX_CPU_NUM];
@@ -48,7 +49,7 @@ static node_t *__attribute__((used)) global_application(size_t size)
 static page_header *get_one_page()
 {
     BREAKPOINT(get_one_page);
-    page_header *next_page = (page_header *)((uintptr_t)global_last_page + sizeof(page_header));
+    page_header *next_page = (page_header *)((uintptr_t)(pm_start + global_page_cnt * PAGE_SIZE) + sizeof(page_header));
     next_page->parent_cpu_id = cpu_id;
     next_page->size = PAGE_SIZE;
     return next_page;
