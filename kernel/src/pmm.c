@@ -100,7 +100,7 @@ static void *slab_alloc(size_t size)
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + poweraligned(size) * object_slab_list->inode_num);
-    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p",(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)));
+    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p",(uintptr_t *)object_slab_list);
     object_slab_list->inode_num++;
 
     object_slab_list->size -= poweraligned(size);
