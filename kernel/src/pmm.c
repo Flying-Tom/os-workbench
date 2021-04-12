@@ -71,7 +71,8 @@ static void *slab_alloc(size_t size)
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
-        printf("object_slab_list->size:%d\n", object_slab_list->size);
+        if (object_slab_list != NULL)
+            printf("object_slab_list->size:%d\n", object_slab_list->size);
         object_slab_list = get_one_page();
     }
 
