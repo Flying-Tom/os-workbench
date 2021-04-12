@@ -58,7 +58,7 @@ static page_header *get_one_page(size_t size)
         if (cur->parent_cpu_id == MAX_CPU_NUM)
         {
             cur->parent_cpu_id = cpu_id;
-            printf("return page %d\n", i);
+            //printf("return page %d\n", i);
             return cur;
         }
     }
