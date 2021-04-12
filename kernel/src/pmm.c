@@ -7,6 +7,7 @@
 #define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
+#define PAGE(a) (pm_start + a * PAGE_SIZE)
 
 static lock_t lk = LOCK_INIT();
 
@@ -53,12 +54,7 @@ static page_header *get_one_page(size_t size)
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        printf("size:%d\n", size);
-        printf("(uintptr_t)cur:%p\n",(uintptr_t)cur);
-        printf("judge:%d\n", (uintptr_t)cur % (1 << size));
-        if(i>3)
-        assert(0);
-        if (cur->parent_cpu_id == MAX_CPU_NUM && ((uintptr_t)cur % (1 << size) == 0))
+        if (cur->parent_cpu_id == MAX_CPU_NUM)
         {
             cur->parent_cpu_id = cpu_id;
             printf("return page %d\n", i);
@@ -83,10 +79,10 @@ static void *slab_alloc(size_t size)
         object_slab_list = slab_list[cpu_id][slab_type];
     }
 
-    ret = (void *)((uintptr_t *)object_slab_list + (slab_type + 1) * 4 * object_slab_list->inode_num);
+    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header))(slab_type + 1) * 4 * object_slab_list->inode_num);
     object_slab_list->inode_num++;
     object_slab_list->size -= (slab_type + 1) * 4;
-
+    assert(ret % (1 << size) == 0);
     return ret;
 }
 
