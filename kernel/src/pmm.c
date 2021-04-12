@@ -19,6 +19,17 @@ typedef struct node_t
     struct node_t *next;
 } node_t;
 
+typedef struct page_header
+{
+    int parent_cpu_id;
+    int size;
+    int inode_num;
+    int slab_type;
+    struct page_header *next;
+} page_header;
+page_header *global_last_page;
+page_header *slab_list[MAX_CPU_NUM][7];
+
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
@@ -34,9 +45,31 @@ static node_t *global_application(size_t size)
     return NULL;
 }
 
-static void *kalloc(size_t size)
+strcat page_header *get_one_page()
 {
-    lock(&lk);
+    page_header *next_page = (page_header *)((uintptr_t)global_last_page + sizeof(page_header));
+    next_page->parent_cpu_id = cpu_id;
+    next_page->size = PAGE_SIZE;
+    return next_page;
+}
+
+static void *slab_alloc(size_t size)
+{
+    void *ret = NULL;
+    int slab_type = size / 4;
+    page_header *object_slab_list = slab_list[cpu_id][slab_type];
+    if (object_slab_list->size <= size || object_slab_list == NULL)
+        object_slab_list = get_one_page();
+
+    ret = (void *)((uintptr_t *)object_slab_list + (slab_type + 1) * 4 * object_slab_list->inode_num);
+    inode_num++;
+    object_slab_list->size -= (slab_type + 1) * 4;
+
+    return ret;
+}
+
+static void *buddy_alloc(size_t size)
+{   /*
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = &local_nodelist[cpu_id], *new_node = NULL;
     BREAKPOINT(kalloc);
@@ -58,9 +91,21 @@ static void *kalloc(size_t size)
     int pm_needed = 0;
     pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
+    */
+}
 
-    unlock(&lk);
-    return NULL;
+static void *kalloc(size_t size)
+{
+    void *ret = NULL;
+    if (size > PAGE_SIZE)
+    {
+        lock(&lk);
+        ret = buddy_alloc(size);
+        unlock(&lk);
+    }
+    else
+        ret = slab_alloc(size);
+    return ret;
 }
 
 static void kfree(void *ptr)
