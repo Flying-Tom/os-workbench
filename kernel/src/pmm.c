@@ -4,7 +4,7 @@
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
-#define PAGE_SIZE (4 KB)
+#define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 
