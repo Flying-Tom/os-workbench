@@ -154,7 +154,7 @@ static void pmm_init()
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        cur->parent_cpu_id = MAX_CPU_NUM;
+        PAGE_HEADER(i)->parent_cpu_id = MAX_CPU_NUM;
     }
     BREAKPOINT(pmm_init finished);
 }
