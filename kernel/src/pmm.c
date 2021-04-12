@@ -107,6 +107,7 @@ static void *slab_alloc(size_t size)
     Log("alloc size:%d", size);
     Log("minium power 2:%d", poweraligned(size));
     Log("ret:%p", ret);
+    Log("PAGE(3):%p", PAGE(3));
 
     assert((uintptr_t)ret % poweraligned(size) == 0);
     return ret;
