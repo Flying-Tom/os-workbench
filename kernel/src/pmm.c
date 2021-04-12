@@ -47,6 +47,7 @@ static node_t *__attribute__((used)) global_application(size_t size)
 
 static page_header *get_one_page()
 {
+    BREAKPOINT(get_one_page);
     page_header *next_page = (page_header *)((uintptr_t)global_last_page + sizeof(page_header));
     next_page->parent_cpu_id = cpu_id;
     next_page->size = PAGE_SIZE;
