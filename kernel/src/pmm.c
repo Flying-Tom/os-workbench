@@ -84,7 +84,7 @@ static void *slab_alloc(size_t size)
     printf("ret:%p\n", ret);
     printf("size:%d\n", size);
     object_slab_list->size -= (slab_type + 1) * 4;
-    assert((uintptr_t)ret % (1 << size) == 0);
+    assert((uintptr_t)ret % (slab_type << 2) == 0);
     return ret;
 }
 
