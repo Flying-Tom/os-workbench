@@ -97,6 +97,7 @@ static void *buddy_alloc(size_t size)
 
 static void *kalloc(size_t size)
 {
+    BREAKPOINT(kalloc);
     void *ret = NULL;
     if (size > PAGE_SIZE)
     {
