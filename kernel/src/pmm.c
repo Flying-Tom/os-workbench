@@ -71,17 +71,17 @@ static void *slab_alloc(size_t size)
     void *ret = NULL;
     int slab_type = 0;
     if (size > 0 && size <= 4)
-        slab_type = 1;
+        slab_type = 0;
     else if (size > 4 && size <= 8)
-        slab_type = 2;
+        slab_type = 1;
     else if (size > 8 && size <= 16)
-        slab_type = 3;
+        slab_type = 2;
     else if (size > 16 && size <= 32)
-        slab_type = 4;
+        slab_type = 3;
     else if (size > 32 && size <= 64)
-        slab_type = 5;
+        slab_type = 4;
     else if (size > 64 && size <= 128)
-        slab_type = 6;
+        slab_type = 5;
 
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
@@ -90,10 +90,10 @@ static void *slab_alloc(size_t size)
             printf("object_slab_list->size:%d\n", object_slab_list->size);
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
-    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (1 << (slab_type + 1)) * object_slab_list->inode_num);
+    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (1 << (slab_type + 2)) * object_slab_list->inode_num);
     object_slab_list->inode_num++;
 
-    object_slab_list->size -= (slab_type + 1) * 4;
+    object_slab_list->size -= (1 << (slab_type + 2));
     assert((uintptr_t)ret % (slab_type << 2) == 0);
     return ret;
 }
