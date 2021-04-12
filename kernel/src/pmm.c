@@ -84,12 +84,10 @@ static void *slab_alloc(size_t size)
     else if (size > 64 && size <= 128)
         slab_type = 5;
 
-    printf("slab_type:%d\n", slab_type);
+    //printf("slab_type:%d\n", slab_type);
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
-        if (object_slab_list != NULL)
-            printf("object_slab_list->size:%d\n", object_slab_list->size);
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (1 << (slab_type + 2)) * object_slab_list->inode_num);
