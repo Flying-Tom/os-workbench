@@ -109,6 +109,7 @@ static void *buddy_alloc(size_t size)
     pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
     */
+    assert(0);
     return NULL;
 }
 
