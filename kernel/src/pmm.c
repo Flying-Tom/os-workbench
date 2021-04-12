@@ -102,6 +102,9 @@ static void *slab_alloc(size_t size)
 
     object_slab_list->size -= (1 << (slab_type + 2));
     assert((uintptr_t)ret % (1 << size) == 0);
+    Log("alloc size:%d", size);
+    Log("minium power 2:%d", poweraligned(size));
+    Log("ret:%p", ret);
     return ret;
 }
 
