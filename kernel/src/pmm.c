@@ -47,13 +47,13 @@ static node_t *__attribute__((used)) global_application(size_t size)
     return NULL;
 }
 
-static page_header *get_one_page()
+static page_header *get_one_page(size_t size)
 {
     BREAKPOINT(get_one_page);
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        if (cur->parent_cpu_id == MAX_CPU_NUM)
+        if (cur->parent_cpu_id == MAX_CPU_NUM && ((uintptr_t)cur % (1 << size) == 0))
         {
             cur->parent_cpu_id = cpu_id;
             printf("return page %d\n", i);
@@ -74,7 +74,7 @@ static void *slab_alloc(size_t size)
     {
         if (object_slab_list != NULL)
             printf("object_slab_list->size:%d\n", object_slab_list->size);
-        slab_list[cpu_id][slab_type] = get_one_page();
+        slab_list[cpu_id][slab_type] = get_one_page(size);
         object_slab_list = slab_list[cpu_id][slab_type];
     }
 
@@ -109,7 +109,6 @@ static void *buddy_alloc(size_t size)
     pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
     */
-    assert(0);
     return NULL;
 }
 
