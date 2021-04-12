@@ -78,7 +78,7 @@ static void *slab_alloc(size_t size)
         slab_list[cpu_id][slab_type] = get_one_page(size);
         object_slab_list = slab_list[cpu_id][slab_type];
     }
-
+    printf("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p\n",(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)));
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (slab_type + 1) * 4 * object_slab_list->inode_num);
     object_slab_list->inode_num++;
     object_slab_list->size -= (slab_type + 1) * 4;
