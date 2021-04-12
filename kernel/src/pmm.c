@@ -54,11 +54,12 @@ static page_header *get_one_page(size_t size)
     {
         page_header *cur = PAGE_HEADER(i);
         printf("size:%d\n", size);
+        printf("(uintptr_t)cur:%p\n",(uintptr_t)cur);
         printf("judge:%d\n", (uintptr_t)cur % (1 << size));
         if (cur->parent_cpu_id == MAX_CPU_NUM && ((uintptr_t)cur % (1 << size) == 0))
         {
             cur->parent_cpu_id = cpu_id;
-            printf("return page %d\n", i);
+            //printf("return page %d\n", i);
             return cur;
         }
     }
