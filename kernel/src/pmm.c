@@ -173,10 +173,10 @@ static void pmm_init()
 
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
-    printf("pm_start:%p\n", pm_start);
+    //printf("pm_start:%p\n", pm_start);
     pm_start = align(pm_start, PAGE_SIZE);
-    printf("aligned pm_start:%p\n", pm_start);
-    printf("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
+    //printf("aligned pm_start:%p\n", pm_start);
+    //printf("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
 
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
@@ -186,7 +186,7 @@ static void pmm_init()
         cur->size = PAGE_SIZE - sizeof(page_header);
     }
     //assert(0);
-    BREAKPOINT(pmm_init finished);
+    //BREAKPOINT(pmm_init finished);
 }
 
 MODULE_DEF(pmm) = {
