@@ -17,7 +17,7 @@ static void os_run()
         pmm->alloc(i);
         //printf("%d\n", i);
     }
-    pmm->alloc(128 MB);
+    pmm->alloc(430);
 
     //pmm->stat();
     /*

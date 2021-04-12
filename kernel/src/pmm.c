@@ -112,7 +112,7 @@ static void *buddy_alloc(size_t size)
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        if (PAGE(i) % size = 0)
+        if (PAGE(i) % size == 0)
         {
             cur->parent_cpu_id = cpu_id;
             //Log("return page %d\n", i);
