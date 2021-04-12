@@ -19,13 +19,13 @@ static void os_run()
     pmm->alloc(128 MB);
 
     //pmm->stat();
-
+    /*
     pmm->free(a[7]);
     pmm->free(a[5]);
     pmm->free(a[4]);
 
     pmm->free(a[6]);
-
+    */
     //pmm->stat();
     printf("Tests done!\n");
     while (1)
