@@ -1,6 +1,7 @@
 #include <common.h>
 #include <lock.h>
 
+#define Log(str,args) 
 #define BREAKPOINT(a) printf("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
