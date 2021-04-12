@@ -96,7 +96,7 @@ static void *slab_alloc(size_t size)
     object_slab_list->inode_num++;
 
     object_slab_list->size -= (1 << (slab_type + 2));
-    assert((uintptr_t)ret % (slab_type << 2) == 0);
+    assert((uintptr_t)ret % (1 << size) == 0);
     return ret;
 }
 
