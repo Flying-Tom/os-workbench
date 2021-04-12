@@ -1,7 +1,6 @@
 #include <common.h>
 #include <lock.h>
 
-#define DEBUG
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
