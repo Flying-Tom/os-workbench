@@ -55,6 +55,7 @@ static page_header *get_one_page()
 
 static void *slab_alloc(size_t size)
 {
+    BREAKPOINT(slab_alloc);
     void *ret = NULL;
     int slab_type = size / 4;
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
