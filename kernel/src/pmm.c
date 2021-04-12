@@ -79,7 +79,7 @@ static void *slab_alloc(size_t size)
         object_slab_list = slab_list[cpu_id][slab_type];
     }
 
-    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header))(slab_type + 1) * 4 * object_slab_list->inode_num);
+    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (slab_type + 1) * 4 * object_slab_list->inode_num);
     object_slab_list->inode_num++;
     object_slab_list->size -= (slab_type + 1) * 4;
     assert((uintptr_t)ret % (1 << size) == 0);
