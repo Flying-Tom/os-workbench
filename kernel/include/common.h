@@ -8,9 +8,12 @@
 
 #define DEBUG
 
+/*
 #define _Log(format, ...)                           \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
          __FILE__, __LINE__, __func__, ##__VA_ARGS__)
+*/
+#define _Log(format, ...) printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", __VA_ARGS__)
 
 #ifdef DEBUG
 #define Log(...) _Log(__VA_ARGS__)
