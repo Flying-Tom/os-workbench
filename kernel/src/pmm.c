@@ -73,7 +73,7 @@ static void *slab_alloc(size_t size)
     {
         if (object_slab_list != NULL)
             printf("object_slab_list->size:%d\n", object_slab_list->size);
-        object_slab_list = get_one_page();
+        object_slab_list = slab_list[cpu_id][slab_type] = get_one_page();
     }
 
     ret = (void *)((uintptr_t *)object_slab_list + (slab_type + 1) * 4 * object_slab_list->inode_num);
