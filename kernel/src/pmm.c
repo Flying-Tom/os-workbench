@@ -69,7 +69,8 @@ static void *slab_alloc(size_t size)
 {
     //BREAKPOINT(slab_alloc);
     void *ret = NULL;
-    int slab_type = (size - 1) / 4;
+    int slab_type = (size - 1) / 4 + 1;
+
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
@@ -77,7 +78,7 @@ static void *slab_alloc(size_t size)
             printf("object_slab_list->size:%d\n", object_slab_list->size);
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
-    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (slab_type + 1) * 4 * object_slab_list->inode_num);
+    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + slab_type * 4 * object_slab_list->inode_num);
     object_slab_list->inode_num++;
     printf("object_slab_list->inode_num:%d\n", object_slab_list->inode_num);
     printf("ret:%p\n", ret);
