@@ -48,6 +48,14 @@ static node_t *__attribute__((used)) global_application(size_t size)
     return NULL;
 }
 
+static int poweraligned(int x)
+{
+    int ret = 1;
+    while (ret < x)
+        ret = ret << 1;
+    return ret;
+}
+
 static page_header *get_one_page(size_t size)
 {
     //BREAKPOINT(get_one_page);
@@ -98,7 +106,20 @@ static void *slab_alloc(size_t size)
 }
 
 static void *buddy_alloc(size_t size)
-{ /*
+{
+    size = poweraligned(size);
+    Log("poweraligned(size):%d", poweraligned(size));
+    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+    {
+        page_header *cur = PAGE_HEADER(i);
+        if (PAGE(i) % size = 0)
+        {
+            cur->parent_cpu_id = cpu_id;
+            //Log("return page %d\n", i);
+            return cur;
+        }
+    }
+    /*
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = &local_nodelist[cpu_id], *new_node = NULL;
     BREAKPOINT(kalloc);
@@ -130,7 +151,7 @@ static void *kalloc(size_t size)
     void *ret = NULL;
     if (size == 0)
         return NULL;
-    if (size > PAGE_SIZE)
+    if (size > 128)
     {
         lock(&lk);
         ret = buddy_alloc(size);
