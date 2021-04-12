@@ -71,7 +71,7 @@ static page_header *get_one_page(size_t size)
             return cur;
         }
     }
-    BREAKPOINT(No more free pages);
+    Log("No more free pages");
     return NULL;
 }
 
@@ -93,6 +93,7 @@ static void *slab_alloc(size_t size)
     else if (size > 64 && size <= 128)
         slab_type = 5;
 
+    size = poweraligned(size);
     //Log("slab_type:%d\n", slab_type);
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
@@ -100,7 +101,7 @@ static void *slab_alloc(size_t size)
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + poweraligned(size) * object_slab_list->inode_num);
-    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p",(uintptr_t *)object_slab_list);
+    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p", (uintptr_t *)object_slab_list);
     object_slab_list->inode_num++;
 
     object_slab_list->size -= poweraligned(size);
