@@ -45,7 +45,7 @@ static node_t *global_application(size_t size)
     return NULL;
 }
 
-strcat page_header *get_one_page()
+static page_header *get_one_page()
 {
     page_header *next_page = (page_header *)((uintptr_t)global_last_page + sizeof(page_header));
     next_page->parent_cpu_id = cpu_id;
