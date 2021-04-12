@@ -172,7 +172,7 @@ static void pmm_init()
         cur->parent_cpu_id = MAX_CPU_NUM;
         cur->size = PAGE_SIZE - sizeof(page_header);
     }
-    assert(0);
+    //assert(0);
     BREAKPOINT(pmm_init finished);
 }
 
