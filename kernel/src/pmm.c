@@ -33,7 +33,7 @@ page_header *slab_list[MAX_CPU_NUM][7];
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
-static node_t *global_application(size_t size)
+static node_t *global_application(size_t size)(__attribute_used__ = true)
 {
     if (global_nodelist->size > size + sizeof(node_t))
     {
@@ -92,6 +92,7 @@ static void *buddy_alloc(size_t size)
     pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
     */
+    return NULL;
 }
 
 static void *kalloc(size_t size)
