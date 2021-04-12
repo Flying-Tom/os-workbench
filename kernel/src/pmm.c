@@ -119,6 +119,8 @@ static void *kalloc(size_t size)
 {
     //BREAKPOINT(kalloc);
     void *ret = NULL;
+    if (size == 0)
+        return NULL;
     if (size > PAGE_SIZE)
     {
         lock(&lk);
