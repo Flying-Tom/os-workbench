@@ -49,11 +49,17 @@ static node_t *__attribute__((used)) global_application(size_t size)
 
 static page_header *get_one_page()
 {
-    BREAKPOINT(get_one_page);
-    page_header *next_page = (page_header *)((uintptr_t)(pm_start + global_page_cnt * PAGE_SIZE) + sizeof(page_header));
-    next_page->parent_cpu_id = cpu_id;
-    next_page->size = PAGE_SIZE;
-    return next_page;
+    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+    {
+        page_header *cur = PAGE_HEADER(i);
+        if (cur->parent_cpu_id == MAX_CPU_NUM)
+        {
+            cur->parent_cpu_id = cpu_id;
+            return cur;
+        }
+    }
+    BREAKPOINT(No more free pages);
+    return NULL;
 }
 
 static void *slab_alloc(size_t size)
@@ -154,7 +160,8 @@ static void pmm_init()
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        PAGE_HEADER(i)->parent_cpu_id = MAX_CPU_NUM;
+        cur->parent_cpu_id = MAX_CPU_NUM;
+        cur->size = PAGE_SIZE - sizeof(page_header);
     }
     BREAKPOINT(pmm_init finished);
 }
