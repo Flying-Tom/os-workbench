@@ -4,7 +4,7 @@
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 #define max(a, b) ((a > b) ? (a) : (b))
-#define PAGE_SIZE (8 KB)
+#define PAGE_SIZE (4 KB)
 #define MAX_CPU_NUM 8
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 #define PAGE(a) (pm_start + a * PAGE_SIZE)
@@ -100,7 +100,7 @@ static void *slab_alloc(size_t size)
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
     ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + poweraligned(size) * object_slab_list->inode_num);
-    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p",(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)));
+    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p",(uintptr_t *)object_slab_list);
     object_slab_list->inode_num++;
 
     object_slab_list->size -= poweraligned(size);
