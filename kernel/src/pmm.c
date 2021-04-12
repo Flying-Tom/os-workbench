@@ -107,6 +107,7 @@ static void *slab_alloc(size_t size)
 
 static void *buddy_alloc(size_t size)
 {
+    cpu_id = cpu_current();
     size = poweraligned(size);
     Log("poweraligned(size):%d", poweraligned(size));
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
@@ -114,12 +115,15 @@ static void *buddy_alloc(size_t size)
         page_header *cur = PAGE_HEADER(i);
         if (PAGE(i) % size == 0)
         {
-            cur->parent_cpu_id = cpu_id;
-            //Log("return page %d\n", i);
-            return cur;
+            int page_needed = size / PAGE_SIZE + 1;
+            for (int j = i; j <= i + page_needed; j++)
+            {
+                cur = PAGE_HEADER(j);
+                cur->parent_cpu_id = cpu_id;
+            }
+            return (void *)PAGE(i);
         }
-    }
-    /*
+        /*
     cpu_id = cpu_current();
     node_t *cur = NULL, *cur_prev = &local_nodelist[cpu_id], *new_node = NULL;
     BREAKPOINT(kalloc);
@@ -142,33 +146,33 @@ static void *buddy_alloc(size_t size)
     pm_needed = max(size, pm_needed);
     cur_prev->next = global_application(pm_needed);
     */
-    return NULL;
-}
-
-static void *kalloc(size_t size)
-{
-    //BREAKPOINT(kalloc);
-    void *ret = NULL;
-    if (size == 0)
         return NULL;
-    if (size > 128)
+    }
+
+    static void *kalloc(size_t size)
+    {
+        //BREAKPOINT(kalloc);
+        void *ret = NULL;
+        if (size == 0)
+            return NULL;
+        if (size > 128)
+        {
+            lock(&lk);
+            ret = buddy_alloc(size);
+            unlock(&lk);
+        }
+        else
+            ret = slab_alloc(size);
+        return ret;
+    }
+
+    static void kfree(void *ptr)
     {
         lock(&lk);
-        ret = buddy_alloc(size);
         unlock(&lk);
     }
-    else
-        ret = slab_alloc(size);
-    return ret;
-}
 
-static void kfree(void *ptr)
-{
-    lock(&lk);
-    unlock(&lk);
-}
-
-/*
+    /*
 static void pmm_stat()
 {
     node_t *cur;
@@ -182,35 +186,35 @@ static void pmm_stat()
 }
 */
 
-static void pmm_init()
-{
-    /*
+    static void pmm_init()
+    {
+        /*
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
     Log("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
-    cpu_num = cpu_count();
-    assert(cpu_num <= MAX_CPU_NUM);
+        cpu_num = cpu_count();
+        assert(cpu_num <= MAX_CPU_NUM);
 
-    pm_start = (uintptr_t)heap.start;
-    pm_end = (uintptr_t)heap.end;
-    //Log("pm_start:%p\n", pm_start);
-    pm_start = align(pm_start, PAGE_SIZE);
-    //Log("aligned pm_start:%p\n", pm_start);
-    //Log("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
-    assert((pm_end - pm_start) % PAGE_SIZE == 0);
+        pm_start = (uintptr_t)heap.start;
+        pm_end = (uintptr_t)heap.end;
+        //Log("pm_start:%p\n", pm_start);
+        pm_start = align(pm_start, PAGE_SIZE);
+        //Log("aligned pm_start:%p\n", pm_start);
+        //Log("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
+        assert((pm_end - pm_start) % PAGE_SIZE == 0);
 
-    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
-    {
-        page_header *cur = PAGE_HEADER(i);
-        cur->parent_cpu_id = MAX_CPU_NUM;
-        cur->size = PAGE_SIZE - sizeof(page_header);
+        for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+        {
+            page_header *cur = PAGE_HEADER(i);
+            cur->parent_cpu_id = MAX_CPU_NUM;
+            cur->size = PAGE_SIZE - sizeof(page_header);
+        }
+        //assert(0);
+        Log("pmm_init finished");
     }
-    //assert(0);
-    Log("pmm_init finished");
-}
 
-MODULE_DEF(pmm) = {
-    .init = pmm_init,
-    .alloc = kalloc,
-    .free = kfree,
-};
+    MODULE_DEF(pmm) = {
+        .init = pmm_init,
+        .alloc = kalloc,
+        .free = kfree,
+    };
