@@ -69,7 +69,19 @@ static void *slab_alloc(size_t size)
 {
     //BREAKPOINT(slab_alloc);
     void *ret = NULL;
-    int slab_type = (size - 1) / 4 + 1;
+    int slab_type = 0;
+    if (size > 0 && size <= 4)
+        slab_type = 1;
+    else if (size > 4 && size <= 8)
+        slab_type = 2;
+    else if (size > 8 && size <= 16)
+        slab_type = 3;
+    else if (size > 16 && size <= 32)
+        slab_type = 4;
+    else if (size > 32 && size <= 64)
+        slab_type = 5;
+    else if (size > 64 && size <= 128)
+        slab_type = 6;
 
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
