@@ -151,11 +151,10 @@ static void pmm_init()
     printf("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
 
-    for (int i = 0; i <= (pm_end - pm_start) / PAGE_SIZE; i++)
+    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
         cur->parent_cpu_id = MAX_CPU_NUM;
-        BREAKPOINT(fuck);
     }
     BREAKPOINT(pmm_init finished);
 }
