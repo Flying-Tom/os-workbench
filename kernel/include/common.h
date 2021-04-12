@@ -15,7 +15,7 @@
 */
 #define _Log(format, ...)                           \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
-         ##__VA_ARGS__)
+         __FILE__, __LINE__, ##__VA_ARGS__)
 
 #ifdef DEBUG
 #define Log(...) _Log(__VA_ARGS__)
