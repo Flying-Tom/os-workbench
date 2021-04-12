@@ -50,6 +50,8 @@ static node_t *__attribute__((used)) global_application(size_t size)
 
 static int poweraligned(int x)
 {
+    if (x == 1 || x == 2)
+        return 4;
     int ret = 1;
     while (ret < x)
         ret = ret << 1;
@@ -97,7 +99,7 @@ static void *slab_alloc(size_t size)
     {
         object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
     }
-    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + (1 << (slab_type + 2)) * object_slab_list->inode_num);
+    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + poweraligned(size) * object_slab_list->inode_num);
     object_slab_list->inode_num++;
 
     object_slab_list->size -= poweraligned(size);
