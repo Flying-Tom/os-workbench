@@ -156,6 +156,7 @@ static void pmm_init()
         page_header *cur = PAGE_HEADER(i);
         cur->parent_cpu_id = MAX_CPU_NUM;
     }
+    BREAKPOINT(pmm_init finished);
 }
 
 MODULE_DEF(pmm) = {
