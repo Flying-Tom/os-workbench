@@ -83,7 +83,7 @@ static void *slab_alloc(size_t size)
     else if (size > 64 && size <= 128)
         slab_type = 5;
 
-    Log("slab_type:%d\n", slab_type);
+    //Log("slab_type:%d\n", slab_type);
     page_header *object_slab_list = slab_list[cpu_id][slab_type];
     if (object_slab_list == NULL || object_slab_list->size <= size)
     {
