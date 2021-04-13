@@ -36,16 +36,6 @@ int slab_type_size[] = {16, 32, 64, 128, 256, 512};
 
 
 
-static int poweraligned(int x)
-{
-    if (x == 1 || x == 2)
-        return 4;
-    int ret = 1;
-    while (ret < x)
-        ret = ret << 1;
-    return ret;
-}
-
 static int cache_type(size_t size)
 {
     int slab_type;
