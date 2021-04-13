@@ -118,15 +118,9 @@ static void *slab_alloc(size_t size)
     }
 
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
-    Log("object_cache->newest_slab->size:%d", object_cache->newest_slab->size);
+    //Log("object_cache->newest_slab->size:%d", object_cache->newest_slab->size);
     object_cache->newest_slab->size += size;
 
-    /*
-    Log("alloc size:%d", size);
-    Log("minium power 2:%d", poweraligned(size));
-    Log("ret:%p", (uintptr_t)ret);
-    Log("PAGE(3):%p", PAGE(3));
-    */
     assert((uintptr_t)ret % size == 0);
     return ret;
 }
@@ -161,7 +155,7 @@ static void *kalloc(size_t size)
     void *ret = NULL;
     if (size == 0)
         return NULL;
-    if (size > 128)
+    if (size > 512)
     {
         lock(&lk);
         ret = buddy_alloc(size);
