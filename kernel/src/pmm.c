@@ -15,6 +15,7 @@ static lock_t lk = LOCK_INIT();
 /////////////////////////////
 static uintptr_t pm_start, pm_end;
 static int cpu_id, cpu_num;
+static size_t total_page_num;
 
 typedef struct page_header
 {
@@ -54,7 +55,7 @@ static int cache_type(size_t size)
 
 static page_header *get_one_page(size_t size)
 {
-    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+    for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
         if (cur->parent_cpu_id == MAX_CPU_NUM)
@@ -99,7 +100,7 @@ static void *buddy_alloc(size_t size)
     cpu_id = cpu_current();
     //size = poweraligned(size);
     //Log("poweraligned(size):%d", poweraligned(size));
-    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+    for (int i = 0; i < total_page_num ; i++)
     {
         page_header *cur = PAGE_HEADER(i);
         if (PAGE(i) % size == 0)
@@ -140,44 +141,24 @@ static void kfree(void *ptr)
     unlock(&lk);
 }
 
-/*
-static void pmm_stat()
-{
-    node_t *cur;
-    int node_cnt = 0;
-    Log("============================\n");
-    for (cur = root_node; cur != NULL; cur = cur->next)
-    {
-        Log("Node %d | status:%d  size:%d MB\n", node_cnt++, cur->status, cur->size / (1024 * 1024));
-    }
-    Log("============================\n");
-}
-*/
-
 static void pmm_init()
 {
-    /*
-    uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
-    Log("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
-    */
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
-    //Log("pm_start:%p\n", pm_start);
+    Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     pm_start = align(pm_start, PAGE_SIZE);
-    //Log("aligned pm_start:%p\n", pm_start);
-    //Log("Total pages:%d\n", (pm_end - pm_start) / PAGE_SIZE);
-    assert((pm_end - pm_start) % PAGE_SIZE == 0);
+    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
 
-    for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
+    for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
         cur->parent_cpu_id = MAX_CPU_NUM;
-        //cur->size = PAGE_SIZE - sizeof(page_header);
         cur->size = 0;
     }
+    assert((pm_end - pm_start) % PAGE_SIZE == 0);
     //assert(0);
     Log("pmm_init finished");
 }
