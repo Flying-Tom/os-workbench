@@ -117,11 +117,11 @@ static void *slab_alloc(size_t size)
         object_cache->newest_slab = get_one_page(size);
     }
 
-    ret = (void *)((uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
+    ret = (void *)((intptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
     Log("object_cache->newest_slab->size:%d", object_cache->newest_slab->size);
     object_cache->newest_slab->size += size;
 
-    Log("(uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) :%p", (uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) );
+    Log("(uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) :%p", (intptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) );
     Log("PAGE_SIZE - sizeof(page_header) :%p", PAGE_SIZE - sizeof(page_header) );
     /*
     Log("alloc size:%d", size);
