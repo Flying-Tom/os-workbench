@@ -105,7 +105,7 @@ static void *slab_alloc(size_t size)
     //BREAKPOINT(slab_alloc);
     void *ret = NULL;
     int cache_type = 0;
-
+    cache_type = cache_type(size);
     size = poweraligned(size);
     //Log("slab_type:%d\n", slab_type);
     Cache *object_cache = &cache[cpu_id][cache_type];
