@@ -125,7 +125,9 @@ static void *kalloc(size_t size)
         return NULL;
     if (size > 512)
     {
+        lock(&lk);
         ret = buddy_alloc(size);
+        unlock(&lk);
     }
     else
         ret = slab_alloc(size);
