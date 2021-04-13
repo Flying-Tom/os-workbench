@@ -34,7 +34,16 @@ typedef struct Cache
 Cache cache[MAX_CPU_NUM][8];
 int slab_type_size[] = {16, 32, 64, 128, 256, 512};
 
-
+static size_t log(size_t x)
+{
+    size_t ret = 0;
+    while (x > 1)
+    {
+        x >> 1;
+        ret++;
+    }
+    return ret;
+}
 
 static int cache_type(size_t size)
 {
@@ -100,7 +109,7 @@ static void *buddy_alloc(size_t size)
 {
     lock(&lk);
     cpu_id = cpu_current();
-    size = poweraligned(size);
+    //size = poweraligned(size);
     Log("poweraligned(size):%d", poweraligned(size));
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
@@ -163,6 +172,8 @@ static void pmm_init()
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
     Log("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
+    for (int i = 1; i < 100; i++)
+        Log("log(%d):%d", i, log(i));
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 
