@@ -119,11 +119,11 @@ static void *slab_alloc(size_t size)
 
     ret = (void *)((uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
     Log("object_cache->newest_slab->size:%d", object_cache->newest_slab->size);
-    //object_cache->newest_slab->size += size;
+    object_cache->newest_slab->size += size;
 
     Log("object_cache->newest_slab :%p", object_cache->newest_slab);
     Log("PAGE_SIZE - sizeof(page_header) :%p", PAGE_SIZE - sizeof(page_header));
-    Log("(uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) :%p", (uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)));
+    Log("???? :%p", (uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)));
     /*
     Log("alloc size:%d", size);
     Log("minium power 2:%d", poweraligned(size));
