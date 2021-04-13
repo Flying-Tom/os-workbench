@@ -110,7 +110,7 @@ static void *buddy_alloc(size_t size)
     lock(&lk);
     cpu_id = cpu_current();
     //size = poweraligned(size);
-    Log("poweraligned(size):%d", poweraligned(size));
+    //Log("poweraligned(size):%d", poweraligned(size));
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
