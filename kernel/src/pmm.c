@@ -100,7 +100,7 @@ static void *buddy_alloc(size_t size)
     cpu_id = cpu_current();
     //size = poweraligned(size);
     //Log("poweraligned(size):%d", poweraligned(size));
-    for (int i = 0; i < total_page_num ; i++)
+    for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
         if (PAGE(i) % size == 0)
@@ -120,10 +120,8 @@ static void *buddy_alloc(size_t size)
 
 static void *kalloc(size_t size)
 {
-    //BREAKPOINT(kalloc);
     void *ret = NULL;
-    if (size == 0)
-        return NULL;
+    assert(size > 0);
     if (size > 512)
     {
         lock(&lk);
@@ -159,7 +157,7 @@ static void pmm_init()
         cur->size = 0;
     }
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
-    //assert(0);
+    Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
 }
 
