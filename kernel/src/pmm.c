@@ -14,14 +14,14 @@ static lock_t lk = LOCK_INIT();
 
 /////////////////////////////
 static uintptr_t pm_start, pm_end;
-static int cpu_id, cpu_num;
+static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 
 typedef struct page_header
 {
-    int parent_cpu_id;
-    int size;
-    int slab_type;
+    size_t size;
+    uint8_t parent_cpu_id;
+    uint8_t slab_type;
     struct page_header *next;
 } page_header;
 page_header *global_page_list, *global_last_page;
@@ -46,9 +46,9 @@ static size_t log(size_t x)
     return ret;
 }
 
-static int cache_type(size_t size)
+static uint8_t cache_type(size_t size)
 {
-    int slab_type = 0;
+    uint8_t slab_type = 0;
     slab_type = log(size - 1);
     return slab_type;
 }
@@ -72,13 +72,11 @@ static page_header *get_one_page(size_t size)
 
 static void *slab_alloc(size_t size)
 {
-    //BREAKPOINT(slab_alloc);
     void *ret = NULL;
-    int type = 0;
+    uint8_t type = 0;
     type = cache_type(size);
     size = 1 << type;
-    Log("type:%d", type);
-    Log("size:%d", size);
+    Log("type:%d size:%d", type, size);
     Cache *object_cache = &cache[cpu_id][type];
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size >= PAGE_SIZE - sizeof(page_header))
     {
@@ -87,7 +85,6 @@ static void *slab_alloc(size_t size)
     }
 
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
-    //Log("object_cache->newest_slab->size:%d", object_cache->newest_slab->size);
     object_cache->newest_slab->size += size;
 
     assert((uintptr_t)ret % size == 0);
@@ -98,8 +95,6 @@ static void *buddy_alloc(size_t size)
 {
     lock(&lk);
     cpu_id = cpu_current();
-    //size = poweraligned(size);
-    //Log("poweraligned(size):%d", poweraligned(size));
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
