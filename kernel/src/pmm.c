@@ -15,11 +15,6 @@ static lock_t lk = LOCK_INIT();
 static uintptr_t pm_start, pm_end;
 static int cpu_id, cpu_num;
 
-typedef struct node_t
-{
-    int size;
-    struct node_t *next;
-} node_t;
 
 typedef struct page_header
 {
