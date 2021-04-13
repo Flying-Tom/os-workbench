@@ -3,16 +3,18 @@
 
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
-#define max(a, b) ((a > b) ? (a) : (b))
+
+/* const macro */
 #define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 12
+
+/* page header */
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 #define PAGE(a) (pm_start + a * PAGE_SIZE)
 
+/*------------------------------------------*/
 static lock_t lk = LOCK_INIT();
-
-/////////////////////////////
 static uintptr_t pm_start, pm_end;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
@@ -25,7 +27,6 @@ typedef struct page_header
     struct page_header *next;
 } page_header;
 page_header *global_page_list, *global_last_page;
-int global_page_cnt;
 
 typedef struct Cache
 {
