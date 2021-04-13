@@ -106,10 +106,11 @@ static void *slab_alloc(size_t size)
     int type = 0;
     type = cache_type(size);
     size = poweraligned(size);
-    Log("type:%d\n", type);
+    Log("type:%d", type);
     Cache *object_cache = &cache[cpu_id][type];
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size <= size)
     {
+        Log("Get new page");
         object_cache->newest_slab = get_one_page(size);
     }
 
