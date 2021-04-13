@@ -15,6 +15,11 @@ static lock_t lk = LOCK_INIT();
 static uintptr_t pm_start, pm_end;
 static int cpu_id, cpu_num;
 
+typedef struct node_t
+{
+    int size;
+    struct node_t *next;
+} node_t;
 
 typedef struct page_header
 {
@@ -38,17 +43,6 @@ int slab_type_size[] = {16, 32, 64, 128, 256, 512};
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
 
-static node_t *__attribute__((used)) global_application(size_t size)
-{
-    if (global_nodelist->size > size + sizeof(node_t))
-    {
-        global_nodelist->size -= size + sizeof(node_t);
-        Log("global_nodelist free size:%d\n", global_nodelist->size);
-        return (node_t *)((uintptr_t)global_nodelist + global_nodelist->size - size);
-    }
-    Log("Kalloc Failed!\n");
-    return NULL;
-}
 
 static int poweraligned(int x)
 {
