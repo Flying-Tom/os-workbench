@@ -93,7 +93,7 @@ static page_header *get_one_page(size_t size)
         {
             cur->parent_cpu_id = cpu_id;
             //cur->size = 0;
-            //Log("return page %d\n", i);
+            Log("return page %d\n", i);
             return cur;
         }
     }
