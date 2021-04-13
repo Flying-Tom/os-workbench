@@ -192,7 +192,7 @@ static void pmm_init()
         //cur->size = PAGE_SIZE - sizeof(page_header);
         cur->size = 0;
     }
-    //assert(0);
+    assert(0);
     Log("pmm_init finished");
 }
 
