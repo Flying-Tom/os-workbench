@@ -107,7 +107,7 @@ static void *slab_alloc(size_t size)
     void *ret = NULL;
     int type = 0;
     type = cache_type(size);
-    size = poweraligned(size);
+    size = slab_type_size[type];
     Log("type:%d", type);
     Log("size:%d", size);
     Cache *object_cache = &cache[cpu_id][type];
