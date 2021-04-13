@@ -31,7 +31,14 @@ typedef struct page_header
 } page_header;
 page_header *global_page_list, *global_last_page;
 int global_page_cnt;
-page_header *slab_list[MAX_CPU_NUM][7];
+
+typedef struct Cache
+{
+    int size;
+    int num_of_slab;
+    page_header *newest_slab;
+} Cache;
+Cache cache[MAX_CPU_NUM][8];
 
 node_t local_nodelist[MAX_CPU_NUM];
 node_t *global_nodelist;
@@ -58,6 +65,24 @@ static int poweraligned(int x)
     return ret;
 }
 
+static int cache_type(size_t size)
+{
+    int slab_type;
+    if (size > 0 && size <= 4)
+        slab_type = 0;
+    else if (size > 4 && size <= 8)
+        slab_type = 1;
+    else if (size > 8 && size <= 16)
+        slab_type = 2;
+    else if (size > 16 && size <= 32)
+        slab_type = 3;
+    else if (size > 32 && size <= 64)
+        slab_type = 4;
+    else if (size > 64 && size <= 128)
+        slab_type = 5;
+    return slab_type;
+}
+
 static page_header *get_one_page(size_t size)
 {
     //BREAKPOINT(get_one_page);
@@ -79,29 +104,18 @@ static void *slab_alloc(size_t size)
 {
     //BREAKPOINT(slab_alloc);
     void *ret = NULL;
-    int slab_type = 0;
-    if (size > 0 && size <= 4)
-        slab_type = 0;
-    else if (size > 4 && size <= 8)
-        slab_type = 1;
-    else if (size > 8 && size <= 16)
-        slab_type = 2;
-    else if (size > 16 && size <= 32)
-        slab_type = 3;
-    else if (size > 32 && size <= 64)
-        slab_type = 4;
-    else if (size > 64 && size <= 128)
-        slab_type = 5;
+    int cache_type = 0;
 
     size = poweraligned(size);
     //Log("slab_type:%d\n", slab_type);
-    page_header *object_slab_list = slab_list[cpu_id][slab_type];
-    if (object_slab_list == NULL || object_slab_list->size <= size)
+    Cache *object_cache = &cache[cpu_id][cache_type];
+    if (object_cache->newest_slab == NULL || object_cache->newest_slab->size <= size)
     {
-        object_slab_list = slab_list[cpu_id][slab_type] = get_one_page(size);
+        object_cache->newest_slab = get_one_page(size);
     }
-    ret = (void *)((uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)) + poweraligned(size) * object_slab_list->inode_num);
-    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p", (uintptr_t *)object_slab_list);
+
+    ret = (void *)((uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + size * object_slab_list->inode_num);
+    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p", (uintptr_t *)object_cache->newest_slab);
     object_slab_list->inode_num++;
 
     object_slab_list->size -= poweraligned(size);
