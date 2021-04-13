@@ -106,7 +106,7 @@ static void *slab_alloc(size_t size)
     int type = 0;
     type = cache_type(size);
     size = poweraligned(size);
-    //Log("slab_type:%d\n", slab_type);
+    Log("type:%d\n", type);
     Cache *object_cache = &cache[cpu_id][type];
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size <= size)
     {
