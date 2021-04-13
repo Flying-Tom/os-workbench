@@ -25,7 +25,6 @@ typedef struct page_header
 {
     int parent_cpu_id;
     int size;
-    int inode_num;
     int slab_type;
     struct page_header *next;
 } page_header;
@@ -114,11 +113,9 @@ static void *slab_alloc(size_t size)
         object_cache->newest_slab = get_one_page(size);
     }
 
-    ret = (void *)((uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + size * object_cache->newest_slab->inode_num);
-    Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p", (uintptr_t *)object_cache->newest_slab);
-    object_cache->newest_slab->inode_num++;
-
-    object_slab_list->size -= poweraligned(size);
+    ret = (void *)((uintptr_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
+    //Log("(uintptr_t *)object_slab_list - (PAGE_SIZE - sizeof(page_header)):%p", (uintptr_t *)object_cache->newest_slab);
+    object_cache->newest_slab->size += size;
     /*
     Log("(uintptr_t)ret  poweraligned(size):%d", (uintptr_t)ret % poweraligned(size));
     Log("alloc size:%d", size);
