@@ -123,7 +123,7 @@ static void *slab_alloc(size_t size)
     Log("ret:%p", (uintptr_t)ret);
     Log("PAGE(3):%p", PAGE(3));
     */
-    assert((uintptr_t)ret % poweraligned(size) == 0);
+    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
