@@ -6,6 +6,7 @@
 #define max(a, b) ((a > b) ? (a) : (b))
 #define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
+#define MAX_SLAB_TYPE 12
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 #define PAGE(a) (pm_start + a * PAGE_SIZE)
 
@@ -47,7 +48,9 @@ static size_t log(size_t x)
 
 static int cache_type(size_t size)
 {
-    int slab_type;
+    int slab_type = 0;
+    slab_type = log(size - 1);
+    /*
     if (size > 0 && size <= 16)
         slab_type = 0;
     else if (size > 16 && size <= 32)
@@ -60,6 +63,9 @@ static int cache_type(size_t size)
         slab_type = 4;
     else if (size > 256 && size <= 512)
         slab_type = 5;
+    if (size <= 3)
+    */
+
     return slab_type;
 }
 
