@@ -110,7 +110,7 @@ static void *slab_alloc(size_t size)
     Log("type:%d", type);
     Log("size:%d", size);
     Cache *object_cache = &cache[cpu_id][type];
-    if (object_cache->newest_slab == NULL || object_cache->newest_slab->size <= size)
+    if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size <= PAGE_SIZE - sizeof(page_header))
     {
         Log("Get new page");
         object_cache->newest_slab = get_one_page(size);
