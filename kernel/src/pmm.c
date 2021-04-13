@@ -91,7 +91,7 @@ static page_header *get_one_page(size_t size)
         if (cur->parent_cpu_id == MAX_CPU_NUM)
         {
             cur->parent_cpu_id = cpu_id;
-            cur->size = 0;
+            //cur->size = 0;
             //Log("return page %d\n", i);
             return cur;
         }
@@ -212,7 +212,8 @@ static void pmm_init()
     {
         page_header *cur = PAGE_HEADER(i);
         cur->parent_cpu_id = MAX_CPU_NUM;
-        cur->size = PAGE_SIZE - sizeof(page_header);
+        //cur->size = PAGE_SIZE - sizeof(page_header);
+        cur->size = 0;
     }
     //assert(0);
     Log("pmm_init finished");
