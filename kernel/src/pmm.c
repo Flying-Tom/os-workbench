@@ -33,7 +33,6 @@ typedef struct Cache
     page_header *newest_slab;
 } Cache;
 Cache cache[MAX_CPU_NUM][8];
-int slab_type_size[] = {1, 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096};
 
 static size_t log(size_t x)
 {
