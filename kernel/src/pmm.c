@@ -49,28 +49,11 @@ static int cache_type(size_t size)
 {
     int slab_type = 0;
     slab_type = log(size - 1);
-    /*
-    if (size > 0 && size <= 16)
-        slab_type = 0;
-    else if (size > 16 && size <= 32)
-        slab_type = 1;
-    else if (size > 32 && size <= 64)
-        slab_type = 2;
-    else if (size > 64 && size <= 128)
-        slab_type = 3;
-    else if (size > 128 && size <= 256)
-        slab_type = 4;
-    else if (size > 256 && size <= 512)
-        slab_type = 5;
-    if (size <= 3)
-    */
-
     return slab_type;
 }
 
 static page_header *get_one_page(size_t size)
 {
-    //BREAKPOINT(get_one_page);
     for (int i = 0; i < (pm_end - pm_start) / PAGE_SIZE; i++)
     {
         page_header *cur = PAGE_HEADER(i);
@@ -112,7 +95,6 @@ static void *slab_alloc(size_t size)
 
 static void *buddy_alloc(size_t size)
 {
-    lock(&lk);
     cpu_id = cpu_current();
     //size = poweraligned(size);
     //Log("poweraligned(size):%d", poweraligned(size));
@@ -127,7 +109,6 @@ static void *buddy_alloc(size_t size)
                 cur = PAGE_HEADER(j);
                 cur->parent_cpu_id = cpu_id;
             }
-            unlock(&lk);
             return (void *)PAGE(i);
         }
     }
