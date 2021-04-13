@@ -178,8 +178,6 @@ static void pmm_init()
     uintptr_t pmsize = ((uintptr_t)heap.end - (uintptr_t)heap.start);
     Log("Got %d MiB heap: [%p, %p)\n", pmsize >> 20, heap.start, heap.end);
     */
-    for (int i = 1; i < 100; i++)
-        Log("log(%d):%d", i, log(i));
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 
@@ -198,7 +196,7 @@ static void pmm_init()
         //cur->size = PAGE_SIZE - sizeof(page_header);
         cur->size = 0;
     }
-    assert(0);
+    //assert(0);
     Log("pmm_init finished");
 }
 
