@@ -39,7 +39,7 @@ static size_t log(size_t x)
     size_t ret = 0;
     while (x > 1)
     {
-        x >> 1;
+        x >>= 1;
         ret++;
     }
     return ret;
