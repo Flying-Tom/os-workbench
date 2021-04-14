@@ -138,6 +138,7 @@ static void kfree(void *ptr)
 
 void buddy_stat()
 {
+    Log("=========================");
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
@@ -151,6 +152,7 @@ void buddy_stat()
             printf("\n");
         }
     }
+    Log("=========================");
     assert(0);
 }
 
