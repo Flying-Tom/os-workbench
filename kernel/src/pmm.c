@@ -98,6 +98,7 @@ static void *slab_alloc(size_t size)
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
     object_cache->newest_slab->size += size;
     assert((uintptr_t)ret % size == 0);
+    assert(0);
     return ret;
 }
 
