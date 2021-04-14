@@ -63,7 +63,7 @@ static void *buddy_alloc(size_t size)
         page_header *cur = PAGE_HEADER(i);
 
         int page_needed = (size - 1) / PAGE_SIZE + 1;
-        for (int j = i; j <= i + page_needed; j++)
+        for (int j = i; j < i + page_needed; j++)
         {
             cur = PAGE_HEADER(j);
             cur->parent_cpu_id = cpu_id;
@@ -90,7 +90,7 @@ static page_header *get_one_page()
     }
     Log("No more free pages");
     return NULL;*/
-    return (page_header *)((uint8_t*)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
+    return (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
 }
 
 static void *slab_alloc(size_t size)
