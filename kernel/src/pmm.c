@@ -81,7 +81,8 @@ static void block_generate(uint8_t order)
 static size_t get_one_block(uint8_t order)
 {
     size_t ret = 0;
-    block_generate(order);
+    if (free_list[order] == NULL)
+        block_generate(order);
     ret = free_list[order]->id;
     free_list[order] = free_list[order]->next;
     return ret;
@@ -190,7 +191,7 @@ static void pmm_init()
     free_list[max_order] = PAGE_HEADER(0);
 
     get_one_block(13);
-    
+
     buddy_stat();
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
