@@ -5,7 +5,7 @@
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 
 /* const macro */
-#define PAGE_SIZE (4 KB)
+#define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 12
 
