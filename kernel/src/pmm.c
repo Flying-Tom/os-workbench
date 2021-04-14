@@ -61,15 +61,17 @@ static void *buddy_alloc(size_t size)
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-
-        int page_needed = (size - 1) / PAGE_SIZE + 1;
-        for (int j = i; j < i + page_needed; j++)
+        if (cur->parent_cpu_id == MAX_CPU_NUM)
         {
-            cur = PAGE_HEADER(j);
-            cur->parent_cpu_id = cpu_id;
+            int page_needed = (size - 1) / PAGE_SIZE + 1;
+            for (int j = i; j < i + page_needed; j++)
+            {
+                cur = PAGE_HEADER(j);
+                cur->parent_cpu_id = cpu_id;
+            }
+            unlock(&lk);
+            return (void *)PAGE(i);
         }
-        unlock(&lk);
-        return (void *)PAGE(i);
     }
     return NULL;
 }
