@@ -191,6 +191,7 @@ static void pmm_init()
             printf("free_list[%d] id:%d \n", i, free_list[i]->id);
     }
 
+    Log("free_list[14]->id:%d", free_list[14]->id);
     assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
