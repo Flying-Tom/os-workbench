@@ -81,7 +81,7 @@ static void *buddy_alloc(size_t size)
     }
     return NULL;
     */
-   return NULL;
+    return NULL;
 }
 
 static page_header *get_one_page()
@@ -138,7 +138,7 @@ static void pmm_init()
 
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
-    Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
+    Log("pm_start:%p aligned pm_start:%p\npm_end:%p", pm_start, align(pm_start, PAGE_SIZE), pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     max_order = log(total_page_num);
