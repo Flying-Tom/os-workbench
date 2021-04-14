@@ -121,7 +121,7 @@ static void *kalloc(size_t size)
         size = 1 << (log(size - 1) + 1);
         ret = buddy_alloc(size);
         Log("buddy_alloc size:%d ret:%p", size, ret);
-        assert((uintptr_t)ret % size == 0);
+        //assert((uintptr_t)ret % size == 0);
         //unlock(&lk);
     }
     else
