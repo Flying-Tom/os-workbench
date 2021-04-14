@@ -174,7 +174,7 @@ static void pmm_init()
         cur->next = NULL;
     }
     page_header *cur = PAGE_HEADER(0);
-    assert(cur->next == NULL);
+    assert(cur->next != NULL);
 
     free_list[max_order] = PAGE_HEADER(0);
     get_one_block(14);
