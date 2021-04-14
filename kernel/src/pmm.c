@@ -34,10 +34,9 @@ typedef struct Cache
     int num_of_slab;
     page_header *newest_slab;
 } Cache;
-Cache cache[MAX_CPU_NUM][8]
+Cache cache[MAX_CPU_NUM][8];
 
-    static size_t
-    log(size_t x)
+static size_t log(size_t x)
 {
     size_t ret = 0;
     while (x > 1)
