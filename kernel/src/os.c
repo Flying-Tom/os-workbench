@@ -15,7 +15,7 @@ static void os_run()
     for (int i = 1; i < 10; i++)
     {
         pmm->alloc(i KB);
-        //printf("%d\n", i);
+        printf("Alloc %d success\n", i KB);
     }
     pmm->alloc(430);
 
