@@ -189,6 +189,7 @@ static void pmm_init()
     get_one_block(1);
     get_one_block(1);
     get_one_block(1);
+    get_one_block(1);
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
