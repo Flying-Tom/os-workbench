@@ -74,17 +74,6 @@ static void get_one_block(uint8_t order)
     page_header *newpage = PAGE_HEADER(parent_page_id);
     newpage->next = free_list[order];
     free_list[order] = newpage;
-
-    /*
-    if (free_list[order + 1]->next != NULL)
-        Log("free_list[order + 1]->next->id:%d", free_list[order + 1]->next->id);
-    free_list[order + 1] = free_list[order + 1]->next;
-    //assert(free_list[order + 1]->next != NULL);
-    if (free_list[order + 1]->next != NULL)
-        Log("free_list[order + 1]->id:%d", free_list[order + 1]->id);
-    Log("order:%d", order);
-    //assert(0);
-    */
 }
 
 static void *buddy_alloc(size_t size)
