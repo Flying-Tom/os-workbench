@@ -74,7 +74,7 @@ static void get_one_block(uint8_t order)
     if (free_list[order + 1]->next != NULL)
         Log("free_list[order + 1]->id:%d", free_list[order + 1]->id);
     Log("order:%d", order);
-    assert(0);
+    //assert(0);
 }
 
 static void *buddy_alloc(size_t size)
