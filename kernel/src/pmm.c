@@ -89,12 +89,14 @@ static void get_one_block(uint8_t order)
 
 static void *buddy_alloc(size_t size)
 {
+    lock(&lk);
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     get_one_block(order);
     ret = (void *)PAGE(free_list[order]->id);
     free_list[order] = free_list[order]->next;
+    unlock(&lk);
     return ret;
 }
 
