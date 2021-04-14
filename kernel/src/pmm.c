@@ -98,11 +98,6 @@ static void *buddy_alloc(size_t size)
     return ret;
 }
 
-static page_header *get_one_page()
-{
-    return (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
-}
-
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
@@ -114,7 +109,7 @@ static void *slab_alloc(size_t size)
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size >= PAGE_SIZE - sizeof(page_header))
     {
         Log("Get new page");
-        object_cache->newest_slab = get_one_page();
+        object_cache->newest_slab = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
     }
 
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
