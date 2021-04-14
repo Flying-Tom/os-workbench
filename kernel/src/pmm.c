@@ -80,6 +80,7 @@ static void get_one_block(uint8_t order)
 static void *buddy_alloc(size_t size)
 {
     lock(&lk);
+    Log("fuck");
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
@@ -118,7 +119,6 @@ static void *kalloc(size_t size)
     if (size >= PAGE_SIZE)
     {
         lock(&lk);
-        Log("fuck");
         ret = buddy_alloc(size);
         assert((uintptr_t)ret % size == 0);
         unlock(&lk);
