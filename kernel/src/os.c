@@ -1,4 +1,5 @@
 #include <common.h>
+#DEBUG
 
 static void os_init()
 {
