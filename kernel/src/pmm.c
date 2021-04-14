@@ -62,7 +62,7 @@ static uint8_t cache_type(size_t size)
 
 static void get_one_block(uint8_t order)
 {
-    if (free_list[order] == NULL)
+    if (free_list[order + 1] == NULL)
         get_one_block(order + 1);
     free_list[order] = PAGE_HEADER(free_list[order + 1]->id + (1 << order));
     page_header *newpage = PAGE_HEADER(free_list[order + 1]->id);
