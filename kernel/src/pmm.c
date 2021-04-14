@@ -106,7 +106,7 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     assert(size > 0);
-    if (size > PAGE_SIZE)
+    if (size >= PAGE_SIZE)
     {
         lock(&lk);
         ret = buddy_alloc(size);
