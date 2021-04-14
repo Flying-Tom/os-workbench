@@ -60,14 +60,14 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
-static void get_one_block(uint8_t order)
+static void block_generate(uint8_t order)
 {
     //Log("%d",order);
     //assert(order < max_order);
     if (free_list[order + 1] == NULL)
     {
         //assert(0);
-        get_one_block(order + 1);
+        block_generate(order + 1);
     }
     size_t parent_page_id = free_list[order + 1]->id;
     free_list[order + 1] = free_list[order + 1]->next;
@@ -78,6 +78,15 @@ static void get_one_block(uint8_t order)
     free_list[order] = newpage;
 }
 
+static size_t get_one_block(uint8_t order)
+{
+    size_t ret = 0;
+    block_generate(order);
+    ret = free_list[order]->id;
+    free_list[order] = free_list[order]->next;
+    return ret;
+}
+
 static void *buddy_alloc(size_t size)
 {
     lock(&lk);
@@ -85,9 +94,7 @@ static void *buddy_alloc(size_t size)
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     Log("buddy_alloc %d Bytes  Its order:%d", size, order);
-    get_one_block(order);
-    ret = (void *)PAGE(free_list[order]->id);
-    free_list[order] = free_list[order]->next;
+    ret = (void *)PAGE(get_one_block(order));
     unlock(&lk);
     return ret;
 }
