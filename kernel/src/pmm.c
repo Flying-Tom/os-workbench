@@ -54,9 +54,8 @@ static uint8_t cache_type(size_t size)
     return slab_type;
 }
 
-static page_header *get_one_page()
+static page_header *get_one_page(size_t size)
 {
-    /*
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
@@ -70,8 +69,6 @@ static page_header *get_one_page()
     }
     Log("No more free pages");
     return NULL;
-    */
-    return (page_header *)((uintptr_t)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
 }
 
 static void *slab_alloc(size_t size)
@@ -85,7 +82,7 @@ static void *slab_alloc(size_t size)
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size >= PAGE_SIZE - sizeof(page_header))
     {
         Log("Get new page");
-        object_cache->newest_slab = get_one_page();
+        object_cache->newest_slab = get_one_page(size);
     }
 
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
@@ -95,6 +92,27 @@ static void *slab_alloc(size_t size)
     return ret;
 }
 
+static void *buddy_alloc(size_t size)
+{
+    lock(&lk);
+    cpu_id = cpu_current();
+    for (int i = 0; i < total_page_num; i++)
+    {
+        page_header *cur = PAGE_HEADER(i);
+        if (PAGE(i) % size == 0)
+        {
+            int page_needed = size / PAGE_SIZE + 1;
+            for (int j = i; j <= i + page_needed; j++)
+            {
+                cur = PAGE_HEADER(j);
+                cur->parent_cpu_id = cpu_id;
+            }
+            unlock(&lk);
+            return (void *)PAGE(i);
+        }
+    }
+    return NULL;
+}
 
 static void *kalloc(size_t size)
 {
