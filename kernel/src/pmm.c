@@ -136,6 +136,25 @@ static void kfree(void *ptr)
     unlock(&lk);
 }
 
+void buddy_stat()
+{
+    for (int i = max_order; i >= 1; i--)
+    {
+        if (free_list[i] != NULL)
+        {
+            page_header *cur = free_list[i];
+            while (cur != NULL)
+            {
+                printf("order %d block:%d  ", i, cur->id);
+                cur = cur->next;
+            }
+            printf("\n");
+        }
+    }
+    assert(0);
+}
+
+
 static void pmm_init()
 {
     cpu_num = cpu_count();
@@ -169,23 +188,7 @@ static void pmm_init()
     Log("pmm_init finished");
 }
 
-void buddy_stat()
-{
-    for (int i = max_order; i >= 1; i--)
-    {
-        if (free_list[i] != NULL)
-        {
-            page_header *cur = free_list[i];
-            while (cur != NULL)
-            {
-                printf("order %d block:%d  ", i, cur->id);
-                cur = cur->next;
-            }
-            printf("\n");
-        }
-    }
-    assert(0);
-}
+
 MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,
