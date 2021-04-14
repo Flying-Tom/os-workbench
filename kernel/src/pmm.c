@@ -34,9 +34,10 @@ typedef struct Cache
     int num_of_slab;
     page_header *newest_slab;
 } Cache;
-Cache cache[MAX_CPU_NUM][8];
+Cache cache[MAX_CPU_NUM][8]
 
-static size_t log(size_t x)
+    static size_t
+    log(size_t x)
 {
     size_t ret = 0;
     while (x > 1)
@@ -99,17 +100,15 @@ static void *buddy_alloc(size_t size)
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
-        if (PAGE(i) % size == 0)
+
+        int page_needed = (size - 1) / PAGE_SIZE + 1;
+        for (int j = i; j <= i + page_needed; j++)
         {
-            int page_needed = size / PAGE_SIZE + 1;
-            for (int j = i; j <= i + page_needed; j++)
-            {
-                cur = PAGE_HEADER(j);
-                cur->parent_cpu_id = cpu_id;
-            }
-            unlock(&lk);
-            return (void *)PAGE(i);
+            cur = PAGE_HEADER(j);
+            cur->parent_cpu_id = cpu_id;
         }
+        unlock(&lk);
+        return (void *)PAGE(i);
     }
     return NULL;
 }
