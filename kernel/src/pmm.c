@@ -64,9 +64,10 @@ static void get_one_block(uint8_t order)
 {
     if (free_list[order + 1] == NULL)
     {   
-        assert(0); 
+        //assert(0); 
         get_one_block(order + 1);
     }
+    assert( free_list[max_order]->next == NULL);
     free_list[order] = PAGE_HEADER(free_list[order + 1]->id + (1 << order));
     page_header *newpage = PAGE_HEADER(free_list[order + 1]->id);
     newpage->next = free_list[order];
