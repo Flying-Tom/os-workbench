@@ -178,7 +178,7 @@ void buddy_stat()
             page_header *cur = free_list[i];
             while (cur != NULL)
             {
-                printf("order %d block:%d  ", order, cur->id);
+                printf("order %d block:%d  ", i, cur->id);
                 cur = cur->next;
             }
             printf("\n");
