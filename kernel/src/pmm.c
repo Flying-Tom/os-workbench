@@ -55,9 +55,9 @@ static size_t log(size_t x)
 
 static uint8_t cache_type(size_t size)
 {
-    uint8_t slab_type = 0;
-    slab_type = log(size - 1);
-    return slab_type;
+    uint8_t ret = 0;
+    ret = max(3, log(size - 1) + 1);
+    return ret;
 }
 
 static void get_one_block(uint8_t order)
