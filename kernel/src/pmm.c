@@ -158,12 +158,6 @@ static void pmm_init()
 
     free_list[max_order] = PAGE_HEADER(0);
 
-    for (int i = max_order; i >= 1; i--)
-    {
-        if (free_list[i] != NULL)
-            printf("free_list[%d] id:%d \n", i, free_list[i]->id);
-    }
-
     //assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
