@@ -12,9 +12,9 @@ static void os_run()
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
     //int *a[100];
-    for (int i = 1; i < 10; i++)
+    for (int i = 1; i < 1000; i++)
     {
-        pmm->alloc(i KB);
+        pmm->alloc(i);
         //printf("%d\n", i);
     }
     pmm->alloc(430);
