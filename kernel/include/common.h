@@ -8,7 +8,7 @@
 
 #define max(a, b) ((a > b) ? (a) : (b))
 
-#define DEBUG
+//#define DEBUG
 
 /*
 #define _Log(format, ...)                           \
