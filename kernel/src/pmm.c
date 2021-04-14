@@ -108,9 +108,7 @@ static void *kalloc(size_t size)
     assert(size > 0);
     if (size >= PAGE_SIZE)
     {
-        lock(&lk);
         ret = buddy_alloc(size);
-        unlock(&lk);
     }
     else
         ret = slab_alloc(size);
