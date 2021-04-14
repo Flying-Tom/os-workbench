@@ -63,7 +63,10 @@ static uint8_t cache_type(size_t size)
 static void get_one_block(uint8_t order)
 {
     if (free_list[order + 1] == NULL)
+    {   
+        assert(0); 
         get_one_block(order + 1);
+    }
     free_list[order] = PAGE_HEADER(free_list[order + 1]->id + (1 << order));
     page_header *newpage = PAGE_HEADER(free_list[order + 1]->id);
     newpage->next = free_list[order];
@@ -177,7 +180,6 @@ static void pmm_init()
     free_list[max_order] = PAGE_HEADER(0);
 
     get_one_block(14);
-    assert( free_list[max_order]== NULL);
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
