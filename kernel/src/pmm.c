@@ -71,6 +71,7 @@ static void get_one_block(uint8_t order)
     free_list[order] = newpage;
 
     free_list[order + 1] = free_list[order + 1]->next;
+    Log("order:%d", order);
 }
 
 static void *buddy_alloc(size_t size)
