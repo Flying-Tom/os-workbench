@@ -161,6 +161,7 @@ static void pmm_init()
     Log("max_order:%d", max_order);
 
     free_list[max_order] = PAGE_HEADER(0);
+    get_one_block(1);
 
     for (int i = 0; i < total_page_num; i++)
     {
