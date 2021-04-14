@@ -62,8 +62,8 @@ static uint8_t cache_type(size_t size)
 
 static void get_one_block(uint8_t order)
 {
-    Log("%d",order);
-    assert(order < max_order);
+    //Log("%d",order);
+    //assert(order < max_order);
     if (free_list[order + 1] == NULL)
     {
         //assert(0);
