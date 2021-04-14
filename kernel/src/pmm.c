@@ -109,7 +109,13 @@ static void *buddy_alloc(size_t size)
     }
     return NULL;
     */
-    return NULL;
+    void *ret = NULL;
+    uint8_t order = 0;
+    order = log(size / PAGE_SIZE) + 1;
+    get_one_page(order);
+    ret = PAGE(free_list[order]->id);
+    free_list[order] = free_list[order]->next;
+    return ret;
 }
 
 static page_header *get_one_page()
@@ -185,14 +191,13 @@ static void pmm_init()
 
     free_list[max_order] = PAGE_HEADER(0);
 
-    get_one_block(12);
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
             printf("free_list[%d] id:%d \n", i, free_list[i]->id);
     }
 
-    assert(0);
+    //assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
