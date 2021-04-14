@@ -26,6 +26,7 @@ static uint8_t max_order;
 typedef struct page_header
 {
     size_t size;
+    size_t id;
     uint8_t parent_cpu_id;
     uint8_t slab_type;
     uint8_t order;
@@ -57,6 +58,19 @@ static uint8_t cache_type(size_t size)
     uint8_t slab_type = 0;
     slab_type = log(size - 1);
     return slab_type;
+}
+
+static void get_one_block(uint8_t order)
+{
+    if (free_list[order + 1] == NULL)
+        get_one_block(order + 1);
+
+    free_list[order] = PAGE_HEADER(free_list[order + 1]->id + (1 << order));
+    page_header *newpage = PAGE_HEADER(free_list[order + 1]->id);
+    newpage->next = free_list[order];
+    free_list[order] = newpage;
+
+    free_list[order + 1] = free_list[order + 1]->next;
 }
 
 static void *buddy_alloc(size_t size)
@@ -145,6 +159,8 @@ static void pmm_init()
     Log("total_page_num:%d", total_page_num);
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
+
+    free_list[max_order] = PAGE_HEADER(0);
 
     for (int i = 0; i < total_page_num; i++)
     {
