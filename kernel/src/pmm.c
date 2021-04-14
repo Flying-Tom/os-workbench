@@ -117,12 +117,12 @@ static void *kalloc(size_t size)
     assert(size > 0);
     if (size >= PAGE_SIZE)
     {
-        lock(&lk);
+        //lock(&lk);
         size = 1 << (log(size - 1) + 1);
         ret = buddy_alloc(size);
         Log("buddy_alloc size:%d ret:%p", size, ret);
         assert((uintptr_t)ret % size == 0);
-        unlock(&lk);
+        //unlock(&lk);
     }
     else
         ret = slab_alloc(size);
