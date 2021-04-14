@@ -113,7 +113,7 @@ static void *buddy_alloc(size_t size)
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     get_one_page(order);
-    ret = PAGE(free_list[order]->id);
+    ret = (void *)PAGE(free_list[order]->id);
     free_list[order] = free_list[order]->next;
     return ret;
 }
