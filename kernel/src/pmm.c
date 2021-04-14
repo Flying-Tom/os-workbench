@@ -173,10 +173,9 @@ static void pmm_init()
         cur->size = 0;
         cur->next = NULL;
     }
-    page_header *cur = PAGE_HEADER(0);
-    assert(cur->next != NULL);
 
     free_list[max_order] = PAGE_HEADER(0);
+    assert( free_list[max_order]->next == NULL);
     get_one_block(14);
 
     for (int i = max_order; i >= 1; i--)
