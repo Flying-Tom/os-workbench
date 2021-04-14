@@ -166,6 +166,14 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
+    for (int i = 0; i < total_page_num; i++)
+    {
+        page_header *cur = PAGE_HEADER(i);
+        cur->parent_cpu_id = MAX_CPU_NUM;
+        cur->size = 0;
+        cur->next = NULL;
+    }
+
     free_list[max_order] = PAGE_HEADER(0);
     get_one_block(14);
 
@@ -175,12 +183,6 @@ static void pmm_init()
             printf("free_list[%d] id:%d \n", i, free_list[i]->id);
     }
 
-    for (int i = 0; i < total_page_num; i++)
-    {
-        page_header *cur = PAGE_HEADER(i);
-        cur->parent_cpu_id = MAX_CPU_NUM;
-        cur->size = 0;
-    }
     assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
