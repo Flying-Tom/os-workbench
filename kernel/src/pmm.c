@@ -113,7 +113,8 @@ static void *kalloc(size_t size)
     }
     else
         ret = slab_alloc(size);
-    //assert((uintptr_t)ret % size == 0);
+    Log("ret:%p", ret);
+    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
