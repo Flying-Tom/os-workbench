@@ -79,9 +79,7 @@ static void get_one_block(uint8_t order)
 
 static void *buddy_alloc(size_t size)
 {
-    Log("fuck");
     lock(&lk);
-    Log("fuck");
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
