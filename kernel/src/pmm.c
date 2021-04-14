@@ -70,8 +70,8 @@ static void get_one_block(uint8_t order)
     free_list[order] = newpage;
 
     free_list[order + 1] = free_list[order + 1]->next;
-    if (free_list[order + 1] != NULL)
-        Log("free_list[order + 1]->id:%d",free_list[order + 1]->id);
+    if (free_list[order + 1]->next != NULL)
+        Log("free_list[order + 1]->id:%d", free_list[order + 1]->id);
     Log("order:%d", order);
     assert(0);
 }
