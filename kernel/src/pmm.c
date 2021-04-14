@@ -81,6 +81,7 @@ static void *buddy_alloc(size_t size)
     }
     return NULL;
     */
+   return NULL;
 }
 
 static page_header *get_one_page()
