@@ -21,6 +21,7 @@ static lock_t lk = LOCK_INIT();
 static uintptr_t pm_start, pm_end;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
+static uint8_t max_order;
 
 typedef struct page_header
 {
@@ -60,6 +61,7 @@ static uint8_t cache_type(size_t size)
 
 static void *buddy_alloc(size_t size)
 {
+    /*
     lock(&lk);
     cpu_id = cpu_current();
     for (int i = 0; i < total_page_num; i++)
@@ -78,6 +80,7 @@ static void *buddy_alloc(size_t size)
         }
     }
     return NULL;
+    */
 }
 
 static page_header *get_one_page()
@@ -137,6 +140,8 @@ static void pmm_init()
     Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     pm_start = align(pm_start, PAGE_SIZE);
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
+    max_order = log(total_page_num);
+    Log("max_order:%d", max_order);
 
     for (int i = 0; i < total_page_num; i++)
     {
@@ -144,6 +149,7 @@ static void pmm_init()
         cur->parent_cpu_id = MAX_CPU_NUM;
         cur->size = 0;
     }
+    assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
