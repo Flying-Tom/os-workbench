@@ -177,6 +177,7 @@ static void pmm_init()
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
+        cur->id = i;
         cur->parent_cpu_id = MAX_CPU_NUM;
         cur->size = 0;
         cur->next = NULL;
@@ -191,7 +192,7 @@ static void pmm_init()
             printf("free_list[%d] id:%d \n", i, free_list[i]->id);
     }
 
-    Log("free_list[14]->id:%d", free_list[14]->next->id);
+    //Log("free_list[14]->id:%d", free_list[14]->next->id);
     assert(0);
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
