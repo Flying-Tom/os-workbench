@@ -62,8 +62,7 @@ static uint8_t cache_type(size_t size)
 
 static void block_generate(uint8_t order)
 {
-    //Log("%d",order);
-    //assert(order < max_order);
+    assert(order < max_order);
     if (free_list[order + 1] == NULL)
     {
         //assert(0);
@@ -189,7 +188,6 @@ static void pmm_init()
     }
 
     free_list[max_order] = PAGE_HEADER(0);
-
 
     //buddy_stat();
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
