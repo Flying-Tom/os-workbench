@@ -175,9 +175,9 @@ static void pmm_init()
     }
 
     free_list[max_order] = PAGE_HEADER(0);
-    assert( free_list[max_order]->next == NULL);
-    get_one_block(14);
 
+    get_one_block(14);
+    assert( free_list[max_order]->next == NULL);
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
