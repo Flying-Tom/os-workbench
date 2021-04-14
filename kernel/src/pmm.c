@@ -90,7 +90,7 @@ static page_header *get_one_page()
     }
     Log("No more free pages");
     return NULL;*/
-    return (page_header *)(buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
+    return (page_header *)((uint8_t)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
 }
 
 static void *slab_alloc(size_t size)
