@@ -138,7 +138,7 @@ static void kfree(void *ptr)
 
 void buddy_stat()
 {
-    Log("=========================");
+    printf("=========================\n");
     for (int i = max_order; i >= 1; i--)
     {
         if (free_list[i] != NULL)
@@ -152,10 +152,9 @@ void buddy_stat()
             printf("\n");
         }
     }
-    Log("=========================");
+    printf("=========================\n");
     assert(0);
 }
-
 
 static void pmm_init()
 {
@@ -189,7 +188,6 @@ static void pmm_init()
     Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
 }
-
 
 MODULE_DEF(pmm) = {
     .init = pmm_init,
