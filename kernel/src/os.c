@@ -18,6 +18,11 @@ static void os_run()
         pmm->alloc(16 KB);
         //printf("Alloc %d success\n", 16 KB);
     }
+    for (int i = 1; i < 1000; i++)
+    {
+        pmm->alloc(i);
+        //printf("Alloc %d success\n", 16 KB);
+    }
     pmm->alloc(430);
 
     //pmm->stat();
