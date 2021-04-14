@@ -190,9 +190,8 @@ static void pmm_init()
 
     free_list[max_order] = PAGE_HEADER(0);
 
-    get_one_block(13);
 
-    buddy_stat();
+    //buddy_stat();
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
