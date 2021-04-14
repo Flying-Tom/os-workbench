@@ -13,6 +13,9 @@
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 #define PAGE(a) (pm_start + a * PAGE_SIZE)
 
+/* buddy system*/
+#define MAX_BUDDY_BLOCK_TYPE 20
+
 /*------------------------------------------*/
 static lock_t lk = LOCK_INIT();
 static uintptr_t pm_start, pm_end;
@@ -24,9 +27,10 @@ typedef struct page_header
     size_t size;
     uint8_t parent_cpu_id;
     uint8_t slab_type;
+    uint8_t order;
     struct page_header *next;
 } page_header;
-page_header *global_page_list, *global_last_page;
+page_header *free_list[MAX_BUDDY_BLOCK_TYPE];
 
 typedef struct Cache
 {
