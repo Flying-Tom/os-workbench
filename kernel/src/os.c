@@ -14,8 +14,8 @@ static void os_run()
     //int *a[100];
     for (int i = 1; i < 10; i++)
     {
-        pmm->alloc(40 KB);
-        printf("Alloc %d success\n", 4 KB);
+        pmm->alloc(16 MB);
+        printf("Alloc %d success\n", 16 MB);
     }
     pmm->alloc(430);
 
