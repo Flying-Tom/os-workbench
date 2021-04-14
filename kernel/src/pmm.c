@@ -56,7 +56,7 @@ static uint8_t cache_type(size_t size)
 
 static void *buddy_alloc(size_t size)
 {
-    //lock(&lk);
+    lock(&lk);
     cpu_id = cpu_current();
     for (int i = 0; i < total_page_num; i++)
     {
@@ -69,7 +69,7 @@ static void *buddy_alloc(size_t size)
                 cur = PAGE_HEADER(j);
                 cur->parent_cpu_id = cpu_id;
             }
-            //unlock(&lk);
+            unlock(&lk);
             return (void *)PAGE(i);
         }
     }
@@ -107,10 +107,10 @@ static void *kalloc(size_t size)
     assert(size > 0);
     if (size >= PAGE_SIZE)
     {
-        lock(&lk);
+        //lock(&lk);
         ret = buddy_alloc(size);
         assert((uintptr_t)ret % size == 0);
-        unlock(&lk);
+        //unlock(&lk);
     }
     else
         ret = slab_alloc(size);
