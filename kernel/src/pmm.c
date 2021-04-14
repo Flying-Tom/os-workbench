@@ -162,12 +162,30 @@ static void pmm_init()
 
     free_list[max_order] = PAGE_HEADER(0);
 
-    //assert(0);
+    get_one_block(13);
+    buddy_stat();
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
 }
 
+void buddy_stat()
+{
+    for (int i = max_order; i >= 1; i--)
+    {
+        if (free_list[i] != NULL)
+        {
+            page_header *cur = free_list[i];
+            while (cur != NULL)
+            {
+                printf("order %d block:%d  ", order, cur->id);
+                cur = cur->next;
+            }
+            printf("\n");
+        }
+    }
+    assert(0);
+}
 MODULE_DEF(pmm) = {
     .init = pmm_init,
     .alloc = kalloc,
