@@ -185,10 +185,6 @@ static void pmm_init()
 
     free_list[max_order] = PAGE_HEADER(0);
 
-    get_one_block(1);
-    get_one_block(1);
-    get_one_block(1);
-    get_one_block(1);
     get_one_block(12);
     for (int i = max_order; i >= 1; i--)
     {
