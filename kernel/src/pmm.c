@@ -202,7 +202,7 @@ static void kfree(void *ptr)
     page_header *cur = (page_header *)(page_addr + PAGE_SIZE - sizeof(page_header));
 
     uint64_t items = ((uintptr_t)ptr - page_addr) / (1 << cur->slab_type);
-    lcok(&page_lk);
+    lock(&page_lk);
     cur->bitmap[items / 64] ^= (1 << (items % 64));
     unlock(&page_lk);
 }
