@@ -139,7 +139,7 @@ static void *slab_alloc(size_t size)
     void *ret = NULL;
     uint8_t type = 0, cur_cpu_id = 0;
     cur_cpu_id = cpu_current();
-
+    cur_cpu_id++;
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
