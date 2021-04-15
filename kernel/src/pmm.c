@@ -189,6 +189,7 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
+    /*
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
@@ -197,7 +198,8 @@ static void pmm_init()
         cur->size = 0;
         cur->next = NULL;
     }
-
+    */
+   
     free_list[max_order] = PAGE_HEADER(0);
 
     //buddy_stat();
