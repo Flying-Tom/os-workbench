@@ -29,7 +29,6 @@ typedef struct page_header
     size_t id;
     uint8_t parent_cpu_id;
     uint64_t bitmap[4096];
-    uint8_t parent_cpu_id;
     uint8_t slab_type;
     uint8_t order;
     struct page_header *next;
@@ -227,7 +226,6 @@ static void pmm_init()
         page_header *cur = PAGE_HEADER(i);
         cur->id = i;
         cur->parent_cpu_id = MAX_CPU_NUM;
-        cur->size = 0;
         cur->next = NULL;
     }
 
