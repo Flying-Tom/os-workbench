@@ -5,7 +5,7 @@
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 
 /* const macro */
-#define PAGE_SIZE (4 KB)
+#define PAGE_SIZE (8 KB)
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 12
 
@@ -125,7 +125,7 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     assert(size > 0);
-    if (size >= PAGE_SIZE)
+    if (size > PAGE_SIZE)
     {
         //lock(&lk);
         size = 1 << (log(size - 1) + 1);
