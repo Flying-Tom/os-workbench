@@ -18,7 +18,7 @@ static void os_run()
     }
 
 #ifdef SMOKE
-    for (int i = 1; i < 100; i++)
+    for (int i = 1; i < 10; i++)
     {
         size_t rand_m = 4;
         pmm->alloc(rand_m);
