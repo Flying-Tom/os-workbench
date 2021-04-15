@@ -117,7 +117,7 @@ static bool page_full(page_header *cur)
     uint64_t i, tmp = 0;
     for (i = 0; i < 64; i++)
     {
-        if (cur->bitmap[i] + 1ULL != 0 ULL)
+        if (cur->bitmap[i] + 1ULL != 0ULL)
         {
             tmp = cur->bitmap[i];
             break;
