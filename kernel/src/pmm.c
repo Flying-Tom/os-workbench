@@ -146,8 +146,8 @@ static bool page_full(page_header *cur)
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
-    uint8_t type = 0;
-    //cur_cpu_id = cpu_current();
+    uint8_t type = 0, cur_cpu_id = 0;
+    cur_cpu_id = cpu_current();
 
     type = cache_type(size);
     size = 1 << type;
@@ -158,6 +158,7 @@ static void *slab_alloc(size_t size)
     {
         Log("Get new page");
         object_cache->slab_free = (page_header *)(buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
+        object_cache->slab_free->parent_cpu_id = cur_cpu_id;
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
 
@@ -197,7 +198,13 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    page_header *cur = (page_header *)((uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE + PAGE_SIZE - sizeof(page_header));
+    uintptr_t page_addr = (uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE;
+    page_header *cur = (page_header *)(page_addr + PAGE_SIZE - sizeof(page_header));
+
+    uint64_t items = ((uinptr_t)ptr - page_addr) / (1 << cur->slab_type);
+    lcok(&page_lk);
+    cur->bitmap[items / 64] ^= (1 << (items % 64));
+    unlock(&page_lk);
 }
 
 void buddy_stat()
