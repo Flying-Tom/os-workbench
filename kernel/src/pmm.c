@@ -104,7 +104,7 @@ static void *buddy_alloc(size_t size)
     unlock(&lk);
     return ret;
     */
-    void ret = NULL;
+    void* ret = NULL;
     pm_cur -= size;
     return ret;
 }
