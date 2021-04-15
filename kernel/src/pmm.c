@@ -164,6 +164,7 @@ static void *slab_alloc(size_t size)
 static void *kalloc(size_t size)
 {
     void *ret = NULL;
+    Log("kalloc: %d", size);
     assert(size > 0);
     if (size >= PAGE_SIZE)
     {
@@ -230,7 +231,7 @@ static void pmm_init()
         cur->parent_cpu_id = MAX_CPU_NUM;
         cur->next = NULL;
     }
-    */ 
+    */
 
     //free_list[max_order] = PAGE_HEADER(0);
 
