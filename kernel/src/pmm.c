@@ -126,7 +126,7 @@ static bool page_full(page_header *cur)
     i = i * 64;
     while (tmp & (1ULL))
     {
-        temp >>= 1ULL;
+        tmp >>= 1ULL;
         i++;
     }
     if (i + 1 < PAGE_SIZE / (1 << cur->slab_type))
