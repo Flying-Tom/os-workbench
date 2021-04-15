@@ -20,7 +20,7 @@ static void os_run()
     }
     for (int i = 0; i < 4; i++)
     {
-        pmm->alloc(rand() % 16 MB + 1);
+        pmm->alloc(rand() % 8 MB + 1);
         //printf("Alloc %d success\n", 16 KB);
     }
     pmm->alloc(430);
