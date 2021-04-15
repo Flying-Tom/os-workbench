@@ -19,7 +19,7 @@
 
 /*------------------------------------------*/
 static lock_t lk = LOCK_INIT();
-static uintptr_t pm_start, pm_end;
+static uintptr_t pm_start, pm_end, pm_cur;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
@@ -61,6 +61,7 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
+/*
 static void block_generate(uint8_t order)
 {
     assert(order < max_order);
@@ -89,9 +90,11 @@ static size_t get_one_block(uint8_t order)
     //unlock(&lk);
     return ret;
 }
+*/
 
 static void *buddy_alloc(size_t size)
 {
+    /*
     lock(&lk);
     void *ret = NULL;
     uint8_t order = 0;
@@ -100,12 +103,9 @@ static void *buddy_alloc(size_t size)
     ret = (void *)PAGE(get_one_block(order));
     unlock(&lk);
     return ret;
-}
-
-static page_header *get_one_page(uint8_t cur_cpu_id)
-{
-    page_header *ret = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
-    ret->parent_cpu_id = cur_cpu_id;
+    */
+    void ret = NULL;
+    pm_cur -= size;
     return ret;
 }
 
@@ -216,6 +216,8 @@ static void pmm_init()
     Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     Log("pm_end:%p", pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
+    pm_cur = pm_end;
+
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("total_page_num:%d", total_page_num);
     max_order = log(total_page_num);
