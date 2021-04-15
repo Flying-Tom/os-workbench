@@ -105,7 +105,7 @@ static void *buddy_alloc(size_t size)
     return ret;
     */
     void *ret = NULL;
-    pm_cur -= size;
+    pm_cur -= (uint8_t *)size;
     return ret;
 }
 
