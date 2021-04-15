@@ -148,6 +148,7 @@ static void *slab_alloc(size_t size)
     {
         Log("Get new page");
         object_cache->slab_free = (page_header *)(buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
+        Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
     size_t i = 0, j = 0;
     Log("object_cache->slab_free->bitmap[0]:%u", object_cache->slab_free->bitmap[0]);
