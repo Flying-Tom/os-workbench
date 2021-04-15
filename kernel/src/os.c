@@ -1,5 +1,9 @@
 #include <common.h>
 
+#define SMOKE
+//#define NORMAL
+//#define STRESSED
+
 static void os_init()
 {
     pmm->init();
@@ -7,32 +11,42 @@ static void os_init()
 
 static void os_run()
 {
+
     for (const char *s = "Hello World from CPU #*\n"; *s; s++)
     {
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
-    //int *a[100];
-    /*
+
+#ifdef SMOKE
+    for (int i = 1; i < 100; i++)
+    {
+        size_t rand_m = 4;
+        pmm->alloc(rand_m);
+        printf("%d: Alloc %d success\n", i, rand_m);
+    }
+#endif
+
+#ifdef NORMAL
     for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m);
     }
-    */
     for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m KB);
     }
-    /*
+#endif
+#ifdef STRESSED
     for (int i = 0; i < 0; i++)
     {
         pmm->alloc(rand() % 8 MB + 1);
         //printf("Alloc %d success\n", 16 KB);
-    }*/
-    pmm->alloc(430);
+    }
+#endif
 
     //pmm->stat();
     /*
