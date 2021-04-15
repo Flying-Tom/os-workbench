@@ -17,8 +17,12 @@
 /* buddy system*/
 #define MAX_BUDDY_BLOCK_TYPE 20
 
+/* bitmap */
+#define BITMAP_FULL(page, id) (page->bitmap[id] + 1ULL == 0ULL)
+
 /*------------------------------------------*/
-static lock_t pm_global_lk;
+static lock_t pm_global_lk = LOCK_INIT();
+static lock_t page_lk = LOCK_INIT();
 
 static uintptr_t pm_start, pm_end;
 static uintptr_t pm_cur;
@@ -121,22 +125,22 @@ static bool page_full(page_header *cur)
     uint64_t i, tmp = 0;
     for (i = 0; i < 64; i++)
     {
-        if (cur->bitmap[i] + 1ULL != 0ULL)
+        if (!BITMAP_FULL(cur, i))
         {
             tmp = cur->bitmap[i];
             break;
         }
     }
-    i = i * 64;
-    while (tmp & (1ULL))
+    i = i << 8;
+    while (tmp & 1)
     {
-        tmp >>= 1ULL;
+        tmp >>= 1;
         i++;
     }
     if (i + 1 < PAGE_SIZE / (1 << cur->slab_type))
-        return 0;
+        return false;
     else
-        return 1;
+        return true;
 }
 
 static void *slab_alloc(size_t size)
@@ -157,7 +161,7 @@ static void *slab_alloc(size_t size)
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
 
-    lock(&pm_global_lk);
+    lock(&page_lk);
     size_t i = 0, j = 0;
     Log("object_cache->slab_free->bitmap[0]:%u", object_cache->slab_free->bitmap[0]);
     while (object_cache->slab_free->bitmap[i] + 1ULL == 0ULL)
@@ -165,7 +169,7 @@ static void *slab_alloc(size_t size)
     while (object_cache->slab_free->bitmap[i] & (1 << j))
         j++;
     object_cache->slab_free->bitmap[i] |= (1 << j);
-    unlock(&pm_global_lk);
+    unlock(&page_lk);
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     assert((uintptr_t)ret % size == 0);
@@ -193,8 +197,9 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    lock(&pm_global_lk);
-    unlock(&pm_global_lk);
+    page_header *cur = NULL;
+    cur = (page_header *)((uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE + PAGE_SIZE - sizeof(page_header));
+    
 }
 
 void buddy_stat()
@@ -234,7 +239,6 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
-    pm_global_lk = LOCK_INIT();
     /*
     for (int i = 0; i < total_page_num; i++)
     {
