@@ -1,5 +1,4 @@
 #include <common.h>
-#define DEBUG
 
 static void os_init()
 {
