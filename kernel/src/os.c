@@ -12,11 +12,19 @@ static void os_run()
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
     //int *a[100];
+    /*
     for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m);
+    }
+    */
+    for (int i = 1; i < 100; i++)
+    {
+        size_t rand_m = rand() % 128 + 1;
+        pmm->alloc(rand_m);
+        printf("%d: Alloc %d success\n", i, rand_m KB);
     }
     /*
     for (int i = 0; i < 0; i++)
