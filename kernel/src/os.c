@@ -14,7 +14,7 @@ static void os_run()
     //int *a[100];
     for (int i = 1; i < 100; i++)
     {
-        size_t rand_m = rand() % 128 + 1;
+        size_t rand_m = 7 % 128 + 1;
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m);
     }
