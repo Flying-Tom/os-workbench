@@ -138,7 +138,7 @@ static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
     uint8_t type = 0;
-    Log("fuck");
+
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
@@ -230,7 +230,7 @@ static void pmm_init()
         cur->next = NULL;
     }
 
-    free_list[max_order] = PAGE_HEADER(0);
+    //free_list[max_order] = PAGE_HEADER(0);
 
     //buddy_stat();
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
