@@ -19,7 +19,8 @@
 
 /*------------------------------------------*/
 static lock_t lk = LOCK_INIT();
-static uintptr_t pm_start, pm_end, pm_cur;
+static uintptr_t pm_start, pm_end;
+static uint8_t *pm_cur;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
@@ -105,7 +106,7 @@ static void *buddy_alloc(size_t size)
     return ret;
     */
     void *ret = NULL;
-    pm_cur -= (uint8_t *)size;
+    pm_cur -= size;
     return ret;
 }
 
