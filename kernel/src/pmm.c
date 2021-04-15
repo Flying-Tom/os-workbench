@@ -104,7 +104,7 @@ static void *buddy_alloc(size_t size)
     unlock(&lk);
     return ret;
     */
-    void* ret = NULL;
+    void *ret = NULL;
     pm_cur -= size;
     return ret;
 }
@@ -137,9 +137,8 @@ static bool page_full(page_header *cur)
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
-    uint8_t type = 0, cur_cpu_id = 0;
-    cur_cpu_id = cpu_current();
-    cur_cpu_id++;
+    uint8_t type = 0;
+
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
