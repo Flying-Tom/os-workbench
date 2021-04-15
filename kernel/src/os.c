@@ -18,7 +18,7 @@ static void os_run()
         pmm->alloc(rand() % 128 + 1);
         //printf("Alloc %d success\n", 16 KB);
     }
-    for (int i = 0; i < 4; i++)
+    for (int i = 0; i < 0; i++)
     {
         pmm->alloc(rand() % 8 MB + 1);
         //printf("Alloc %d success\n", 16 KB);
