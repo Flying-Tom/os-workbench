@@ -150,6 +150,7 @@ static void *slab_alloc(size_t size)
         object_cache->slab_free = (page_header *)(buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
     }
     size_t i = 0, j = 0;
+    Log("fuck");
     while (object_cache->slab_free->bitmap[i] + 1ULL != 0ULL)
         i++;
     Log("fuck");
