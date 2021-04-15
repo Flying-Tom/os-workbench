@@ -197,9 +197,7 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    page_header *cur = NULL;
-    cur = (page_header *)((uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE + PAGE_SIZE - sizeof(page_header));
-    
+    page_header *cur = (page_header *)((uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE + PAGE_SIZE - sizeof(page_header));
 }
 
 void buddy_stat()
