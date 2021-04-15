@@ -138,7 +138,7 @@ static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
     uint8_t type = 0;
-
+    Log("fuck");
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
