@@ -156,7 +156,6 @@ static void *slab_alloc(size_t size)
     Log("object_cache->slab_free->bitmap[0]:%u", object_cache->slab_free->bitmap[0]);
     while (object_cache->slab_free->bitmap[i] + 1ULL == 0ULL)
         i++;
-    Log("fuck");
     while (object_cache->slab_free->bitmap[i] & (1 << j))
         j++;
     object_cache->slab_free->bitmap[i] |= (1 << j);
