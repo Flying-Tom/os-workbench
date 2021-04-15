@@ -221,7 +221,7 @@ static void pmm_init()
     Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     Log("pm_end:%p", pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
-    pm_cur = (uint8_t *)pm_end;
+    pm_cur = pm_end;
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("total_page_num:%d", total_page_num);
