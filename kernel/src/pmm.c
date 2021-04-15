@@ -101,10 +101,19 @@ static void *buddy_alloc(size_t size)
     return ret;
 }
 
+static page_header *get_one_page(uint8_t cur_cpu_id)
+{
+    page_header *ret = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
+    ret->parent_cpu_id = cur_cpu_id;
+    return ret;
+}
+
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
-    uint8_t type = 0;
+    uint8_t type = 0, cur_cpu_id = 0;
+    cur_cpu_id = cpu_current();
+
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
@@ -112,7 +121,7 @@ static void *slab_alloc(size_t size)
     if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size >= PAGE_SIZE - sizeof(page_header))
     {
         Log("Get new page");
-        object_cache->newest_slab = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + (PAGE_SIZE - sizeof(page_header)));
+        object_cache->newest_slab = get_one_page(cur_cpu_id);
     }
 
     ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
