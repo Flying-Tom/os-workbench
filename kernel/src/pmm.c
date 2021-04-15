@@ -12,6 +12,7 @@
 /* page header */
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
 #define PAGE(a) (pm_start + a * PAGE_SIZE)
+#define slab_max_items(size) ((PAGE_SIZE - sizeof(page_header)) / size)
 
 /* buddy system*/
 #define MAX_BUDDY_BLOCK_TYPE 20
@@ -25,8 +26,9 @@ static uint8_t max_order;
 
 typedef struct page_header
 {
-    size_t size;
     size_t id;
+    uint8_t parent_cpu_id;
+    uint64_t bitmap[4096];
     uint8_t parent_cpu_id;
     uint8_t slab_type;
     uint8_t order;
@@ -38,7 +40,7 @@ typedef struct Cache
 {
     int size;
     int num_of_slab;
-    page_header *newest_slab;
+    page_header *slab_free;
 } Cache;
 Cache cache[MAX_CPU_NUM][8];
 
@@ -108,6 +110,31 @@ static page_header *get_one_page(uint8_t cur_cpu_id)
     return ret;
 }
 
+static bool page_full(page_header *cur)
+{
+    if (cur == NULL)
+        return true;
+    uint64_t i, tmp = 0;
+    for (i = 0; i < 64; i++)
+    {
+        if (cur->bitmap[i] + 1ULL != 0 ULL)
+        {
+            tmp = cur->bitmap[i];
+            break;
+        }
+    }
+    i = i * 64;
+    while (tmp & (1ULL))
+    {
+        temp >>= 1ULL;
+        i++;
+    }
+    if (i + 1 < PAGE_SIZE / (1 << cur->slab_type))
+        return 0;
+    else
+        return 1;
+}
+
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
@@ -117,15 +144,21 @@ static void *slab_alloc(size_t size)
     type = cache_type(size);
     size = 1 << type;
     Log("type:%d size:%d", type, size);
+
     Cache *object_cache = &cache[cpu_id][type];
-    if (object_cache->newest_slab == NULL || object_cache->newest_slab->size + size >= PAGE_SIZE - sizeof(page_header))
+    if (page_full(object_cache->slab_free))
     {
         Log("Get new page");
-        object_cache->newest_slab = get_one_page(cur_cpu_id);
+        object_cache->slab_free = get_one_page(cur_cpu_id);
     }
+    size_t i = 0, j = 0;
+    while (object_cache->slab_free->bitmap[i])
+        i++;
+    while (object_cache->slab_free->bitmap[i] & (1 << j))
+        j++;
+    object_cache->slab_free->bitmap[i] |= (1 << j);
 
-    ret = (void *)((uint8_t *)object_cache->newest_slab - (PAGE_SIZE - sizeof(page_header)) + object_cache->newest_slab->size);
-    object_cache->newest_slab->size += size;
+    ret = (void *)((uint8_t *)object_cache->newest_slab + (i * 64 + j) * size);
     assert((uintptr_t)ret % size == 0);
     return ret;
 }
@@ -189,7 +222,6 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
-    /*
     for (int i = 0; i < total_page_num; i++)
     {
         page_header *cur = PAGE_HEADER(i);
@@ -198,8 +230,7 @@ static void pmm_init()
         cur->size = 0;
         cur->next = NULL;
     }
-    */
-   
+
     free_list[max_order] = PAGE_HEADER(0);
 
     //buddy_stat();
