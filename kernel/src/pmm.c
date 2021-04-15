@@ -18,7 +18,8 @@
 #define MAX_BUDDY_BLOCK_TYPE 20
 
 /*------------------------------------------*/
-static lock_t lk = LOCK_INIT();
+static lock_t pm_global_lk;
+
 static uintptr_t pm_start, pm_end;
 static uintptr_t pm_cur;
 static uint8_t cpu_id, cpu_num;
@@ -82,13 +83,13 @@ static void block_generate(uint8_t order)
 
 static size_t get_one_block(uint8_t order)
 {
-    //lock(&lk);
+    //lock(&pm_global_lk);
     size_t ret = 0;
     if (free_list[order] == NULL)
         block_generate(order);
     ret = free_list[order]->id;
     free_list[order] = free_list[order]->next;
-    //unlock(&lk);
+    //unlock(&pm_global_lk);
     return ret;
 }
 */
@@ -96,20 +97,20 @@ static size_t get_one_block(uint8_t order)
 static void *buddy_alloc(size_t size)
 {
     /*
-    lock(&lk);
+    lock(&pm_global_lk);
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     Log("buddy_alloc %d Bytes  Its order:%d", size, order);
     ret = (void *)PAGE(get_one_block(order));
-    unlock(&lk);
+    unlock(&pm_global_lk);
     return ret;
     */
-    lock(&lk);
+    lock(&pm_global_lk);
     void *ret = NULL;
     pm_cur -= size;
     ret = (void *)pm_cur;
-    unlock(&lk);
+    unlock(&pm_global_lk);
     return ret;
 }
 
@@ -141,7 +142,8 @@ static bool page_full(page_header *cur)
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
-    uint8_t type = 0;
+    uint8_t type = 0, cur_cpu_id = 0;
+    cur_cpu_id = cpu_current();
 
     type = cache_type(size);
     size = 1 << type;
@@ -154,15 +156,16 @@ static void *slab_alloc(size_t size)
         object_cache->slab_free = (page_header *)(buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
+
+    lock(&pm_global_lk);
     size_t i = 0, j = 0;
     Log("object_cache->slab_free->bitmap[0]:%u", object_cache->slab_free->bitmap[0]);
     while (object_cache->slab_free->bitmap[i] + 1ULL == 0ULL)
         i++;
     while (object_cache->slab_free->bitmap[i] & (1 << j))
         j++;
-    lock(&lk);
     object_cache->slab_free->bitmap[i] |= (1 << j);
-    unlock(&lk);
+    unlock(&cpm_global_lk);
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     assert((uintptr_t)ret % size == 0);
@@ -176,12 +179,12 @@ static void *kalloc(size_t size)
     assert(size > 0);
     if (size >= PAGE_SIZE)
     {
-        //lock(&lk);
+        //lock(&pm_global_lk);
         size = 1 << (log(size - 1) + 1);
         ret = buddy_alloc(size);
         Log("buddy_alloc size:%d ret:%p", size, ret);
         //assert((uintptr_t)ret % size == 0);
-        //unlock(&lk);
+        //unlock(&pm_global_lk);
     }
     else
         ret = slab_alloc(size);
@@ -190,8 +193,8 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    lock(&lk);
-    unlock(&lk);
+    lock(&pm_global_lk);
+    unlock(&pm_global_lk);
 }
 
 void buddy_stat()
@@ -231,6 +234,7 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
+    pm_global_lk = LOCK_INIT();
     /*
     for (int i = 0; i < total_page_num; i++)
     {
