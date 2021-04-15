@@ -142,8 +142,8 @@ static bool page_full(page_header *cur)
 static void *slab_alloc(size_t size)
 {
     void *ret = NULL;
-    uint8_t type = 0, cur_cpu_id = 0;
-    cur_cpu_id = cpu_current();
+    uint8_t type = 0;
+    //cur_cpu_id = cpu_current();
 
     type = cache_type(size);
     size = 1 << type;
@@ -165,7 +165,7 @@ static void *slab_alloc(size_t size)
     while (object_cache->slab_free->bitmap[i] & (1 << j))
         j++;
     object_cache->slab_free->bitmap[i] |= (1 << j);
-    unlock(&cpm_global_lk);
+    unlock(&pm_global_lk);
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     assert((uintptr_t)ret % size == 0);
