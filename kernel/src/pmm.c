@@ -160,7 +160,7 @@ static void *slab_alloc(size_t size)
         j++;
     object_cache->slab_free->bitmap[i] |= (1 << j);
 
-    ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE -sizeof(page_header) + (i * 64 + j) * size);
+    ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     assert((uintptr_t)ret % size == 0);
     return ret;
 }
