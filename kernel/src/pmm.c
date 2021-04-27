@@ -48,6 +48,12 @@ typedef struct Cache
 } Cache;
 Cache cache[MAX_CPU_NUM][8];
 
+enum
+{
+    BUD_EMPTY,
+    BUD_USED
+};
+
 typedef struct buddy_node
 {
     uint8_t status;
@@ -111,11 +117,7 @@ static void buddy_init()
 
     pm_start = align(pm_start, PAGE_SIZE);
 
-    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
-
-    Log("total_page_num:%d", total_page_num);
-
-    max_order = log((pm_end - pm_start) / PAGE_SIZE);
+    max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
     pm_end = (uintptr_t)((uint8_t *)pm_end - (1 << max_order) * sizeof(buddy_node));
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
