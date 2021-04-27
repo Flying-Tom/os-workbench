@@ -28,7 +28,7 @@ static uintptr_t pm_start, pm_end;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
-static uint8_t max_buddy_node_num;
+static size_t max_buddy_node_num;
 
 typedef struct page_header
 {
@@ -124,23 +124,22 @@ static void buddy_init()
     pm_start = align(pm_start, PAGE_SIZE);
 
     max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
-    max_buddy_node_num = 1 + max_order;
-    Log("max_order:%d", max_order);
-    Log("max_buddy_node_num:%d", max_buddy_node_num);
+    max_buddy_node_num = 1 << max_order;
 
     pm_end = (uintptr_t)((uint8_t *)pm_end - max_buddy_node_num * sizeof(buddy_node));
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
-    Log("fuck");
+
     buddy = (buddy_node *)pm_end;
 
     int temp = total_page_num;
     buddy_node *cur_node = NULL;
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
-        cur_node = buddy + i;
-        Log("cur_node:%p", cur_node);
-        cur_node->status = BUD_UNINIT;
+        //cur_node = buddy + i;
+        //Log("cur_node:%p", cur_node);
+        //cur_node->status = BUD_UNINIT;
+        buddy[i].status = BUD_UNINIT;
     }
 
     for (int i = max_order; i >= 2; i--)
