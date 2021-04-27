@@ -187,7 +187,7 @@ static void *buddy_alloc(size_t size)
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
     ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node)));
-
+    Log("ret:%p", ret);
     //ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
     return ret;
