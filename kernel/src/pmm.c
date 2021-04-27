@@ -26,6 +26,7 @@ static lock_t page_lk = LOCK_INIT();
 static lock_t buddy_lk = LOCK_INIT();
 
 static uintptr_t pm_start, pm_end;
+static size_t pmm_size;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
@@ -121,6 +122,7 @@ static void buddy_init()
     Log("heap.end:%p", heap.end);
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
+    pmm_size = pm_end - pm_start;
     Log("max pages:%d", (pm_end - pm_start) / PAGE_SIZE);
 
     pm_start = align(pm_start, PAGE_SIZE);
@@ -190,7 +192,7 @@ static void *buddy_alloc(size_t size)
     size = 1 << (log(size / PAGE_SIZE) + 1);
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
-    temp = obj_buddy_node;
+    temp = obj_buddy_node % (1 << log(obj_buddy_node));
     while (temp)
     {
         temp >>= 1;
