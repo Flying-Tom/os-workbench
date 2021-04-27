@@ -176,7 +176,7 @@ static size_t get_one_buddy_node(uint8_t order)
         }
     }
     unlock(&buddy_lk);
-    return NULL;
+    return 0;
 }
 
 static void *buddy_alloc(size_t size)
