@@ -167,6 +167,7 @@ static void buddy_init()
 static size_t get_one_buddy_node(uint8_t order)
 {
     lock(&buddy_lk);
+    Log("fuck");
     size_t obj_loc = 1 << (max_order - order);
     size_t obj_max_loc = 1 << (max_order - order + 1);
     for (; obj_loc < obj_max_loc; obj_loc++)
