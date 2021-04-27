@@ -188,7 +188,8 @@ static void *buddy_alloc(size_t size)
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     Log("buddy_alloc %d Bytes  Its order:%d", size, order);
-    ret = (void *)PAGE(get_one_buddy_node(order));
+    get_one_buddy_node(order);
+    //ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
     return ret;
 }
