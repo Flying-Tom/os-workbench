@@ -142,7 +142,7 @@ static void buddy_init()
 
     for (int i = max_order; i >= 2; i--)
     {
-        int buddy_node_size = 1 << (max_order - 1);
+        int buddy_node_size = 1 << (i - 1);
         int j = 1 << (max_order - i);
         while (temp > buddy_node_size)
         {
