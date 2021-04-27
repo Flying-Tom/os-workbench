@@ -142,8 +142,8 @@ static void buddy_init()
         assert((uintptr_t)(buddy + i) < (uintptr_t)heap.end);
         buddy[i].status = BUD_UNINIT;
     }
-    buddy[1].remaining = (pm_end - pm_start) / PAGE_SIZE;
-    buddy[1 << 8 - 1].status = BUD_FULL;
+    buddy[1].size = (pm_end - pm_start) / PAGE_SIZE;
+    buddy[(1 << 8) - 1].status = BUD_FULL;
 
     Log("max_buddy_node_num:%d", max_buddy_node_num);
     Log("total_page_num:%d", total_page_num);
@@ -296,7 +296,7 @@ void buddy_stat()
     printf("=========================\n");
     for (int i = max_order; i >= 1; i--)
     {
-        if (free_list[i] != NULL)
+        if (1)
         {
             page_header *cur = free_list[i];
             while (cur != NULL)
