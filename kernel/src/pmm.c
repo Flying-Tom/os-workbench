@@ -135,8 +135,8 @@ static void buddy_init()
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
         cur_node = buddy + i;
+        Log("cur_node:%p", cur_node);
         cur_node->status = BUD_UNINIT;
-        Log("fuck");
     }
 
     for (int i = max_order; i >= 2; i--)
