@@ -89,6 +89,8 @@ static void block_generate(uint8_t order)
     free_list[order] = newpage;
 }
 
+/*
+
 static size_t get_one_block(uint8_t order)
 {
     //lock(&pm_global_lk);
@@ -100,6 +102,7 @@ static size_t get_one_block(uint8_t order)
     //unlock(&pm_global_lk);
     return ret;
 }
+*/
 
 static void buddy_init()
 {
