@@ -145,7 +145,7 @@ static void buddy_init()
         buddy[i].status = BUD_UNINIT;
     }
 
-    for (int i = max_order; i >= 2; i--)
+    for (int i = max_order; i >= 1; i--)
     {
         int buddy_node_size = 1 << (i - 1);
         int j = 1 << (max_order - i);
@@ -169,7 +169,7 @@ static size_t get_one_buddy_node(uint8_t order)
     lock(&buddy_lk);
     size_t obj_loc = 1 << (max_order - order);
     size_t obj_max_loc = 1 << (max_order - order + 1);
-    
+
     Log("obj_loc:%d", obj_loc);
     Log("obj_max_loc:%d", obj_max_loc);
 
