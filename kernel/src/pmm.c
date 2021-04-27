@@ -141,7 +141,7 @@ static void buddy_init()
         //cur_node->status = BUD_UNINIT;
         buddy[i].status = BUD_UNINIT;
     }
-
+    Log("fuck");
     for (int i = max_order; i >= 2; i--)
     {
         int buddy_node_size = 1 << (max_order - 1);
