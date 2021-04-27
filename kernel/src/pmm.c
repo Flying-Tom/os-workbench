@@ -133,7 +133,6 @@ static void *buddy_alloc(size_t size)
     */
     lock(&pm_global_lk);
     void *ret = NULL;
-    ret = (void *)pm_cur;
     unlock(&pm_global_lk);
     return ret;
 }
