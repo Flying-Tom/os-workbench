@@ -154,6 +154,7 @@ static size_t get_one_buddy_node(size_t size)
     int cur = 1;
     while (buddy[cur].status != BUD_FULL)
     {
+        Log("cur:%d", cur);
         if (buddy[cur].size > size && buddy[cur].size < 2 * size && buddy[cur].status != BUD_FULL)
             break;
         if (buddy[cur].size >= 2 * size)
@@ -173,7 +174,7 @@ static size_t get_one_buddy_node(size_t size)
     }
 
     unlock(&buddy_lk);
-    return 0;
+    return cur;
 }
 
 static void *buddy_alloc(size_t size)
