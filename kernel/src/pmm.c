@@ -128,7 +128,8 @@ static void buddy_init()
     max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
     max_buddy_node_num = 1 << max_order;
 
-    pm_end = (uintptr_t)((uint8_t *)pm_end - (max_buddy_node_num + 2) * sizeof(buddy_node));
+    pm_end = (uintptr_t)((uint8_t *)pm_end - (max_buddy_node_num + 4) * sizeof(buddy_node));
+    pm_end = align(pm_end, PAGE_SIZE);
     max_order = max_order - 1;
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
