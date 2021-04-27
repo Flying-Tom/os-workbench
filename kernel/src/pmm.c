@@ -140,7 +140,7 @@ static void buddy_init()
         //Log("cur_node:%p", cur_node);
         //cur_node->status = BUD_UNINIT;
         //Log("fuck");
-        assert(buddy[i] < heap.end);
+        assert((uintptr_t)buddy[i] < (uintptr_t)heap.end);
         buddy[i].status = BUD_UNINIT;
     }
     Log("fuck");
