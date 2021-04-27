@@ -49,6 +49,12 @@ typedef struct Cache
 } Cache;
 Cache cache[MAX_CPU_NUM][8];
 
+typedef struct buddy_node
+{
+    uint8_t status;
+    uint8_t order;
+} buddy_node;
+
 static size_t log(size_t x)
 {
     size_t ret = 0;
@@ -67,7 +73,6 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
-/*
 static void block_generate(uint8_t order)
 {
     assert(order < max_order);
@@ -96,7 +101,11 @@ static size_t get_one_block(uint8_t order)
     //unlock(&pm_global_lk);
     return ret;
 }
-*/
+
+static void buddy_init()
+{
+    pm_end = (uint8_t *)pm_end - (1 << max_order) * sizeof(buddy_node);
+}
 
 static void *buddy_alloc(size_t size)
 {
@@ -244,6 +253,7 @@ static void pmm_init()
     max_order = log(total_page_num);
     Log("max_order:%d", max_order);
 
+    buddy_init();
     /*
     for (int i = 0; i < total_page_num; i++)
     {
