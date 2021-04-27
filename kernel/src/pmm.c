@@ -137,7 +137,6 @@ static void buddy_init()
 
     buddy = (buddy_node *)pm_end;
 
-    int temp = total_page_num;
     //buddy_node *cur_node = NULL;
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
@@ -192,10 +191,10 @@ static void *buddy_alloc(size_t size)
     size = 1 << (log(size / PAGE_SIZE) + 1);
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
-    ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node))) while (temp)
+    ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node)));
 
-        //ret = (void *)PAGE(get_one_buddy_node(order));
-        unlock(&pm_global_lk);
+    //ret = (void *)PAGE(get_one_buddy_node(order));
+    unlock(&pm_global_lk);
     return ret;
 }
 
