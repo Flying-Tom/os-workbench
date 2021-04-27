@@ -127,7 +127,7 @@ static void buddy_init()
     max_buddy_node_num = 1 << max_order;
 
     pm_end = (uintptr_t)((uint8_t *)pm_end - max_buddy_node_num * sizeof(buddy_node));
-
+    Log("pm_end:%p", pm_end);
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("fuck");
     buddy = (buddy_node *)pm_end;
