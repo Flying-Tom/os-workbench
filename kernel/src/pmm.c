@@ -152,6 +152,7 @@ static size_t get_one_buddy_node(size_t size)
 {
     lock(&buddy_lk);
     int cur = 1;
+    Log("fuck");
     while (buddy[cur].status != BUD_FULL)
     {
         Log("cur:%d", cur);
@@ -183,7 +184,6 @@ static void *buddy_alloc(size_t size)
     void *ret = NULL;
     //uint8_t order = 0;
     size_t obj_buddy_node = 0;
-    Log("fuck");
     size = (1 << log(size) >= size) ? 1 << log(size) : (1 << (log(size) + 1));
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
