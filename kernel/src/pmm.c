@@ -133,7 +133,7 @@ static void buddy_init()
     buddy = (buddy_node *)pm_end;
 
     int temp = total_page_num;
-    buddy_node *cur_node = NULL;
+    //buddy_node *cur_node = NULL;
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
         //cur_node = buddy + i;
