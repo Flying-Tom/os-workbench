@@ -28,6 +28,7 @@ static uintptr_t pm_start, pm_end;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
+static uint8_t max_buddy_node_num;
 
 typedef struct page_header
 {
@@ -50,6 +51,7 @@ Cache cache[MAX_CPU_NUM][8];
 
 enum
 {
+    BUD_UNINIT,
     BUD_EMPTY,
     BUD_USED
 };
@@ -59,6 +61,8 @@ typedef struct buddy_node
     uint8_t status;
     uint8_t order;
 } buddy_node;
+
+buddy_node *buddy;
 
 static size_t log(size_t x)
 {
@@ -118,10 +122,30 @@ static void buddy_init()
     pm_start = align(pm_start, PAGE_SIZE);
 
     max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
-    pm_end = (uintptr_t)((uint8_t *)pm_end - (1 << max_order) * sizeof(buddy_node));
+    max_buddy_node_num = 1 << max_order;
+
+    pm_end = (uintptr_t)((uint8_t *)pm_end - max_buddy_node_num * sizeof(buddy_node));
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
+    int temp = total_page_num;
 
+    for (int i = 0; i <= max_buddy_node_num; i++)
+    {
+        buddy[j].status = BUD_UNINIT;
+    }
+
+    for (int i = max_order; i >= 2; i--)
+    {
+        int buddy_node_size = 1 << (max_order - 1);
+        int j = 1 << (max_order - i);
+        while (temp > buddy_node_size)
+        {
+            temp -= buddy_node_size;
+            buddy[j].status = BUD_EMPTY;
+            j++;
+        }
+    }
+    Log("max_buddy_node_num:%d", max_buddy_node_num);
     Log("total_page_num:%d", total_page_num);
     Log("max_order:%d", max_order);
     Log("pm_start:%p", pm_start);
