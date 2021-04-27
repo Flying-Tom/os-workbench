@@ -15,7 +15,7 @@
 #define slab_max_items(size) ((PAGE_SIZE - sizeof(page_header)) / size)
 
 /* buddy system*/
-#define MAX_BUDDY_BLOCK_TYPE 20
+#define MAX_BUDDY_NODE_TYPE 20
 
 /* bitmap */
 #define BITMAP_FULL(page, id) (page->bitmap[id] + 1ULL == 0ULL)
@@ -40,7 +40,6 @@ typedef struct page_header
     uint8_t order;
     struct page_header *next;
 } page_header;
-page_header *free_list[MAX_BUDDY_BLOCK_TYPE];
 
 typedef struct Cache
 {
@@ -54,13 +53,14 @@ enum
 {
     BUD_UNINIT,
     BUD_EMPTY,
-    BUD_USED
+    BUD_USED,
+    BUD_FULL
 };
 
 typedef struct buddy_node
 {
     uint8_t status;
-    uint8_t order;
+    size_t size;
 } buddy_node;
 
 buddy_node *buddy;
@@ -126,12 +126,10 @@ static void buddy_init()
     pm_start = align(pm_start, PAGE_SIZE);
 
     max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
-    max_buddy_node_num = 1 << max_order;
-
-    pm_end = (uintptr_t)((uint8_t *)pm_end - (max_buddy_node_num + 4) * sizeof(buddy_node));
-
-    pm_end = align((uintptr_t)((uint8_t *)pm_end - PAGE_SIZE), PAGE_SIZE);
-    max_order = max_order - 1;
+    //max_buddy_node_num = 1 << max_order;
+    //pm_end = (uintptr_t)((uint8_t *)pm_end - (max_buddy_node_num + 4) * sizeof(buddy_node));
+    //pm_end = align((uintptr_t)((uint8_t *)pm_end - PAGE_SIZE), PAGE_SIZE);
+    //max_order = max_order - 1;
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
 
@@ -144,19 +142,9 @@ static void buddy_init()
         assert((uintptr_t)(buddy + i) < (uintptr_t)heap.end);
         buddy[i].status = BUD_UNINIT;
     }
+    buddy[1].remaining = (pm_end - pm_start) / PAGE_SIZE;
+    buddy[1 << 8 - 1].status = BUD_FULL;
 
-    for (int i = max_order; i >= 1; i--)
-    {
-        int buddy_node_size = 1 << (i - 1);
-        int j = 1 << (max_order - i);
-        while (temp > buddy_node_size)
-        {
-            temp -= buddy_node_size;
-            Log("buddy[%d] is empty now", j);
-            buddy[j].status = BUD_EMPTY;
-            j++;
-        }
-    }
     Log("max_buddy_node_num:%d", max_buddy_node_num);
     Log("total_page_num:%d", total_page_num);
     Log("max_order:%d", max_order);
@@ -164,23 +152,30 @@ static void buddy_init()
     Log("pm_end:%p", pm_end);
 }
 
-static size_t get_one_buddy_node(uint8_t order)
+static size_t get_one_buddy_node(size_t size)
 {
     lock(&buddy_lk);
-    size_t obj_loc = 1 << (max_order - order);
-    size_t obj_max_loc = 1 << (max_order - order + 1);
-
-    Log("obj_loc:%d", obj_loc);
-    Log("obj_max_loc:%d", obj_max_loc);
-
-    for (; obj_loc < obj_max_loc; obj_loc++)
+    int cur = 1;
+    while (buddy[cur].status != BUD_FULL)
     {
-        if (buddy[obj_loc].status == BUD_EMPTY)
+        if (buddy[cur].size > size && buddy[cur].size < 2 * size && buddy[cur].status != BUD_FULL)
+            break;
+        if (buddy[cur].size >= 2 * size)
         {
-            Log("Find it!");
-            assert(0);
+            buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
+        }
+        if (buddy[2 * cur].size > size && buddy[2 * cur].status != BUD_FULL)
+        {
+            cur = 2 * cur;
+            continue;
+        }
+        if (buddy[2 * cur + 1].size > size && buddy[2 * cur + 1].status != BUD_FULL)
+        {
+            cur = 2 * cur + 1;
+            continue;
         }
     }
+
     unlock(&buddy_lk);
     return 0;
 }
@@ -190,9 +185,18 @@ static void *buddy_alloc(size_t size)
     lock(&pm_global_lk);
     void *ret = NULL;
     uint8_t order = 0;
-    order = log(size / PAGE_SIZE) + 1;
-    Log("buddy_alloc %d Bytes  Its order:%d", size, order);
-    get_one_buddy_node(order);
+    size_t obj_buddy_node = 0, temp;
+
+    size = 1 << (log(size / PAGE_SIZE) + 1);
+    Log("buddy_alloc %d Bytes ", size);
+    obj_buddy_node = get_one_buddy_node(size);
+    temp = obj_buddy_node;
+    while (temp)
+    {
+        temp >>= 1;
+        order++;
+    }
+
     //ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
     return ret;
