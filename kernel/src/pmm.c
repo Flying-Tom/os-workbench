@@ -25,7 +25,6 @@ static lock_t pm_global_lk = LOCK_INIT();
 static lock_t page_lk = LOCK_INIT();
 
 static uintptr_t pm_start, pm_end;
-static uintptr_t pm_cur;
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static uint8_t max_order;
@@ -104,7 +103,20 @@ static size_t get_one_block(uint8_t order)
 
 static void buddy_init()
 {
-    pm_end = (uint8_t *)pm_end - (1 << max_order) * sizeof(buddy_node);
+    pm_start = (uintptr_t)heap.start;
+    pm_end = (uintptr_t)heap.end;
+
+    pm_start = align(pm_start, PAGE_SIZE);
+
+    max_order = log((pm_end - pm_start) / PAGE_SIZE);
+    pm_end = (uintptr_t)((uint8_t *)pm_end - (1 << max_order) * sizeof(buddy_node));
+
+    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
+
+    Log("total_page_num:%d", total_page_num);
+    Log("max_order:%d", max_order);
+    Log("pm_start:%p", pm_start);
+    Log("pm_end:%p", pm_end);
 }
 
 static void *buddy_alloc(size_t size)
@@ -240,18 +252,6 @@ static void pmm_init()
 {
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
-
-    pm_start = (uintptr_t)heap.start;
-    pm_end = (uintptr_t)heap.end;
-    Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
-    Log("pm_end:%p", pm_end);
-    pm_start = align(pm_start, PAGE_SIZE);
-    pm_cur = pm_end;
-
-    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
-    Log("total_page_num:%d", total_page_num);
-    max_order = log(total_page_num);
-    Log("max_order:%d", max_order);
 
     buddy_init();
     /*
