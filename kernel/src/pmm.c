@@ -185,7 +185,7 @@ static void *buddy_alloc(size_t size)
 {
     lock(&pm_global_lk);
     void *ret = NULL;
-    uint8_t order = 0;
+    //uint8_t order = 0;
     size_t obj_buddy_node = 0;
 
     size = 1 << (log(size / PAGE_SIZE) + 1);
