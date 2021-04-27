@@ -52,7 +52,6 @@ Cache cache[MAX_CPU_NUM][8];
 
 enum
 {
-    BUD_UNINIT,
     BUD_EMPTY,
     BUD_USED,
     BUD_FULL
@@ -138,11 +137,7 @@ static void buddy_init()
     buddy = (buddy_node *)pm_end;
 
     //buddy_node *cur_node = NULL;
-    for (int i = 0; i <= max_buddy_node_num; i++)
-    {
-        assert((uintptr_t)(buddy + i) < (uintptr_t)heap.end);
-        buddy[i].status = BUD_UNINIT;
-    }
+
     buddy[1].size = (pm_end - pm_start) / PAGE_SIZE;
     buddy[(1 << 8) - 1].status = BUD_FULL;
 
