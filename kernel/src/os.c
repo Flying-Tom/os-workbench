@@ -1,6 +1,6 @@
 #include <common.h>
 
-//#define SMOKE
+#define SMOKE
 //#define NORMAL
 //#define STRESSED
 
