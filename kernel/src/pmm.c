@@ -23,6 +23,7 @@
 /*------------------------------------------*/
 static lock_t pm_global_lk = LOCK_INIT();
 static lock_t page_lk = LOCK_INIT();
+static lock_t buddy_lk = LOCK_INIT();
 
 static uintptr_t pm_start, pm_end;
 static uint8_t cpu_id, cpu_num;
@@ -101,7 +102,7 @@ static void block_generate(uint8_t order)
     free_list[order] = newpage;
 }
 
-static size_t get_one_block(uint8_t order)
+static size_t get_one_buddy_node(uint8_t order)
 {
     //lock(&pm_global_lk);
     size_t ret = 0;
@@ -161,20 +162,31 @@ static void buddy_init()
     Log("pm_end:%p", pm_end);
 }
 
+static size_t get_one_buddy_node(uint8_t order)
+{
+    lock(&buddy_global_lk);
+    size_t obj_loc = 1 << (max_order - order);
+    size_t obj_max_loc = 1 << (max_order - order + 1);
+    for (; obj_loc < obj_max_loc; obj_loc++)
+    {
+        if (buddy[obj_loc].status == BUD_EMPTY)
+        {
+            Log("Find it!");
+            assert(0);
+        }
+    }
+    unlock(&buddy_global_lk);
+    return ret;
+}
+
 static void *buddy_alloc(size_t size)
 {
-    /*
     lock(&pm_global_lk);
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
     Log("buddy_alloc %d Bytes  Its order:%d", size, order);
-    ret = (void *)PAGE(get_one_block(order));
-    unlock(&pm_global_lk);
-    return ret;
-    */
-    lock(&pm_global_lk);
-    void *ret = NULL;
+    ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
     return ret;
 }
