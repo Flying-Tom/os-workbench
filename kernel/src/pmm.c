@@ -136,14 +136,10 @@ static void buddy_init()
     //buddy_node *cur_node = NULL;
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
-        //cur_node = buddy + i;
-        //Log("cur_node:%p", cur_node);
-        //cur_node->status = BUD_UNINIT;
-        //Log("fuck");
         assert((uintptr_t)(buddy + i) < (uintptr_t)heap.end);
         buddy[i].status = BUD_UNINIT;
     }
-    Log("fuck");
+
     for (int i = max_order; i >= 2; i--)
     {
         int buddy_node_size = 1 << (max_order - 1);
@@ -151,6 +147,7 @@ static void buddy_init()
         while (temp > buddy_node_size)
         {
             temp -= buddy_node_size;
+            Log("buddy[%d] is empty now", j);
             buddy[j].status = BUD_EMPTY;
             j++;
         }
