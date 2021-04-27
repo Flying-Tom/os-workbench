@@ -72,6 +72,8 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
+/*
+
 static void block_generate(uint8_t order)
 {
     assert(order < max_order);
@@ -88,8 +90,6 @@ static void block_generate(uint8_t order)
     newpage->next = free_list[order];
     free_list[order] = newpage;
 }
-
-/*
 
 static size_t get_one_block(uint8_t order)
 {
