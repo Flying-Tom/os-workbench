@@ -183,7 +183,7 @@ static void *buddy_alloc(size_t size)
     //uint8_t order = 0;
     size_t obj_buddy_node = 0;
 
-    size = 1 << (log(size) + 1);
+    size = (1 << log(size) >= size) ? 1 << log(size) : (1 << (log(size) + 1));
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
     ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node)));
