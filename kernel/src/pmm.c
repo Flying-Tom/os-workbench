@@ -139,7 +139,7 @@ static void buddy_init()
         //cur_node = buddy + i;
         //Log("cur_node:%p", cur_node);
         //cur_node->status = BUD_UNINIT;
-        Log("fuck");
+        //Log("fuck");
         buddy[i].status = BUD_UNINIT;
     }
     Log("fuck");
