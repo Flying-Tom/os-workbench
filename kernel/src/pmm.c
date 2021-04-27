@@ -133,13 +133,13 @@ static void buddy_init()
     //max_order = max_order - 1;
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
-    Log("fuck");
+
     buddy = (buddy_node *)pm_end;
 
     //buddy_node *cur_node = NULL;
 
-    buddy[1].size = (pm_end - pm_start) / PAGE_SIZE;
-    buddy[(1 << 8) - 1].status = BUD_FULL;
+    //buddy[1].size = (pm_end - pm_start) / PAGE_SIZE;
+    //buddy[(1 << 8) - 1].status = BUD_FULL;
 
     Log("max_buddy_node_num:%d", max_buddy_node_num);
     Log("total_page_num:%d", total_page_num);
