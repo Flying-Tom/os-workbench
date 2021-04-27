@@ -294,19 +294,7 @@ static void kfree(void *ptr)
 void buddy_stat()
 {
     printf("=========================\n");
-    for (int i = max_order; i >= 1; i--)
-    {
-        if (1)
-        {
-            page_header *cur = free_list[i];
-            while (cur != NULL)
-            {
-                printf("order %d block:%d  ", i, cur->id);
-                cur = cur->next;
-            }
-            printf("\n");
-        }
-    }
+
     printf("=========================\n");
     assert(0);
 }
