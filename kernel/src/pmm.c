@@ -122,17 +122,17 @@ static void buddy_init()
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
     pmm_size = pm_end - pm_start;
-    Log("max pages:%d", (pm_end - pm_start) / PAGE_SIZE);
+    Log("max pages:%d", pmm_size / PAGE_SIZE);
 
     pm_start = align(pm_start, PAGE_SIZE);
 
-    max_order = log((pm_end - pm_start) / PAGE_SIZE) + 1;
+    max_order = log(pmm_size / PAGE_SIZE) + 1;
     //max_buddy_node_num = 1 << max_order;
     //pm_end = (uintptr_t)((uint8_t *)pm_end - (max_buddy_node_num + 4) * sizeof(buddy_node));
     //pm_end = align((uintptr_t)((uint8_t *)pm_end - PAGE_SIZE), PAGE_SIZE);
     //max_order = max_order - 1;
 
-    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
+    total_page_num = pmm_size / PAGE_SIZE;
 
     buddy = (buddy_node *)pm_end;
 
@@ -183,7 +183,7 @@ static void *buddy_alloc(size_t size)
     //uint8_t order = 0;
     size_t obj_buddy_node = 0;
 
-    size = 1 << (log(size / PAGE_SIZE) + 1);
+    size = 1 << (log(size) + 1);
     Log("buddy_alloc %d Bytes ", size);
     obj_buddy_node = get_one_buddy_node(size);
     ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node)));
