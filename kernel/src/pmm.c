@@ -129,12 +129,13 @@ static void buddy_init()
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("fuck");
     buddy = (buddy_node *)pm_end;
-    Log("fuck");
+
     int temp = total_page_num;
 
     for (int i = 0; i <= max_buddy_node_num; i++)
     {
         buddy[i].status = BUD_UNINIT;
+        Log("fuck");
     }
 
     for (int i = max_order; i >= 2; i--)
