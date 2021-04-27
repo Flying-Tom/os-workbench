@@ -116,6 +116,7 @@ static size_t get_one_block(uint8_t order)
 
 static void buddy_init()
 {
+    Log("heap.start:%p", heap.start);
     Log("heap.end:%p", heap.end);
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
