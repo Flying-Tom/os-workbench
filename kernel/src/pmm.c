@@ -80,6 +80,7 @@ static size_t binalign(size_t size)
 {
     bool flag = true;
     size_t ret = 1;
+    assert(size > 0);
     while (size != 1)
     {
         if (size & 1)
@@ -88,13 +89,6 @@ static size_t binalign(size_t size)
         size >>= 1;
     }
     ret = flag == true ? ret : ret << 1;
-    return ret;
-}
-
-static uint8_t cache_type(size_t size)
-{
-    uint8_t ret = 0;
-    ret = max(3, log(size - 1) + 1);
     return ret;
 }
 
@@ -177,9 +171,8 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
 static void *buddy_alloc(size_t size)
 {
     void *ret = NULL;
-    //uint8_t order = 0;
     size_t obj_buddy_node = 0;
-    size = binalign(size) / PAGE_SIZE;
+    size = size / PAGE_SIZE;
     Log("buddy_alloc %d Bytes ", size);
 
     lock(&buddy_lk);
@@ -225,8 +218,9 @@ static void *slab_alloc(size_t size)
     uint8_t type = 0, cur_cpu_id = 0;
     cur_cpu_id = cpu_current();
 
-    type = cache_type(size);
+    type = max(3, log(size) + 1);
     size = 1 << type;
+
     Log("type:%d size:%d", type, size);
 
     Cache *object_cache = &cache[cpu_id][type];
@@ -260,7 +254,7 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     Log("kalloc: %d", size);
-    assert(size > 0);
+    size = binalign(size);
     if (size >= PAGE_SIZE)
     {
         lock(&pm_global_lk);
