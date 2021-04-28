@@ -36,7 +36,7 @@ typedef struct page_header
 {
     size_t id;
     uint8_t parent_cpu_id;
-    uint64_t bitmap[4096];
+    uint64_t bitmap[64];
     uint8_t slab_type;
     uint8_t order;
     struct page_header *next;
@@ -221,7 +221,7 @@ static void *slab_alloc(size_t size)
     {
         Log("Get new page");
         void *tmp = buddy_alloc(PAGE_SIZE);
-        Log("???:%d",PAGE_SIZE - sizeof(page_header));
+        Log("???:%d", PAGE_SIZE - sizeof(page_header));
         Log("tmp:%p", (uint8_t *)tmp + PAGE_SIZE - sizeof(page_header));
         object_cache->slab_free = (page_header *)((uint8_t *)tmp + PAGE_SIZE - sizeof(page_header));
         Log("object_cache->slab_free:%p", object_cache->slab_free);
