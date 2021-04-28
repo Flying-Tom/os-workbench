@@ -38,7 +38,6 @@ typedef struct page_header
     uint8_t parent_cpu_id;
     uint64_t bitmap[64];
     uint8_t slab_type;
-    uint8_t order;
     struct page_header *next;
 } page_header;
 
