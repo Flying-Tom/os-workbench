@@ -135,6 +135,12 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
         if (buddy[cur].size < 2 * size)
         {
             buddy[cur].status = BUD_USED;
+            size_t parent = cur / 2;
+            while (buddy[2 * parent].status == BUD_USED && buddy[2 * parent + 1].status == BUD_USED)
+            {
+                buddy[parent].status == BUD_USED;
+                parent /= 2;
+            }
             return cur;
         }
         else
