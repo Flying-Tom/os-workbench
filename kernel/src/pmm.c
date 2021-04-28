@@ -178,8 +178,8 @@ static void *buddy_alloc(size_t size)
     lock(&buddy_lk);
     obj_buddy_node = get_one_buddy_node(1, size);
     Log("Got buddy node id :%d", obj_buddy_node);
-    Log("page(%d)", (7 % (1 << log(7))));
-    ret = (void *)PAGE(size * obj_buddy_node % (1 << log(obj_buddy_node)));
+
+    ret = (void *)PAGE(size * (obj_buddy_node % (1 << log(obj_buddy_node))));
     Log("ret:%p", ret);
 
     unlock(&buddy_lk);
