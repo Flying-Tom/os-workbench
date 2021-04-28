@@ -33,11 +33,11 @@ static void os_run()
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m);
     }
-    * /
+    */
 #endif
 
 #ifdef NORMAL
-        for (int i = 1; i < 100; i++)
+    for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
         pmm->alloc(rand_m);
