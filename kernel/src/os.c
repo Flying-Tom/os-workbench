@@ -1,7 +1,7 @@
 #include <common.h>
 
 #define SMOKE
-#define NORMAL
+//#define NORMAL
 #define STRESSED
 
 static void os_init()
