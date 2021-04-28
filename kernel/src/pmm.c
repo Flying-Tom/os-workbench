@@ -108,8 +108,8 @@ static void buddy_init()
     size_t cur = 1;
     while (2 * cur + 1 < max_buddy_node_num)
     {
-        /* code */
         buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
+        cur++;
     }
 
     //buddy_node *cur_node = NULL;
