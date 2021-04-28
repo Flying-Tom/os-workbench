@@ -18,25 +18,26 @@ static void os_run()
     }
 
 #ifdef SMOKE
-    pmm->alloc(17);
-    /*
+    //pmm->alloc(17);
+
     int *a = NULL;
-    for (int i = 1; i <= 1000000; i++)
+    for (int i = 1; i <= 100; i++)
     {
-        a = pmm->alloc(100);
+        a = pmm->alloc(4 KB);
         pmm->free(a);
-    }*/
+    }
     /*
     for (int i = 1; i < 4; i++)
     {
         size_t rand_m = 4;
         pmm->alloc(rand_m);
         printf("%d: Alloc %d success\n", i, rand_m);
-    }*/
+    }
+    * /
 #endif
 
 #ifdef NORMAL
-    for (int i = 1; i < 100; i++)
+        for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
         pmm->alloc(rand_m);
