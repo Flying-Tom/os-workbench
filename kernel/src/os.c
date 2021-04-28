@@ -18,7 +18,7 @@ static void os_run()
     }
 
 #ifdef SMOKE
-    pmm->alloc(100);
+    pmm->alloc(17);
     /*
     int *a = NULL;
     for (int i = 1; i <= 1000000; i++)
