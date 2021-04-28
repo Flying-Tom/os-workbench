@@ -204,7 +204,7 @@ static void *slab_alloc(size_t size)
     uint8_t type = 0, cur_cpu_id = 0;
     cur_cpu_id = cpu_current();
 
-    type = max(3, log(size) + 1);
+    type = max(3, log(size));
     size = 1 << type;
 
     Log("type:%d size:%d", type, size);
