@@ -1,8 +1,8 @@
 #include <common.h>
 
-#define SMOKE
+//#define SMOKE
 //#define NORMAL
-//#define STRESSED
+#define STRESSED
 
 static void os_init()
 {
@@ -48,9 +48,9 @@ static void os_run()
     }
 #endif
 #ifdef STRESSED
-    for (int i = 0; i < 0; i++)
+    for (int i = 0; i < 1000; i++)
     {
-        pmm->alloc(rand() % 8 MB + 1);
+        pmm->alloc(rand() % 4 KB + 1);
         //printf("Alloc %d success\n", 16 KB);
     }
 #endif
