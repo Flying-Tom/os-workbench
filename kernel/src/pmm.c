@@ -161,7 +161,6 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
 
 static void *buddy_alloc(size_t size)
 {
-    lock(&pm_global_lk);
     void *ret = NULL;
     //uint8_t order = 0;
     size_t obj_buddy_node = 0;
@@ -176,7 +175,6 @@ static void *buddy_alloc(size_t size)
 
     unlock(&buddy_lk);
 
-    unlock(&pm_global_lk);
     assert((uintptr_t)ret % size == 0);
     return ret;
 }
@@ -217,6 +215,8 @@ static void *slab_alloc(size_t size)
     Log("type:%d size:%d", type, size);
 
     Cache *object_cache = &cache[cpu_id][type];
+
+    lock(&pm_global_lk);
     if (page_full(object_cache->slab_free))
     {
         Log("Get new page");
@@ -224,6 +224,7 @@ static void *slab_alloc(size_t size)
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
+    unlock(&pm_global_lk);
 
     lock(&page_lk);
     size_t i = 0, j = 0;
@@ -246,7 +247,11 @@ static void *kalloc(size_t size)
     Log("kalloc: %d", size);
     assert(size > 0);
     if (size >= PAGE_SIZE)
+    {
+        lock(&pm_global_lk);
         ret = buddy_alloc(size);
+        unlock(&pm_global_lk);
+    }
     else
         ret = slab_alloc(size);
     return ret;
