@@ -145,7 +145,7 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
             return get_one_buddy_node(2 * cur, size);
         }
     }
-    Log("Get buddy node failed!");
+    Log("Get buddy node failed! cur = %d size = %d", cur, size);
     assert(0);
     return 0;
 }
