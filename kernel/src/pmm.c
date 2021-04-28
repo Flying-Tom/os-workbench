@@ -248,7 +248,7 @@ static void *kalloc(size_t size)
     {
         ret = buddy_alloc(size);
         Log("buddy_alloc size:%d ret:%p", size, ret);
-        ret = align(ret, (1 << size));
+        ret = (void *)align((uintptr_t)ret, (1 << size));
         assert((uintptr_t)ret % size == 0);
     }
     else
