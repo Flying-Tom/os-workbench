@@ -177,6 +177,7 @@ static void *buddy_alloc(size_t size)
     unlock(&buddy_lk);
 
     unlock(&pm_global_lk);
+    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
@@ -245,12 +246,7 @@ static void *kalloc(size_t size)
     Log("kalloc: %d", size);
     assert(size > 0);
     if (size >= PAGE_SIZE)
-    {
         ret = buddy_alloc(size);
-        Log("buddy_alloc size:%d ret:%p", size, ret);
-        ret = (void *)align((uintptr_t)ret, (1 << size));
-        assert((uintptr_t)ret % size == 0);
-    }
     else
         ret = slab_alloc(size);
     return ret;
