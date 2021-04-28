@@ -248,7 +248,8 @@ static void *kalloc(size_t size)
     {
         ret = buddy_alloc(size);
         Log("buddy_alloc size:%d ret:%p", size, ret);
-        //assert((uintptr_t)ret % size == 0);
+        printf("buddy_alloc size:%d ret:%p", size, ret)
+            assert((uintptr_t)ret % size == 0);
     }
     else
         ret = slab_alloc(size);
