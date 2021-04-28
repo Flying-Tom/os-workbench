@@ -101,8 +101,8 @@ static void buddy_init()
     //pm_end = align((uintptr_t)((uint8_t *)pm_end - PAGE_SIZE), PAGE_SIZE);
     //max_order = max_order - 1;
 
-    max_buddy_node_num = total_page_num = pmm_size / PAGE_SIZE;
-
+    total_page_num = pmm_size / PAGE_SIZE;
+    max_buddy_node_num = 2 * total_page_num;
     buddy = (buddy_node *)((uint8_t *)pm_end - (max_buddy_node_num + 2) * sizeof(buddy_node));
     buddy[1].size = pmm_size / PAGE_SIZE;
     buddy[1].status = BUD_AVAILABLE;
@@ -112,9 +112,9 @@ static void buddy_init()
         buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
         cur++;
     }
-    for (int i = 1; i <= max_buddy_node_num; i++)
-        Log("buddy[%d].size = %d", i, buddy[i].size);
-    assert(0);
+    //for (int i = 1; i <= max_buddy_node_num; i++)
+    //    Log("buddy[%d].size = %d", i, buddy[i].size);
+    //assert(0);
     //buddy_node *cur_node = NULL;
 
     //buddy[1].size = (pm_end - pm_start) / PAGE_SIZE;
