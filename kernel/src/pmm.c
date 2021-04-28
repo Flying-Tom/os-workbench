@@ -90,7 +90,7 @@ static void buddy_init()
     Log("heap.end:%p", heap.end);
     pm_start = (uintptr_t)heap.start;
     pm_end = (uintptr_t)heap.end;
-    pmm_size = (pm_end - pm_start) / sizeof(uintptr_t);
+    pmm_size = pm_end - pm_start;
     Log("max pages:%d", pmm_size / PAGE_SIZE);
 
     pm_start = align(pm_start, PAGE_SIZE);
