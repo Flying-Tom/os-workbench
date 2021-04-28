@@ -240,6 +240,7 @@ static void *kalloc(size_t size)
     void *ret = NULL;
     Log("kalloc: %d", size);
     size = binalign(size);
+    Log("kalloc aligned size: %d", size);
     if (size >= PAGE_SIZE)
     {
         lock(&pm_global_lk);
