@@ -175,21 +175,8 @@ static void *buddy_alloc(size_t size)
     ret = (void *)PAGE(size * obj_buddy_node % (1 << log(obj_buddy_node)));
     Log("ret:%p", ret);
 
-    obj_buddy_node = get_one_buddy_node(1, size);
-    Log("Got buddy node id :%d", obj_buddy_node);
-    ret = (void *)PAGE(size * obj_buddy_node % (1 << log(obj_buddy_node)));
-    Log("ret:%p", ret);
-
-    obj_buddy_node = get_one_buddy_node(1, size);
-    Log("Got buddy node id :%d", obj_buddy_node);
-    ret = (void *)PAGE(size * obj_buddy_node % (1 << log(obj_buddy_node)));
-    Log("ret:%p", ret);
-
     unlock(&buddy_lk);
 
-    ret = (void *)PAGE(size * obj_buddy_node % (1 << log(obj_buddy_node)));
-    Log("ret:%p", ret);
-    //ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
     return ret;
 }
@@ -234,6 +221,7 @@ static void *slab_alloc(size_t size)
     {
         Log("Get new page");
         object_cache->slab_free = (page_header *)(buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
+        Log("fuck");
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
