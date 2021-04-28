@@ -178,6 +178,7 @@ static void *buddy_alloc(size_t size)
     Log("ret:%p", ret);
     //ret = (void *)PAGE(get_one_buddy_node(order));
     unlock(&pm_global_lk);
+    Log("fuck");
     return ret;
 }
 
