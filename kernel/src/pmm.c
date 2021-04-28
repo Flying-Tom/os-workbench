@@ -133,7 +133,10 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
     if (buddy[cur].status == BUD_AVAILABLE && buddy[cur].size >= size)
     {
         if (buddy[cur].size < 2 * size)
+        {
+            buddy[cur].status = BUD_USED;
             return cur;
+        }
         else
         {
             if (buddy[2 * cur].status == BUD_AVAILABLE)
