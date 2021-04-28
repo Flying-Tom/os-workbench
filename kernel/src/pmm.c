@@ -150,7 +150,7 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
             if (buddy[2 * cur + 1].status == BUD_AVAILABLE)
                 return get_one_buddy_node(2 * cur + 1, size);
 
-            buddy[cur].status = BUD_SPLITTED;
+            //buddy[cur].status = BUD_SPLITTED;
             buddy[2 * cur].status = buddy[2 * cur + 1].status = BUD_AVAILABLE;
             return get_one_buddy_node(2 * cur, size);
         }
