@@ -221,7 +221,7 @@ static void *slab_alloc(size_t size)
     {
         Log("Get new page");
         void *tmp = buddy_alloc(PAGE_SIZE);
-        Log("tmp:%p", tmp);
+        Log("tmp:%p", tmp + PAGE_SIZE - sizeof(page_header));
         object_cache->slab_free = (page_header *)((uint8_t *)tmp + PAGE_SIZE - sizeof(page_header));
         Log("object_cache->slab_free:%p", object_cache->slab_free);
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
