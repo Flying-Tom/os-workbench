@@ -173,7 +173,7 @@ static void *buddy_alloc(size_t size)
     void *ret = NULL;
     size_t obj_buddy_node = 0;
     size = size / PAGE_SIZE;
-    Log("buddy_alloc %d Bytes ", size);
+    Log("buddy_alloc %d page ", size);
 
     lock(&buddy_lk);
     obj_buddy_node = get_one_buddy_node(1, size);
@@ -246,7 +246,6 @@ static void *slab_alloc(size_t size)
     unlock(&page_lk);
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
-    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
@@ -291,21 +290,6 @@ static void pmm_init()
     assert(cpu_num <= MAX_CPU_NUM);
 
     buddy_init();
-    /*
-    for (int i = 0; i < total_page_num; i++)
-    {
-        page_header *cur = PAGE_HEADER(i);
-        cur->id = i;
-        cur->parent_cpu_id = MAX_CPU_NUM;
-        cur->next = NULL;
-    }
-    */
-
-    //free_list[max_order] = PAGE_HEADER(0);
-
-    //buddy_stat();
-    assert((pm_end - pm_start) % PAGE_SIZE == 0);
-    Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
 }
 
