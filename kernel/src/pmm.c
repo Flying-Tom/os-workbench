@@ -53,8 +53,9 @@ Cache cache[MAX_CPU_NUM][8];
 enum
 {
     BUD_EMPTY,
+    BUD_AVAILABLE,
     BUD_USED,
-    BUD_FULL
+    BUD_SPLITTED
 };
 
 typedef struct buddy_node
@@ -83,38 +84,6 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
-/*
-
-static void block_generate(uint8_t order)
-{
-    assert(order < max_order);
-    if (free_list[order + 1] == NULL)
-    {
-        //assert(0);
-        block_generate(order + 1);
-    }
-    size_t parent_page_id = free_list[order + 1]->id;
-    free_list[order + 1] = free_list[order + 1]->next;
-
-    free_list[order] = PAGE_HEADER(parent_page_id + (1 << order));
-    page_header *newpage = PAGE_HEADER(parent_page_id);
-    newpage->next = free_list[order];
-    free_list[order] = newpage;
-}
-
-static size_t get_one_buddy_node(uint8_t order)
-{
-    //lock(&pm_global_lk);
-    size_t ret = 0;
-    if (free_list[order] == NULL)
-        block_generate(order);
-    ret = free_list[order]->id;
-    free_list[order] = free_list[order]->next;
-    //unlock(&pm_global_lk);
-    return ret;
-}
-*/
-
 static void buddy_init()
 {
     Log("heap.start:%p", heap.start);
@@ -135,6 +104,13 @@ static void buddy_init()
     max_buddy_node_num = total_page_num = pmm_size / PAGE_SIZE;
 
     buddy = (buddy_node *)((uint8_t *)pm_end - (max_buddy_node_num + 2) * sizeof(buddy_node));
+    buddy[1].size = pmm_size;
+    size_t cur = 1;
+    while (2 * cur + 1 < max_buddy_node_num)
+    {
+        /* code */
+        buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
+    }
 
     //buddy_node *cur_node = NULL;
 
@@ -148,33 +124,29 @@ static void buddy_init()
     Log("pm_end:%p", pm_end);
 }
 
-static size_t get_one_buddy_node(size_t size)
+static size_t get_one_buddy_node(size_t cur, size_t size)
 {
     lock(&buddy_lk);
-    int cur = 1;
-    while (buddy[cur].status != BUD_FULL)
+
+    if (buddy[cur].status == BUD_AVAILABLE && buddy[cur].size > size)
     {
-        Log("cur:%d", cur);
-        if (buddy[cur].size > size && buddy[cur].size < 2 * size && buddy[cur].status != BUD_FULL)
-            break;
-        if (buddy[cur].size >= 2 * size)
+        if (buddy[cur].size < 2 * size)
+            return cur;
+        else
         {
-            buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
-        }
-        if (buddy[2 * cur].size > size && buddy[2 * cur].status != BUD_FULL)
-        {
-            cur = 2 * cur;
-            continue;
-        }
-        if (buddy[2 * cur + 1].size > size && buddy[2 * cur + 1].status != BUD_FULL)
-        {
-            cur = 2 * cur + 1;
-            continue;
+            if (buddy[2 * cur].status == BUD_AVAILABLE)
+                return get_one_buddy_node(2 * cur, size);
+            if (buddy[2 * cur + 1].status == BUD_AVAILABLE)
+                return get_one_buddy_node(2 * cur + 1, size);
+
+            buddy[cur].status = BUD_SPLITTED;
+            buddy[2 * cur].status = buddy[2 * cur + 1].status = BUD_AVAILABLE;
+            return get_one_buddy_node(2 * cur, size);
         }
     }
-
-    unlock(&buddy_lk);
-    return cur;
+    Log("Get buddy node failed!");
+    assert(0);
+    return 0;
 }
 
 static void *buddy_alloc(size_t size)
@@ -185,7 +157,11 @@ static void *buddy_alloc(size_t size)
     size_t obj_buddy_node = 0;
     size = (1 << log(size) >= size) ? 1 << log(size) : (1 << (log(size) + 1));
     Log("buddy_alloc %d Bytes ", size);
-    obj_buddy_node = get_one_buddy_node(size);
+
+    lock(&buddy_lk);
+    obj_buddy_node = get_one_buddy_node(1, size);
+    unlock(&buddy_lk);
+
     ret = (void *)(pmm_size / size * obj_buddy_node % (1 << log(obj_buddy_node)));
     Log("ret:%p", ret);
     //ret = (void *)PAGE(get_one_buddy_node(order));
