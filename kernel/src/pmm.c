@@ -107,7 +107,7 @@ static void buddy_init()
     buddy[1].size = pmm_size / PAGE_SIZE;
     buddy[1].status = BUD_AVAILABLE;
     size_t cur = 1;
-    while (2 * cur + 1 < max_buddy_node_num)
+    while (2 * cur + 1 <= max_buddy_node_num)
     {
         buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
         cur++;
