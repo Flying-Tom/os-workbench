@@ -129,7 +129,7 @@ static void buddy_init()
 
 static size_t get_one_buddy_node(size_t cur, size_t size)
 {
-    Log("buddy[%d].status = %d , buddy[%d].size = %d ", cur, buddy[cur].status, buddy[cur].size);
+    Log("buddy[%d].status = %d , buddy[%d].size = %d ", cur, buddy[cur].status, cur, buddy[cur].size);
     if (buddy[cur].status == BUD_AVAILABLE && buddy[cur].size >= size)
     {
         if (buddy[cur].size < 2 * size)
