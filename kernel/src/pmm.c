@@ -169,7 +169,7 @@ static void *buddy_alloc(size_t size)
 
     unlock(&buddy_lk);
 
-    assert((uintptr_t)ret % size == 0);
+    assert((uint8_t)ret % size == 0);
     return ret;
 }
 
