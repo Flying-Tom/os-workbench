@@ -111,6 +111,8 @@ static void buddy_init()
         buddy[2 * cur].size = buddy[2 * cur + 1].size = buddy[cur].size / 2;
         cur++;
     }
+    for (int i = 1; i <= max_buddy_node_num; i++)
+        Log("buddy[%d].size = %d", i, buddy[i].size);
 
     //buddy_node *cur_node = NULL;
 
