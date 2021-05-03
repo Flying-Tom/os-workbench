@@ -1,4 +1,5 @@
 #include <common.h>
+#include <pmm.h>
 #include <lock.h>
 
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
@@ -239,12 +240,8 @@ static void *kalloc(size_t size)
     Log("kalloc: %d", size);
     size = binalign(size);
     Log("kalloc aligned size: %d", size);
-    if (true || size >= PAGE_SIZE)
-    {
-        //lock(&pm_global_lk);
+    if (size >= PAGE_SIZE)
         ret = buddy_alloc(size);
-        //unlock(&pm_global_lk);
-    }
     else
         ret = slab_alloc(size);
     return ret;
@@ -259,14 +256,6 @@ static void kfree(void *ptr)
     lock(&page_lk);
     cur->bitmap[items / 64] ^= (1 << (items % 64));
     unlock(&page_lk);
-}
-
-void buddy_stat()
-{
-    printf("=========================\n");
-
-    printf("=========================\n");
-    assert(0);
 }
 
 static void pmm_init()
