@@ -2,7 +2,7 @@
 
 static lock_t buddy_lk = LOCK_INIT();
 
-static void buddy_init()
+void buddy_init()
 {
     Log("heap.start:%p", heap.start);
     Log("heap.end:%p", heap.end);
