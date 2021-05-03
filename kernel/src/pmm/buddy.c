@@ -68,6 +68,7 @@ size_t get_one_buddy_node(size_t cur, size_t size)
 
 void *buddy_split(uint8_t cur_order, uint8_t obj_order)
 {
+    return NULL;
 }
 
 void *buddy_alloc(size_t size)
