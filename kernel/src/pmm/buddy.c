@@ -2,6 +2,7 @@
 
 lock_t buddy_lk = LOCK_INIT();
 lock_t pm_global_lk = LOCK_INIT();
+uint8_t buddy_max_order;
 
 void buddy_init()
 {
@@ -65,19 +66,18 @@ size_t get_one_buddy_node(size_t cur, size_t size)
     return 0;
 }
 
+void *buddy_split(uint8_t cur_order, uint8_t obj_order)
+{
+}
+
 void *buddy_alloc(size_t size)
 {
-    void *ret = NULL;
-    size_t obj_buddy_node = 0;
-    size = size / PAGE_SIZE;
-    Log("buddy_alloc %d page ", size);
-
     lock(&buddy_lk);
-    obj_buddy_node = get_one_buddy_node(1, size);
-    Log("Got buddy node id :%d", obj_buddy_node);
+    void *ret = NULL;
+    uint8_t order = log(size - 1) + 1;
 
-    ret = (void *)PAGE(size * (obj_buddy_node % (1 << log(obj_buddy_node))));
-    Log("ret:%p", ret);
+    ret = buddy_split(buddy_max_order, order);
+    Log("buddy order :%d ret:%p", order, ret);
 
     unlock(&buddy_lk);
 
