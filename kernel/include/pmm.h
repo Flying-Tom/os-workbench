@@ -67,4 +67,4 @@ buddy_node *buddy;
 /* buddy system */
 static void buddy_init();
 static size_t get_one_buddy_node(size_t cur, size_t size);
-static void *buddy_alloc(size_t size)
+static void *buddy_alloc(size_t size);
