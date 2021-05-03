@@ -1,5 +1,7 @@
 #include <pmm.h>
 
+static lock_t buddy_lk = LOCK_INIT();
+
 static void buddy_init()
 {
     Log("heap.start:%p", heap.start);

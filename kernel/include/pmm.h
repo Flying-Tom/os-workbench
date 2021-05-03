@@ -23,10 +23,9 @@
 /*------------------------------------------*/
 static lock_t pm_global_lk = LOCK_INIT();
 static lock_t page_lk = LOCK_INIT();
-static lock_t buddy_lk = LOCK_INIT();
 
 static uintptr_t pm_start, pm_end;
-static size_t pmm_size;
+
 static uint8_t cpu_id, cpu_num;
 static size_t total_page_num;
 static size_t max_buddy_node_num;
