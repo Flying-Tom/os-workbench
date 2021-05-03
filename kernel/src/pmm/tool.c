@@ -1,3 +1,5 @@
+#include <pmm.h>
+
 size_t log(size_t x)
 {
     size_t ret = 0;
