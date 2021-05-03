@@ -66,8 +66,19 @@ size_t get_one_buddy_node(size_t cur, size_t size)
     return 0;
 }
 
-void *buddy_split(uint8_t cur_order, uint8_t obj_order)
+void *buddy_split(size_t id, uint8_t cur_order, uint8_t obj_order)
 {
+    void *ret = NULL;
+    ret = buddy_split(2 * id, cur_order - 1, obj_order);
+    if (ret == NULL)
+        ret = buddy_split(2 * id + 1, cur_order - 1, obj_order);
+
+    if (ret)
+    {
+        buddy[id].order = max(buddy[2 * id].order, buddy[2 * id + 1].order);
+        buddy[id].status = BUD_SPLITTED;
+        return ret;
+    }
     return NULL;
 }
 
@@ -77,7 +88,7 @@ void *buddy_alloc(size_t size)
     void *ret = NULL;
     uint8_t order = log(size - 1) + 1;
 
-    ret = buddy_split(buddy_max_order, order);
+    ret = buddy_split(1, buddy_max_order, order);
     Log("buddy order :%d ret:%p", order, ret);
 
     unlock(&buddy_lk);

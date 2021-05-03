@@ -49,14 +49,14 @@ enum
 {
     BUD_EMPTY,
     BUD_AVAILABLE,
-    BUD_USED,
-    BUD_SPLITTED
+    BUD_SPLITTED,
+    BUD_FULL
 };
 
 typedef struct buddy_node
 {
     uint8_t status;
-    size_t size;
+    uint8_t order;
 } buddy_node;
 
 buddy_node *buddy;
