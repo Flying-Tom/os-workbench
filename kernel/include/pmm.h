@@ -66,11 +66,11 @@ buddy_node *buddy;
 void buddy_init();
 size_t get_one_buddy_node(size_t cur, size_t size);
 void *buddy_alloc(size_t size);
-void *slab_alloc(size_t size)
+void *slab_alloc(size_t size);
 
-    /* Tool func */
+/* Tool func */
 
-    size_t log(size_t x);
+size_t log(size_t x);
 size_t binalign(size_t size);
 
 size_t log(size_t x)
