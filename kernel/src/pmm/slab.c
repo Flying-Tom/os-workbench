@@ -25,7 +25,7 @@ static bool page_full(page_header *cur)
     return (i + 1 >= PAGE_SIZE / (1 << cur->slab_type));
 }
 
-static void *slab_alloc(size_t size)
+void *slab_alloc(size_t size)
 {
     void *ret = NULL;
     uint8_t type = 0, cur_cpu_id = 0;
