@@ -29,7 +29,7 @@ void buddy_init()
     Log("pm_end:%p", pm_end);
 }
 
-static size_t get_one_buddy_node(size_t cur, size_t size)
+size_t get_one_buddy_node(size_t cur, size_t size)
 {
     //Log("buddy[%d].status = %d , buddy[%d].size = %d ", cur, buddy[cur].status, cur, buddy[cur].size);
     if (buddy[cur].status == BUD_AVAILABLE && buddy[cur].size >= size)
