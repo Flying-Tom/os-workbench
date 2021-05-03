@@ -21,8 +21,7 @@
 #define BITMAP_FULL(page, id) (page->bitmap[id] + 1ULL == 0ULL)
 
 /*------------------------------------------*/
-
-
+lock_t pm_global_lk = LOCK_INIT();
 
 uintptr_t pm_start, pm_end;
 size_t pmm_size;
