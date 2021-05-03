@@ -32,7 +32,7 @@ void buddy_init()
     Log("pm_start:%p", pm_start);
     Log("pm_end:%p", pm_end);
 }
-
+/*
 size_t get_one_buddy_node(size_t cur, size_t size)
 {
     //Log("buddy[%d].status = %d , buddy[%d].size = %d ", cur, buddy[cur].status, cur, buddy[cur].size);
@@ -65,6 +65,7 @@ size_t get_one_buddy_node(size_t cur, size_t size)
     assert(0);
     return 0;
 }
+*/
 
 void *buddy_split(size_t id, uint8_t cur_order, uint8_t obj_order)
 {
