@@ -192,10 +192,8 @@ static bool page_full(page_header *cur)
         tmp >>= 1;
         i++;
     }
-    if (i + 1 < PAGE_SIZE / (1 << cur->slab_type))
-        return false;
-    else
-        return true;
+
+    return (i + 1 >= PAGE_SIZE / (1 << cur->slab_type));
 }
 
 static void *slab_alloc(size_t size)
@@ -241,11 +239,11 @@ static void *kalloc(size_t size)
     Log("kalloc: %d", size);
     size = binalign(size);
     Log("kalloc aligned size: %d", size);
-    if (size >= PAGE_SIZE)
+    if (true || size >= PAGE_SIZE)
     {
-        lock(&pm_global_lk);
+        //lock(&pm_global_lk);
         ret = buddy_alloc(size);
-        unlock(&pm_global_lk);
+        //unlock(&pm_global_lk);
     }
     else
         ret = slab_alloc(size);
