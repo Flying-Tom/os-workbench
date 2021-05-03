@@ -70,6 +70,10 @@ static size_t get_one_buddy_node(size_t cur, size_t size);
 static void *buddy_alloc(size_t size);
 
 /* Tool func */
+
+static size_t log(size_t x);
+static size_t binalign(size_t size);
+
 static size_t log(size_t x)
 {
     size_t ret = 0;
