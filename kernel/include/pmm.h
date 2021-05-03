@@ -84,7 +84,7 @@ size_t log(size_t x)
     return ret;
 }
 
-static size_t binalign(size_t size)
+size_t binalign(size_t size)
 {
     bool flag = true;
     size_t ret = 1;
