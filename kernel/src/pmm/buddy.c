@@ -23,7 +23,7 @@ void buddy_init()
     size_t cur = 1;
     while (2 * cur + 1 <= max_buddy_node_num)
     {
-        buddy[2 * cur].order = buddy[2 * cur + 1].size = buddy[cur].order / 2;
+        buddy[2 * cur].order = buddy[2 * cur + 1].order = buddy[cur].order / 2;
         cur++;
     }
 
