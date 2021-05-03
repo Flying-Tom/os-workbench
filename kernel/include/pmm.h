@@ -64,16 +64,16 @@ typedef struct buddy_node
 buddy_node *buddy;
 
 /* buddy system */
-static void buddy_init();
-static size_t get_one_buddy_node(size_t cur, size_t size);
-static void *buddy_alloc(size_t size);
+void buddy_init();
+size_t get_one_buddy_node(size_t cur, size_t size);
+void *buddy_alloc(size_t size);
 
 /* Tool func */
 
-static size_t log(size_t x);
-static size_t binalign(size_t size);
+size_t log(size_t x);
+size_t binalign(size_t size);
 
-static size_t log(size_t x)
+size_t log(size_t x)
 {
     size_t ret = 0;
     while (x > 1)

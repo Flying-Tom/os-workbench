@@ -64,7 +64,7 @@ static size_t get_one_buddy_node(size_t cur, size_t size)
     return 0;
 }
 
-static void *buddy_alloc(size_t size)
+void *buddy_alloc(size_t size)
 {
     void *ret = NULL;
     size_t obj_buddy_node = 0;
