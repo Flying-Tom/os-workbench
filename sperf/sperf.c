@@ -5,6 +5,10 @@
 
 int main(int argc, char *argv[])
 {
+    char *exec_envp[] = {
+        "PATH=/bin",
+        NULL,
+    };
     /*
     char *exec_argv[] = {
         "strace",
@@ -22,14 +26,14 @@ int main(int argc, char *argv[])
     exit(EXIT_FAILURE);
     */
 
-    assert(argc > 2);
+    assert(argc >= 2);
     pid_t pid;
 
     pid = fork();
     if (pid == 0)
     {
         /* child process */
-        //execve(argv, exec_argv, exec_envp);
+        execve(argv[1], argv + 2, exec_envp);
         printf("argv[0]:%s\n", argv[0]);
     }
     else
