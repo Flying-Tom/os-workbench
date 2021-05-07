@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
     if (pid == 0)
     {
         /* child process */
-        printf("execve(%s, %s, exec_envp)\n", argv[1], argv + 2);
+        printf("execve(%s, argv, exec_envp)\n", argv[1]);
         execve(argv[1], argv + 2, exec_envp);
     }
     else
