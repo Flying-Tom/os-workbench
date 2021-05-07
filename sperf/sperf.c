@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <assert.h>
 
 int main(int argc, char *argv[])
 {
@@ -20,11 +21,16 @@ int main(int argc, char *argv[])
     perror(argv[0]);
     exit(EXIT_FAILURE);
     */
+
+    assert(argc > 2);
     pid_t pid;
+
     pid = fork();
-    if (pid == 0) //返回子进程
+    if (pid == 0)
     {
-        printf("child pid: %d\n", getpid());
+        /* child process */
+        //execve(argv, exec_argv, exec_envp);
+        printf("argv[0]:%s\n", argv[0]);
     }
     else
     {
