@@ -1,7 +1,6 @@
 #include <pmm.h>
 
-lock_t page_lk = LOCK_INIT();
-extern lock_t pm_global_lk;
+//extern lock_t pm_global_lk;
 
 static bool page_full(page_header *cur)
 {
