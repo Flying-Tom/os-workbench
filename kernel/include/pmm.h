@@ -1,3 +1,6 @@
+#ifndef PMM_H
+#define PMM_H
+
 #include <common.h>
 #include <lock.h>
 
@@ -74,3 +77,5 @@ void *slab_alloc(size_t size);
 
 size_t log(size_t x);
 size_t binalign(size_t size);
+
+#endif
