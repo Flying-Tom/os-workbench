@@ -22,11 +22,14 @@
 
 /*------------------------------------------*/
 
+lock_t pm_global_lk = LOCK_INIT();
+lock_t page_lk = LOCK_INIT();
+
 uintptr_t pm_start, pm_end;
-size_t pmm_size;
+uintptr_t pm_cur;
 uint8_t cpu_id, cpu_num;
 size_t total_page_num;
-size_t max_buddy_node_num;
+uint8_t max_order;
 
 typedef struct page_header
 {
