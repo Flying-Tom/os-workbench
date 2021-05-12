@@ -16,7 +16,7 @@ static void os_run()
     {
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
-
+    printf("Tests Start!\n");
 #ifdef SMOKE
     //pmm->alloc(17);
 
