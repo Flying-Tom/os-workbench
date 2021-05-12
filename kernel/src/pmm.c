@@ -26,16 +26,9 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     Log("kalloc: %d", size);
-    assert(size > 0);
+    size = binalign(size);
     if (size >= PAGE_SIZE)
-    {
-        lock(&pm_global_lk);
-        size = 1 << (log(size - 1) + 1);
         ret = global_alloc(size);
-        Log("global_alloc size:%d ret:%p", size, ret);
-        assert((uintptr_t)ret % size == 0);
-        unlock(&pm_global_lk);
-    }
     else
         ret = slab_alloc(size);
     return ret;
