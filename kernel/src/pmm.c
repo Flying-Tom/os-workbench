@@ -1,6 +1,6 @@
 #include <pmm.h>
 
-static void *global_alloc(size_t size)
+void *global_alloc(size_t size)
 {
     /*
     lock(&pm_global_lk);
