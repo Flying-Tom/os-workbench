@@ -43,7 +43,7 @@ void *slab_alloc(size_t size)
     if (page_full(object_cache->slab_free))
     {
         Log("Get new page");
-        object_cache->slab_free = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
+        object_cache->slab_free = (page_header *)((uint8_t *)global_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
