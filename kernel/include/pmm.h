@@ -1,6 +1,3 @@
-#ifndef PMM_H
-#define PMM_H
-
 #include <common.h>
 #include <lock.h>
 
@@ -26,7 +23,6 @@
 /*------------------------------------------*/
 
 lock_t pm_global_lk = LOCK_INIT();
-lock_t page_lk = LOCK_INIT();
 
 uintptr_t pm_start, pm_end;
 uintptr_t pm_cur;
@@ -77,5 +73,3 @@ void *slab_alloc(size_t size);
 
 size_t log(size_t x);
 size_t binalign(size_t size);
-
-#endif
