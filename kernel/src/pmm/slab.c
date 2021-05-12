@@ -62,3 +62,7 @@ void *slab_alloc(size_t size)
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     return ret;
 }
+
+void slab_free(void *ptr)
+{
+}

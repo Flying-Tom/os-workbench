@@ -5,7 +5,7 @@
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 
 /* const macro */
-#define PAGE_SIZE (4 KB)
+#define PAGE_SIZE (4 MB)
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 12
 
@@ -34,6 +34,7 @@ typedef struct page_header
     uint8_t parent_cpu_id;
     uint64_t bitmap[64];
     uint8_t slab_type;
+    size_t pages_occupied;
     struct page_header *next;
 } page_header;
 

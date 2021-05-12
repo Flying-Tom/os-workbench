@@ -4,19 +4,9 @@ lock_t pm_global_lk = LOCK_INIT();
 
 void *global_alloc(size_t size)
 {
-    /*
     lock(&pm_global_lk);
     void *ret = NULL;
-    uint8_t order = 0;
-    order = log(size / PAGE_SIZE) + 1;
-    Log("global_alloc %d Bytes  Its order:%d", size, order);
-    ret = (void *)PAGE(get_one_block(order));
-    unlock(&pm_global_lk);
-    return ret;
-    */
-    lock(&pm_global_lk);
-    void *ret = NULL;
-    pm_cur -= size;
+    pm_cur += size;
     ret = (void *)pm_cur;
     unlock(&pm_global_lk);
     return ret;
@@ -55,7 +45,7 @@ static void pmm_init()
     Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     Log("pm_end:%p", pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
-    pm_cur = pm_end;
+    pm_cur = pm_start;
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("total_page_num:%d", total_page_num);
