@@ -23,6 +23,7 @@
 /*------------------------------------------*/
 
 lock_t pm_global_lk = LOCK_INIT();
+lock_t page_lk = LOCK_INIT();
 
 uintptr_t pm_start, pm_end;
 uintptr_t pm_cur;
