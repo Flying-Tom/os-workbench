@@ -1,12 +1,5 @@
 #include <pmm.h>
 
-static uint8_t cache_type(size_t size)
-{
-    uint8_t ret = 0;
-    ret = max(3, log(size - 1) + 1);
-    return ret;
-}
-
 static void *global_alloc(size_t size)
 {
     /*
