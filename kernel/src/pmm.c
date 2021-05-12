@@ -1,5 +1,7 @@
 #include <pmm.h>
 
+lock_t pm_global_lk = LOCK_INIT();
+
 void *global_alloc(size_t size)
 {
     /*
