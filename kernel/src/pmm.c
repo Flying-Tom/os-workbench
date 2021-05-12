@@ -7,14 +7,14 @@ static uint8_t cache_type(size_t size)
     return ret;
 }
 
-static void *buddy_alloc(size_t size)
+static void *global_alloc(size_t size)
 {
     /*
     lock(&pm_global_lk);
     void *ret = NULL;
     uint8_t order = 0;
     order = log(size / PAGE_SIZE) + 1;
-    Log("buddy_alloc %d Bytes  Its order:%d", size, order);
+    Log("global_alloc %d Bytes  Its order:%d", size, order);
     ret = (void *)PAGE(get_one_block(order));
     unlock(&pm_global_lk);
     return ret;
@@ -36,8 +36,8 @@ static void *kalloc(size_t size)
     {
         lock(&pm_global_lk);
         size = 1 << (log(size - 1) + 1);
-        ret = buddy_alloc(size);
-        Log("buddy_alloc size:%d ret:%p", size, ret);
+        ret = global_alloc(size);
+        Log("global_alloc size:%d ret:%p", size, ret);
         assert((uintptr_t)ret % size == 0);
         unlock(&pm_global_lk);
     }
