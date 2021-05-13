@@ -10,7 +10,7 @@ int main(int argc, char *argv[], char *envp[])
 {
     char *exec_argv[] = {
         "strace",
-        //"-T",
+        "-T",
         NULL,
     };
     char *exec_envp[] = {
