@@ -12,7 +12,7 @@ char buf[4096];
 struct Syscall
 {
     char name[32];
-    double time;
+    double time = 0;
 } syscall_rec[512];
 
 int syscall_num = -1;
@@ -59,7 +59,7 @@ void parent(int pipe)
             printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
-            syscall_rec[syscall_rec_cnt].time = syscall_time;
+            syscall_rec[syscall_rec_cnt].time += syscall_time;
         }
     }
     printf("syscall_num:%d\n", syscall_num);
