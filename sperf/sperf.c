@@ -60,6 +60,6 @@ int main(int argc, char *argv[], char *envp[])
     else
     {
         /* parent process */
-        parent(channel[0]);
+        parent(channel[0], pid);
     }
 }
