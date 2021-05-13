@@ -22,16 +22,14 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
         printf("%s ", exec_argv[i]);
     printf("\n");
     */
-    //dup2(pipe, STDOUT_FILENO);
+    dup2(pipe, STDOUT_FILENO);
     //dup2(pipe, STDERR_FILENO);
     printf("111111");
     //execve("strace", exec_argv, exec_envp);
 }
 
-void parent(int pipe, int child_pid)
+void parent(int pipe)
 {
-    dup2(pipe, STDIN_FILENO);
-
     /*
     while (fgets(buf, 4096, stdin) != NULL)
     {
@@ -39,9 +37,8 @@ void parent(int pipe, int child_pid)
         printf("%s\n", buf);
     }
     */
-    int temp;
-    scanf("%d", &temp);
-
+    read(pipe, buf, sizeof(buf));
+    printf("%s", buf);
     printf("Finished!\n");
 }
 
@@ -65,7 +62,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* parent process */
         close(channel[0]);
-        parent(channel[0], pid);
+        parent(channel[0]);
         close(channel[1]);
     }
     return 0;
