@@ -46,7 +46,7 @@ int main(int argc, char *argv[], char *envp[])
             exec_argv[i] = argv[i];
         dup2(trash, STDOUT_FILENO);
         dup2(channel[1], STDERR_FILENO);
-        execve("/bin/strace", exec_argv, envp);
+        //execve("/bin/strace", exec_argv, envp);
     }
     else
     {
