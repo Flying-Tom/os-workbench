@@ -17,11 +17,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
-    /*
-    for (int i = 0; i < exec_argc + 2; i++)
-        printf("%s ", exec_argv[i]);
-    printf("\n");
-    */
     dup2(pipe, STDOUT_FILENO);
     //dup2(pipe, STDERR_FILENO);
     printf("111111");
@@ -30,13 +25,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
 void parent(int pipe)
 {
-    /*
-    while (fgets(buf, 4096, stdin) != NULL)
-    {
-        printf("fuck\n");
-        printf("%s\n", buf);
-    }
-    */
     printf("pipe:%d\n", pipe);
     read(pipe, buf, sizeof(buf));
     printf("%s", buf);
