@@ -33,7 +33,7 @@ int main(int argc, char *argv[])
         /* child process */
         printf("execve(%s, argv, exec_envp)\n", argv[1]);
         printf("%s\n", argv[1]);
-        execve("/bin/touch", argv + 1, exec_envp);
+        execve(argv[1], argv + 1, exec_envp);
     }
     else
     {
