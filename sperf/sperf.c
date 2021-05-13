@@ -18,6 +18,10 @@ void child(int pipe, int argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     memcpy(exec_argv + 2, argv + 1, (argc - 1) * sizeof(char *));
+    for (int i = 0; i < sizeof(exec_argv) / sizeof(char *); i++)
+        printf("%s ", exec_argv[i]);
+
+    printf("\n");
     dup2(trash, STDOUT_FILENO);
     dup2(trash, STDERR_FILENO);
     execve("strace", exec_argv, exec_envp);
@@ -25,24 +29,6 @@ void child(int pipe, int argc, char *argv[], char *exec_envp[])
 
 int main(int argc, char *argv[], char *envp[])
 {
-
-    /*
-    char *exec_argv[] = {
-        "strace",
-        "ls",
-        NULL,
-    };
-    char *exec_envp[] = {
-        "PATH=/bin",
-        NULL,
-    };
-    execve("strace", exec_argv, exec_envp);
-    execve("/bin/strace", exec_argv, exec_envp);
-    execve("/usr/bin/strace", exec_argv, exec_envp);
-    perror(argv[0]);
-    exit(EXIT_FAILURE);
-    */
-
     assert(argc >= 2);
     if (pipe(channel))
     {
