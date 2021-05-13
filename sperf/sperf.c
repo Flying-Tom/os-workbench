@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-int main(int argc, char *argv[], char *envp)
+int main(int argc, char *argv[], char *envp[])
 {
     char *exec_envp[] = {
         "PATH=/bin",
