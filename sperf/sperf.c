@@ -11,6 +11,8 @@ char buf[4096];
 void child(int pipe, int argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[argc + 2];
+    exec_argv[0] = "strace";
+    exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
 
     memcpy(exec_argv + 2, argv + 1, (argc - 2) * sizeof(char *));
