@@ -88,7 +88,7 @@ void parent(int pipe)
         total_exec_time += syscall_rec[i].time;
     }
 
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i <= 5; i++)
     {
         printf("%s(%lf)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
     }
