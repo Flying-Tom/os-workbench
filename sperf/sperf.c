@@ -37,6 +37,7 @@ void parent(int pipe)
         printf("%s\n", buf);
     }
     */
+    printf("pipe:%d\n", pipe);
     read(pipe, buf, sizeof(buf));
     printf("%s", buf);
     printf("Finished!\n");
