@@ -21,12 +21,11 @@ double total_exec_time = 0;
 void sort()
 {
     for (int i = 0; i < syscall_num; i++)
-        for (int j = syscall_num; j >= i + 1; j--)
+        for (int j = syscall_num; j >= 1; j--)
         {
             if (syscall_rec[j - 1].time < syscall_rec[j].time)
             {
                 memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
-                syscall_temp.time = 0;
                 memcpy(syscall_temp.name, syscall_rec[j - 1].name, sizeof(syscall_temp.name));
                 memcpy(syscall_rec[j - 1].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
                 memcpy(syscall_rec[j].name, syscall_temp.name, sizeof(syscall_rec[j]));
@@ -90,14 +89,14 @@ void parent(int pipe)
     for (int i = 0; i <= syscall_num; i++)
     {
         //printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-        printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
+        //printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
     }
 
     sort();
     for (int i = 0; i <= syscall_num; i++)
     {
         //printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-        //printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
+        printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
     }
 }
 
