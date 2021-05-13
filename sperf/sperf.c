@@ -47,7 +47,7 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
-        //close(channel[0]);
+        close(channel[0]);
         child(channel[1], argc - 1, argv, envp);
     }
     else
