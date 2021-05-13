@@ -25,7 +25,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     //dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
     fprintf(stderr, "111111");
-    execve("strace", exec_argv, exec_envp);
+    //execve("strace", exec_argv, exec_envp);
 }
 
 void parent(int pipe, int child_pid)
