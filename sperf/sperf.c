@@ -41,7 +41,7 @@ void parent(int pipe)
     {
         printf("%s", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
-        sscanf(buf, "%[^(]%*[^<]<%lf>", syscall_name, syscall_time);
+        sscanf(buf, "%[^(]%*[^<]<%lf>", syscall_name, &syscall_time);
         for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
