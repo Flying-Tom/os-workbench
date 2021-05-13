@@ -55,12 +55,15 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
+        close(channel[0]);
         child(channel[1], argc - 1, argv, envp);
     }
     else
     {
         /* parent process */
+        close(channel[0]);
         parent(channel[0], pid);
+        close(channel[1]);
     }
     return 0;
 }
