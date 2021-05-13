@@ -81,6 +81,7 @@ void parent(int pipe)
             syscall_rec[syscall_rec_cnt].time = syscall_time;
         }
     }
+    syscall_num--;
     sort(0, syscall_num);
 
     for (int i = 0; i <= syscall_num; i++)
