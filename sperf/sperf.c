@@ -5,7 +5,7 @@
 #include <fcntl.h>
 
 int channel[2];
-char buf[512];
+char buf[4096];
 int main(int argc, char *argv[], char *envp[])
 {
     char *exec_argv[] = {
