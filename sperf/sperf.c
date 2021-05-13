@@ -44,7 +44,7 @@ int main(int argc, char *argv[], char *envp[])
         assert(pipe(channel) >= 0);
         for (int i = 1; i < argc; i++)
             exec_argv[i] = argv[i];
-        dup2(trash, STDERR_FILENO);
+        dup2(channel[1], STDERR_FILENO);
         //dup2(channel[1], STDOUT_FILENO);
         execve("/bin/strace", exec_argv, envp);
     }
