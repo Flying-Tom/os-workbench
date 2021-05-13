@@ -12,7 +12,7 @@ void child(int pipe, int argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[] = {
         "strace",
-        //"-T",
+        "-T",
         NULL,
     };
     int trash = open("/dev/null", O_WRONLY);
