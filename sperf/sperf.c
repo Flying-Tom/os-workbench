@@ -13,11 +13,8 @@ void child(int pipe, int argc, char *argv[], char *exec_envp[])
     char *exec_argv[] = {
         "strace",
         "-T",
-        NULL,
     };
     int trash = open("/dev/null", O_WRONLY);
-
-    printf("fuck\n");
 
     memcpy(exec_argv + 2, argv + 1, (argc - 1) * sizeof(char *));
     for (int i = 0; i < sizeof(exec_argv) / sizeof(char *); i++)
