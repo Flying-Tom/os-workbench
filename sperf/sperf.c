@@ -2,21 +2,30 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
+#include <string.h>
 #include <fcntl.h>
 
 int channel[2];
 char buf[4096];
-int main(int argc, char *argv[], char *envp[])
+
+void child(int pipe, int argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[] = {
         "strace",
         //"-T",
         NULL,
     };
-    char *exec_envp[] = {
-        "PATH=/bin",
-        NULL,
-    };
+    int trash = open("/dev/null", O_WRONLY);
+
+    memcpy(exec_argv + 2, argv + 1, (argc - 1) * sizeof(char *));
+    dup2(trash, STDOUT_FILENO);
+    dup2(trash, STDERR_FILENO);
+    execve("strace", exec_argv, exec_envp);
+}
+
+int main(int argc, char *argv[], char *envp[])
+{
+
     /*
     char *exec_argv[] = {
         "strace",
@@ -45,12 +54,7 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
-        int trash = open("/dev/null", O_WRONLY);
-        for (int i = 1; i < argc; i++)
-            exec_argv[i] = argv[i];
-        //dup2(trash, STDOUT_FILENO);
-        //dup2(channel[1], STDERR_FILENO);
-        execve("/usr/bin/strace", exec_argv, envp);
+        child(channel[1], argc, argv, envp);
     }
     else
     {
