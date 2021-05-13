@@ -52,6 +52,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* father process */
         int nbytes;
+        printf("fuck\n");
         while ((nbytes = read(channel[0], buf, 512)) > 0)
         {
             printf("%s\n", buf);
