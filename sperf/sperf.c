@@ -59,7 +59,7 @@ void parent(int pipe)
             printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
-            syscall_rec[syscall_rec_cnt].time += syscall_time;
+            syscall_rec[syscall_rec_cnt].time = syscall_time;
         }
     }
     printf("syscall_num:%d\n", syscall_num);
