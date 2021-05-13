@@ -16,13 +16,14 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
+    /*
     for (int i = 0; i < exec_argc + 2; i++)
         printf("%s ", exec_argv[i]);
-
     printf("\n");
+    */
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
-    //execve("strace", exec_argv, exec_envp);
+    execve("strace", exec_argv, exec_envp);
 }
 
 void parent(int pipe)
