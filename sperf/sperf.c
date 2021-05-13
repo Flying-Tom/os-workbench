@@ -35,17 +35,21 @@ int main(int argc, char *argv[], char *envp[])
     */
 
     assert(argc >= 2);
-    int trash = open("/dev/null", O_WRONLY);
-    assert(pipe(channel) == 0);
+    if (pipe(channel))
+    {
+        perror("Open Pipe Failed!");
+        assert(0);
+    }
 
     pid_t pid = fork();
     if (pid == 0)
     {
         /* child process */
         close(channel[0]);
+        int trash = open("/dev/null", O_WRONLY);
         for (int i = 1; i < argc; i++)
             exec_argv[i + 1] = argv[i];
-        dup2(trash, STDOUT_FILENO);
+        //dup2(trash, STDOUT_FILENO);
         dup2(channel[1], STDERR_FILENO);
         close(channel[1]);
         execve("/bin/strace", exec_argv, envp);
