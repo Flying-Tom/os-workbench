@@ -41,7 +41,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         printf("execve(%s, argv, envp)\n", "/bin/strace");
-        assert(pipe(channel) >= 0);
+        assert(pipe(channel));
         for (int i = 1; i < argc; i++)
             exec_argv[i] = argv[i];
         dup2(channel[1], STDERR_FILENO);
