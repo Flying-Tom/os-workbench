@@ -18,27 +18,22 @@ struct Syscall
 int syscall_num = -1;
 double total_exec_time = 0;
 
-void swap(int x, int y)
+void findtimemax()
 {
-    memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
-    memcpy(syscall_temp.name, syscall_rec[x].name, sizeof(syscall_temp.name));
-    memcpy(syscall_rec[x].name, syscall_rec[y].name, sizeof(syscall_rec[x].name));
-    memcpy(syscall_rec[y].name, syscall_temp.name, sizeof(syscall_rec[y]));
-    syscall_temp.time = syscall_rec[x].time;
-    syscall_rec[x].time = syscall_rec[y].time;
-    syscall_rec[y].time = syscall_temp.time;
-}
-void sort()
-{
+    double syscall_time_max = 0;
+    int syscall_id = 0;
     for (int i = 0; i <= syscall_num; i++)
-        for (int j = syscall_num - 1; j >= i; j--)
+    {
+        if (syscall_rec[i].time > syscall_time_max)
         {
-            if (syscall_rec[j].time < syscall_rec[j + 1].time)
-            {
-                swap(j, j + 1);
-            }
+            syscall_time_max = syscall_rec[i].time;
+            syscall_id = i;
         }
+    }
+    printf("%s(%.0lf%%)\n", syscall_rec[syscall_id].name, 100 * syscall_rec[syscall_id].time / total_exec_time);
+    syscall_rec[syscall_id].time = 0;
 }
+
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
@@ -90,18 +85,8 @@ void parent(int pipe)
         total_exec_time += syscall_rec[i].time;
     }
 
-    for (int i = 0; i <= syscall_num; i++)
-    {
-        //printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-        //printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
-    }
-
-    sort();
-    for (int i = 0; i <= syscall_num; i++)
-    {
-        //printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-        printf("%s(%lf%%)\n", syscall_rec[i].name, syscall_rec[i].time);
-    }
+    for (int i = 0; i <= 5; i++)
+        findtimemax();
 }
 
 int main(int argc, char *argv[], char *envp[])
