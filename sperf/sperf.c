@@ -55,7 +55,7 @@ int main(int argc, char *argv[], char *envp[])
     else
     {
         /* father process */
-        dup2(channel[0], STDIN_FILENO);
+        //dup2(channel[0], STDIN_FILENO);
         /*
         while (fgets(buf, 4096, stdin) != NULL)
         {
@@ -63,7 +63,7 @@ int main(int argc, char *argv[], char *envp[])
             printf("%s\n", buf);
         }
         */
-        getchar();
+        //getchar();
         printf("Finished!\n");
     }
 }
