@@ -27,9 +27,7 @@ int main(int argc, char *argv[])
     */
 
     assert(argc >= 2);
-    pid_t pid;
-
-    pid = fork();
+    pid_t pid = fork();
     if (pid == 0)
     {
         /* child process */
