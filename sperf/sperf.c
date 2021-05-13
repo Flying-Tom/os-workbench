@@ -35,11 +35,11 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
-        printf("execve(%s, argv, envp)\n", argv[1]);
+        printf("execve(%s, argv, envp)\n", "/bin/strace");
         printf("%s\n", argv[1]);
         for (int i = 1; i < argc; i++)
             exec_argv[i + 1] = argv[i];
-        execve("strace", exec_argv, envp);
+        execve("/bin/strace", exec_argv, envp);
     }
     else
     {
