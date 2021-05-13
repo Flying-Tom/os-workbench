@@ -30,12 +30,12 @@ void swap(int x, int y)
 }
 void sort()
 {
-    for (int i = 0; i < syscall_num; i++)
-        for (int j = syscall_num; j >= 1; j--)
+    for (int i = 0; i <= syscall_num; i++)
+        for (int j = syscall_num - 1; j >= i; j--)
         {
-            if (syscall_rec[j - 1].time < syscall_rec[j].time)
+            if (syscall_rec[j].time < syscall_rec[j + 1].time)
             {
-                swap(j - 1, j);
+                swap(j, j + 1);
             }
         }
 }
