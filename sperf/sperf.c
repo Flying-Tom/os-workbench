@@ -35,21 +35,17 @@ void parent(int pipe)
     printf("pipe:%d\n", pipe);
     dup2(pipe, STDIN_FILENO);
     char syscall_name[32];
-    double syscall_time;
-    int syscall_rec_cnt;
+    double syscall_time = 0;
+    int syscall_rec_cnt = 0;
 
     while (scanf("%s", buf) == 1)
     {
         printf("%s", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
-        //sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
+        sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
-        for (int i = 0; i < 512; i++)
-        {
-            syscall_rec[i].time = 0;
-        }
 
-                for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
+        for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
@@ -63,7 +59,7 @@ void parent(int pipe)
             printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
-            syscall_rec[syscall_rec_cnt].time += syscall_time;
+            syscall_rec[syscall_rec_cnt].time = syscall_time;
         }
     }
     printf("syscall_num:%d\n", syscall_num);
