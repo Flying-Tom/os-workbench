@@ -25,8 +25,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 void parent(int pipe)
 {
     printf("pipe:%d\n", pipe);
-    read(pipe, buf, sizeof(buf));
-    printf("%s", buf);
+    while (read(pipe, buf, sizeof(buf)))
+        printf("%s", buf);
     printf("Finished!\n");
 }
 
