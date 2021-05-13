@@ -9,6 +9,14 @@
 int channel[2];
 char buf[4096];
 
+struct Syscall
+{
+    char name[32];
+    double time;
+} syscall_rec[512];
+
+int syscall_num = -1;
+
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
@@ -25,9 +33,28 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 void parent(int pipe)
 {
     printf("pipe:%d\n", pipe);
+    char syscall_name[32];
+    double syscall_time;
+    int syscall_rec_cnt;
+
     while (read(pipe, buf, sizeof(buf)))
     {
         printf("%s", buf);
+        memset(syscall_name, '\0', sizeof(syscall_name));
+        sscanf(buf, "%[^(]%*[^<]<%lf>", syscall_name, syscall_time);
+        for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
+        {
+            if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
+            {
+                syscall_rec[syscall_rec_cnt].time += syscall_time;
+                break;
+            }
+        }
+        if (syscall_rec_cnt > syscall_num)
+        {
+            memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
+            syscall_rec[syscall_rec_cnt].time += syscall_time;
+        }
         memset(buf, '\0', sizeof(buf));
     }
     printf("Finished!\n");
