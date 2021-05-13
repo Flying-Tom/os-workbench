@@ -36,7 +36,7 @@ void parent(int pipe)
             printf("%s\n", buf);
         }
         */
-    //getchar();
+    getchar();
     printf("Finished!\n");
 }
 
