@@ -18,20 +18,20 @@ struct Syscall
 int syscall_num = -1;
 double total_exec_time = 0;
 
-void sort(int left, int right)
+void sort()
 {
-    for (int i = left; i <= right; i++)
-        for (int j = i; j <= right; j++)
+    for (int i = 0; i < syscall_num; i++)
+        for (int j = syscall_num; j >= i + 1; j--)
         {
-            if (syscall_rec[i].time < syscall_rec[j].time)
+            if (syscall_rec[j - 1].time < syscall_rec[j].time)
             {
                 memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
                 syscall_temp.time = 0;
-                memcpy(syscall_temp.name, syscall_rec[i].name, sizeof(syscall_temp.name));
-                memcpy(syscall_rec[i].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
+                memcpy(syscall_temp.name, syscall_rec[j - 1].name, sizeof(syscall_temp.name));
+                memcpy(syscall_rec[j - 1].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
                 memcpy(syscall_rec[j].name, syscall_temp.name, sizeof(syscall_rec[j]));
-                syscall_temp.time = syscall_rec[i].time;
-                syscall_rec[i].time = syscall_rec[j].time;
+                syscall_temp.time = syscall_rec[j - 1].time;
+                syscall_rec[j - 1].time = syscall_rec[j].time;
                 syscall_rec[j].time = syscall_temp.time;
             }
         }
@@ -82,7 +82,7 @@ void parent(int pipe)
         }
     }
     syscall_num--;
-    sort(0, syscall_num);
+    sort();
 
     for (int i = 0; i <= syscall_num; i++)
     {
