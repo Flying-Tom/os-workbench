@@ -32,11 +32,13 @@ void parent(int pipe, int child_pid)
 {
     dup2(pipe, STDIN_FILENO);
 
+    /*
     while (fgets(buf, 4096, stdin) != NULL)
     {
         printf("fuck\n");
         printf("%s\n", buf);
     }
+    */
 
     printf("Finished!\n");
 }
