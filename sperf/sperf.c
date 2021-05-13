@@ -18,6 +18,16 @@ struct Syscall
 int syscall_num = -1;
 double total_exec_time = 0;
 
+void swap(int x, int y)
+{
+    memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
+    memcpy(syscall_temp.name, syscall_rec[x].name, sizeof(syscall_temp.name));
+    memcpy(syscall_rec[x].name, syscall_rec[y].name, sizeof(syscall_rec[x].name));
+    memcpy(syscall_rec[y].name, syscall_temp.name, sizeof(syscall_rec[y]));
+    syscall_temp.time = syscall_rec[x].time;
+    syscall_rec[x].time = syscall_rec[y].time;
+    syscall_rec[y].time = syscall_temp.time;
+}
 void sort()
 {
     for (int i = 0; i < syscall_num; i++)
@@ -25,13 +35,7 @@ void sort()
         {
             if (syscall_rec[j - 1].time < syscall_rec[j].time)
             {
-                memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
-                memcpy(syscall_temp.name, syscall_rec[j - 1].name, sizeof(syscall_temp.name));
-                memcpy(syscall_rec[j - 1].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
-                memcpy(syscall_rec[j].name, syscall_temp.name, sizeof(syscall_rec[j]));
-                syscall_temp.time = syscall_rec[j - 1].time;
-                syscall_rec[j - 1].time = syscall_rec[j].time;
-                syscall_rec[j].time = syscall_temp.time;
+                swap(j - 1, j);
             }
         }
 }
