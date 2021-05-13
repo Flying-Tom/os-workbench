@@ -38,9 +38,9 @@ void parent(int pipe)
     double syscall_time;
     int syscall_rec_cnt;
 
-    while (scanf("%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time) == 2)
+    while (scanf("%s", buf) == 1)
     {
-        //printf("%s", buf);
+        printf("%s", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
         //sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
