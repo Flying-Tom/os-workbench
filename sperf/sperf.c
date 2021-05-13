@@ -51,10 +51,10 @@ int main(int argc, char *argv[], char *envp[])
     else
     {
         /* father process */
-        printf("pid: %d\n", pid); //父进程中返回子进程的pid
-        printf("father pid: %d\n", getpid());
         int nbytes;
         while ((nbytes = read(channel[0], buf, 512)) > 0)
             printf("%s\n", buf);
+
+        printf("Finished!\n");
     }
 }
