@@ -44,8 +44,12 @@ void parent(int pipe)
         memset(syscall_name, '\0', sizeof(syscall_name));
         //sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
+        for (int i = 0; i < 512; i++)
+        {
+            syscall_rec[i].time = 0;
+        }
 
-        for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
+                for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
