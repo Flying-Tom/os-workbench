@@ -53,8 +53,7 @@ int main(int argc, char *argv[], char *envp[])
         /* father process */
         dup2(channel[0], STDIN_FILENO);
         int nbytes;
-        printf("fuck\n");
-        while ((nbytes = read(channel[0], buf, 512)) > 0)
+        while ((nbytes = read(stdin, buf, 512)) > 0)
         {
             printf("%s\n", buf);
             printf("fuck\n");
