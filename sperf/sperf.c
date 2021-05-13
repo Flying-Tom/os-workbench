@@ -36,9 +36,8 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         printf("execve(%s, argv, envp)\n", "/bin/strace");
-        printf("%s\n", argv[1]);
         for (int i = 1; i < argc; i++)
-            exec_argv[i + 1] = argv[i];
+            exec_argv[i] = argv[i];
         execve("/bin/strace", exec_argv, envp);
     }
     else
