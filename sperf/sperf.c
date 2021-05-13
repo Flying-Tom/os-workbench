@@ -5,6 +5,7 @@
 #include <fcntl.h>
 
 int channel[2];
+char buf[512];
 int main(int argc, char *argv[], char *envp[])
 {
     char *exec_argv[] = {
@@ -44,7 +45,6 @@ int main(int argc, char *argv[], char *envp[])
         for (int i = 1; i < argc; i++)
             exec_argv[i] = argv[i];
         dup2(trash, STDERR_FILENO), dup2(trash, STDOUT_FILENO);
-        
         execve("/bin/strace", exec_argv, envp);
     }
     else
@@ -52,5 +52,8 @@ int main(int argc, char *argv[], char *envp[])
         /* father process */
         printf("pid: %d\n", pid); //父进程中返回子进程的pid
         printf("father pid: %d\n", getpid());
+        int nbytes;
+        while ((nbytes = read(channel[0], buf, 512)) > 0)
+            printf("% s\n", inbuf);
     }
 }
