@@ -22,7 +22,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
         printf("%s ", exec_argv[i]);
     printf("\n");
     */
-    dup2(pipe, STDOUT_FILENO);
+    //dup2(pipe, STDOUT_FILENO);
     //dup2(pipe, STDERR_FILENO);
     printf("111111");
     //execve("strace", exec_argv, exec_envp);
