@@ -36,6 +36,7 @@ int main(int argc, char *argv[])
     }
     else
     {
+        /* father process */
         printf("pid: %d\n", pid); //父进程中返回子进程的pid
         printf("father pid: %d\n", getpid());
     }
