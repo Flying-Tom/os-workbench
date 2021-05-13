@@ -44,7 +44,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
-    execve("strace", exec_argv, exec_envp);
+    execve("/usr/bin/strace", exec_argv, exec_envp);
 }
 
 void parent(int pipe)
