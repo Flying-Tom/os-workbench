@@ -10,7 +10,7 @@ int main(int argc, char *argv[], char *envp[])
 {
     char *exec_argv[] = {
         "strace",
-        "-T",
+        //"-T",
         NULL,
     };
     char *exec_envp[] = {
@@ -47,7 +47,7 @@ int main(int argc, char *argv[], char *envp[])
         /* child process */
         int trash = open("/dev/null", O_WRONLY);
         for (int i = 1; i < argc; i++)
-            exec_argv[i + 1] = argv[i];
+            exec_argv[i] = argv[i];
         //dup2(trash, STDOUT_FILENO);
         //dup2(channel[1], STDERR_FILENO);
         execve("/usr/bin/strace", exec_argv, envp);
