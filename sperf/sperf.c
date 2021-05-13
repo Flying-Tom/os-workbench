@@ -40,7 +40,7 @@ void parent(int pipe)
 
     while (scanf("%s", buf) == 1)
     {
-        printf("%s", buf);
+        printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
         sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
