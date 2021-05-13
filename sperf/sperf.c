@@ -90,7 +90,7 @@ void parent(int pipe)
 
     for (int i = 0; i < 5; i++)
     {
-        printf("%s(%lf)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+        printf("%s(%lf)\n", syscall_rec[i].name, syscall_rec[i].time);
     }
 }
 
