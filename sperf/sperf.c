@@ -8,15 +8,15 @@
 int channel[2];
 char buf[4096];
 
-void child(int pipe, int argc, char *argv[], char *exec_envp[])
+void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[argc + 2];
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
 
-    memcpy(exec_argv + 2, argv + 1, (argc - 2) * sizeof(char *));
-    for (int i = 0; i < sizeof(exec_argv) / sizeof(char *); i++)
+    memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
+    for (int i = 0; i < exec_argc + 2; i++)
         printf("%s ", exec_argv[i]);
 
     printf("\n");
@@ -38,7 +38,7 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
-        child(channel[1], argc, argv, envp);
+        child(channel[1], argc - 1, argv, envp);
     }
     else
     {
