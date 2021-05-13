@@ -4,6 +4,7 @@
 #include <assert.h>
 #include <string.h>
 #include <fcntl.h>
+#include <sys/wait.h>
 
 int channel[2];
 char buf[4096];
@@ -26,7 +27,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     execve("strace", exec_argv, exec_envp);
 }
 
-void parent(int pipe)
+void parent(int pipe, int child_pid)
 {
     //dup2(channel[0], STDIN_FILENO);
     /*
@@ -36,6 +37,7 @@ void parent(int pipe)
             printf("%s\n", buf);
         }
         */
+    waitpid(child_pid, NULL, WNOHANG);
     getchar();
     printf("Finished!\n");
 }
