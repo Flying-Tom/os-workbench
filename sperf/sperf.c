@@ -13,7 +13,7 @@ struct Syscall
 {
     char name[32];
     double time;
-} syscall_rec[512];
+} syscall_rec[512], syscall_temp;
 
 int syscall_num = -1;
 
@@ -24,14 +24,14 @@ void sort(int left, int right)
         {
             if (syscall_rec[i].time > syscall_rec[j].time)
             {
-                char buf_temp[32];
-                double temp;
-                memcpy(buf_temp, syscall_rec[i].name, sizeof(buf_temp));
+                memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
+                syscall_temp.time = 0;
+                memcpy(syscall_temp.name, syscall_rec[i].name, sizeof(syscall_temp.name));
                 memcpy(syscall_rec[i].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
-                memcpy(syscall_rec[j].name, buf_temp, sizeof(syscall_rec[j]));
-                temp = syscall_rec[i].time;
+                memcpy(syscall_rec[j].name, syscall_temp.name, sizeof(syscall_rec[j]));
+                syscall_temp.time = syscall_rec[i].time;
                 syscall_rec[i].time = syscall_rec[j].time;
-                syscall_rec[j].time = temp;
+                syscall_rec[j].time = syscall_temp.time;
             }
         }
 }
