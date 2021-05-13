@@ -38,7 +38,7 @@ void parent(int pipe)
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
 
-    while (scanf("%[^\n]", buf) != EOF)
+    while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
         printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
