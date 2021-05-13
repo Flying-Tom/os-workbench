@@ -17,6 +17,24 @@ struct Syscall
 
 int syscall_num = -1;
 
+void sort(int left, int right)
+{
+    for (int i = left; i <= right; i++)
+        for (int j = i; j <= right; j++)
+        {
+            if (syscall_rec[i].time > syscall_rec[j].time)
+            {
+                char buf_temp[32];
+                double temp;
+                memcpy(buf_temp, syscall_rec[i].name, sizeof(buf_temp));
+                memcpy(syscall_rec[i].name, syscall_rec[j].name, sizeof(syscall_rec[i].name));
+                memcpy(syscall_rec[j].name, buf_temp, sizeof(syscall_rec[j]));
+                temp = syscall_rec[i].time;
+                syscall_rec[i].time = syscall_rec[j].time;
+                syscall_rec[j].time = temp;
+            }
+        }
+}
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
@@ -62,13 +80,12 @@ void parent(int pipe)
             syscall_rec[syscall_rec_cnt].time = syscall_time;
         }
     }
-    printf("syscall_num:%d\n", syscall_num);
+    sort(0, syscall_num);
 
     for (int i = 0; i <= syscall_num; i++)
     {
         printf("%s\n", syscall_rec[i].name);
     }
-    printf("Finished!\n");
 }
 
 int main(int argc, char *argv[], char *envp[])
