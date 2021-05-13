@@ -39,7 +39,7 @@ int main(int argc, char *argv[], char *envp[])
         printf("%s\n", argv[1]);
         for (int i = 1; i < argc; i++)
             exec_argv[i + 1] = argv[i];
-        execve(argv[1], exec_argv, envp);
+        execve("strace", exec_argv, envp);
     }
     else
     {
