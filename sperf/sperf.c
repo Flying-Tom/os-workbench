@@ -3,6 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 
+int channel[2];
 int main(int argc, char *argv[], char *envp[])
 {
     char *exec_argv[] = {
@@ -37,6 +38,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         printf("execve(%s, argv, envp)\n", "/bin/strace");
+        assert(pipe(channel));
         for (int i = 1; i < argc; i++)
             exec_argv[i] = argv[i];
         execve("/bin/strace", exec_argv, envp);
