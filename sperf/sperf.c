@@ -23,7 +23,7 @@ void sort(int left, int right)
     for (int i = left; i <= right; i++)
         for (int j = i; j <= right; j++)
         {
-            if (syscall_rec[i].time > syscall_rec[j].time)
+            if (syscall_rec[i].time < syscall_rec[j].time)
             {
                 memset(syscall_temp.name, '\0', sizeof(syscall_temp.time));
                 syscall_temp.time = 0;
@@ -69,7 +69,6 @@ void parent(int pipe)
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
                 //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
-                printf("%lf\n", syscall_time);
                 syscall_rec[syscall_rec_cnt].time += syscall_time;
                 break;
             }
@@ -91,7 +90,7 @@ void parent(int pipe)
 
     for (int i = 0; i < 5; i++)
     {
-        printf("%s(%lf)\n", syscall_rec[i].name, syscall_rec[i].time);
+        printf("%s(%lf)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
     }
 }
 
