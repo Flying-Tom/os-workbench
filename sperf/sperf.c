@@ -65,7 +65,7 @@ int main(int argc, char *argv[], char *envp[])
             printf("%s\n", buf);
         }
         */
-        getchar();
+        //getchar();
         printf("Finished!\n");
     }
 }
