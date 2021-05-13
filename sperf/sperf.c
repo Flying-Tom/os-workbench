@@ -26,7 +26,10 @@ void parent(int pipe)
 {
     printf("pipe:%d\n", pipe);
     while (read(pipe, buf, sizeof(buf)))
+    {
         printf("%s", buf);
+        memset(buf, '\0', sizeof(buf));
+    }
     printf("Finished!\n");
 }
 
