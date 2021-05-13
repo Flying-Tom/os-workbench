@@ -39,7 +39,7 @@ void parent(int pipe)
 
     while (read(pipe, buf, sizeof(buf)))
     {
-        printf("%s", buf);
+        //printf("%s", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
         sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
