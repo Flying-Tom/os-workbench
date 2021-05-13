@@ -10,7 +10,7 @@ char buf[4096];
 
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
-    char *exec_argv[argc + 2];
+    char *exec_argv[exec_argc + 10];
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
