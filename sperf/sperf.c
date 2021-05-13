@@ -54,6 +54,6 @@ int main(int argc, char *argv[], char *envp[])
         printf("father pid: %d\n", getpid());
         int nbytes;
         while ((nbytes = read(channel[0], buf, 512)) > 0)
-            printf("% s\n", buf);
+            printf("%s\n", buf);
     }
 }
