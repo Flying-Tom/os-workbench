@@ -52,7 +52,7 @@ int main(int argc, char *argv[], char *envp[])
         //dup2(trash, STDOUT_FILENO);
         dup2(channel[1], STDERR_FILENO);
         close(channel[1]);
-        execve("/bin/strace", exec_argv, envp);
+        execve("/usr/bin/strace", exec_argv, envp);
     }
     else
     {
@@ -65,7 +65,7 @@ int main(int argc, char *argv[], char *envp[])
             printf("%s\n", buf);
         }
         */
-        //getchar();
+        getchar();
         printf("Finished!\n");
     }
 }
