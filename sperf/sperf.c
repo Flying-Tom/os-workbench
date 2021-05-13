@@ -34,6 +34,7 @@ int main(int argc, char *argv[], char *envp[])
 
     assert(argc >= 2);
     pid_t pid = fork();
+    int trash = open("/dev/null", O_WRONLY);
     if (pid == 0)
     {
         /* child process */
