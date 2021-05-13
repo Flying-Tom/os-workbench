@@ -59,6 +59,7 @@ int main(int argc, char *argv[], char *envp[])
             printf("%s\n", buf);
         }
         */
+        scanf("%s", buf);
         printf("Finished!\n");
     }
 }
