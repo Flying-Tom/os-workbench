@@ -12,7 +12,7 @@ char buf[4096];
 struct Syscall
 {
     char name[32];
-    double time = 0;
+    double time;
 } syscall_rec[512];
 
 int syscall_num = -1;
