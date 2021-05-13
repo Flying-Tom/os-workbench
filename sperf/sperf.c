@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <assert.h>
 
-int main(int argc, char *argv[])
+int main(int argc, char *argv[], char *envp)
 {
     char *exec_envp[] = {
         "PATH=/bin",
@@ -31,9 +31,9 @@ int main(int argc, char *argv[])
     if (pid == 0)
     {
         /* child process */
-        printf("execve(%s, argv, exec_envp)\n", argv[1]);
+        printf("execve(%s, argv, envp)\n", argv[1]);
         printf("%s\n", argv[1]);
-        execve(argv[1], argv + 1, exec_envp);
+        execve(argv[1], argv + 1, envp);
     }
     else
     {
