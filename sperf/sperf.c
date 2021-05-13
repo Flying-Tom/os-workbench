@@ -39,6 +39,7 @@ int main(int argc, char *argv[], char *envp[])
         perror("Open Pipe Failed!");
         assert(0);
     }
+    printf("channel[0]:%d channel[1]:%d\n", channel[0], channel[1]);
 
     pid_t pid = fork();
     if (pid == 0)
