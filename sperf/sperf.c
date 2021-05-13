@@ -36,9 +36,8 @@ void parent(int pipe, int child_pid)
             printf("fuck\n");
             printf("%s\n", buf);
         }
+        
         */
-    waitpid(child_pid, NULL, WNOHANG);
-    getchar();
     printf("Finished!\n");
 }
 
