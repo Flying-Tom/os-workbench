@@ -56,11 +56,11 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         child(channel[1], argc - 1, argv, envp);
-        assert(0);
     }
     else
     {
         /* parent process */
         parent(channel[0], pid);
     }
+    return 0;
 }
