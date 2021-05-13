@@ -21,8 +21,22 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     printf("\n");
     dup2(trash, STDOUT_FILENO);
-    dup2(trash, STDERR_FILENO);
-    execve("strace", exec_argv, exec_envp);
+    dup2(pipe, STDERR_FILENO);
+    //execve("strace", exec_argv, exec_envp);
+}
+
+void parent(int pipe)
+{
+    //dup2(channel[0], STDIN_FILENO);
+    /*
+        while (fgets(buf, 4096, stdin) != NULL)
+        {
+            printf("fuck\n");
+            printf("%s\n", buf);
+        }
+        */
+    //getchar();
+    printf("Finished!\n");
 }
 
 int main(int argc, char *argv[], char *envp[])
@@ -42,16 +56,7 @@ int main(int argc, char *argv[], char *envp[])
     }
     else
     {
-        /* father process */
-        //dup2(channel[0], STDIN_FILENO);
-        /*
-        while (fgets(buf, 4096, stdin) != NULL)
-        {
-            printf("fuck\n");
-            printf("%s\n", buf);
-        }
-        */
-        //getchar();
-        printf("Finished!\n");
+        /* parent process */
+        parent(channel[0]);
     }
 }
