@@ -16,6 +16,7 @@ struct Syscall
 } syscall_rec[512], syscall_temp;
 
 int syscall_num = -1;
+double total_exec_time = 0;
 
 void sort(int left, int right)
 {
@@ -84,7 +85,12 @@ void parent(int pipe)
 
     for (int i = 0; i <= syscall_num; i++)
     {
-        printf("%s\n", syscall_rec[i].name);
+        total_exec_time += syscall_rec[i].time;
+    }
+
+    for (int i = 0; i < 5; i++)
+    {
+        printf("%s(%lf\%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time % total_exec_time);
     }
 }
 
