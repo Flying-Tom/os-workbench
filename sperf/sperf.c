@@ -49,7 +49,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
 void parent(int pipe)
 {
-    printf("pipe:%d\n", pipe);
     dup2(pipe, STDIN_FILENO);
     char syscall_name[32];
     double syscall_time = 0;
@@ -97,7 +96,6 @@ int main(int argc, char *argv[], char *envp[])
         perror("Open Pipe Failed!");
         assert(0);
     }
-    printf("channel[0]:%d channel[1]:%d\n", channel[0], channel[1]);
 
     pid_t pid = fork();
     if (pid == 0)
