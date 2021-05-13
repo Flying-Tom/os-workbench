@@ -49,14 +49,14 @@ void parent(int pipe)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
-                printf("%s\n", syscall_rec[syscall_rec_cnt].name);
+                //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
                 syscall_rec[syscall_rec_cnt].time += syscall_time;
                 break;
             }
         }
         if (syscall_rec_cnt > syscall_num)
         {
-            printf("%s\n", syscall_rec[syscall_rec_cnt].name);
+            //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
             syscall_rec[syscall_rec_cnt].time = syscall_time;
