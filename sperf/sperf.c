@@ -5,6 +5,10 @@
 
 int main(int argc, char *argv[], char *envp[])
 {
+    char *exec_argv[] = {
+        "strace",
+        NULL,
+    };
     char *exec_envp[] = {
         "PATH=/bin",
         NULL,
@@ -33,7 +37,9 @@ int main(int argc, char *argv[], char *envp[])
         /* child process */
         printf("execve(%s, argv, envp)\n", argv[1]);
         printf("%s\n", argv[1]);
-        execve(argv[1], argv + 1, envp);
+        for (int i = 1; i < argc; i++)
+            exec_argv[i + 1] = argv[i];
+        execve(argv[1], exec_argv, envp);
     }
     else
     {
