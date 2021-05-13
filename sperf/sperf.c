@@ -10,7 +10,7 @@ char buf[4096];
 
 void child(int pipe, int argc, char *argv[], char *exec_envp[])
 {
-    char *exec_argv[] = {
+    char *exec_argv[argc + 2] = {
         "strace",
         "-T",
     };
