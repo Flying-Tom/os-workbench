@@ -37,11 +37,11 @@ int main(int argc, char *argv[], char *envp[])
     assert(argc >= 2);
     pid_t pid = fork();
     int trash = open("/dev/null", O_WRONLY);
+    assert(pipe(channel) == 0);
     if (pid == 0)
     {
         /* child process */
         printf("execve(%s, argv, envp)\n", "/bin/strace");
-        assert(pipe(channel) == 0);
         close(channel[0]);
         for (int i = 1; i < argc; i++)
             exec_argv[i + 1] = argv[i];
