@@ -45,13 +45,11 @@ int main(int argc, char *argv[], char *envp[])
     if (pid == 0)
     {
         /* child process */
-        close(channel[0]);
         int trash = open("/dev/null", O_WRONLY);
         for (int i = 1; i < argc; i++)
             exec_argv[i + 1] = argv[i];
         //dup2(trash, STDOUT_FILENO);
-        dup2(channel[1], STDERR_FILENO);
-        close(channel[1]);
+        //dup2(channel[1], STDERR_FILENO);
         execve("/usr/bin/strace", exec_argv, envp);
     }
     else
