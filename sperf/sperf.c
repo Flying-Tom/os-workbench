@@ -53,7 +53,6 @@ void parent(int pipe)
         }
         if (syscall_rec_cnt > syscall_num)
         {
-            assert(0);
             printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
