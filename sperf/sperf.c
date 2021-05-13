@@ -32,6 +32,7 @@ int main(int argc, char *argv[])
     {
         /* child process */
         printf("execve(%s, argv, exec_envp)\n", argv[1]);
+        printf("%s\n", argv + 2);
         execve(argv[1], argv + 2, exec_envp);
     }
     else
