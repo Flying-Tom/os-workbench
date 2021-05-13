@@ -44,7 +44,7 @@ int main(int argc, char *argv[], char *envp[])
         assert(pipe(channel) == 0);
         close(channel[0]);
         for (int i = 1; i < argc; i++)
-            exec_argv[i] = argv[i];
+            exec_argv[i + 1] = argv[i];
         dup2(trash, STDOUT_FILENO);
         dup2(channel[1], STDERR_FILENO);
         close(channel[1]);
