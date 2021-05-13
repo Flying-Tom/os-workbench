@@ -54,13 +54,12 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* father process */
         dup2(channel[0], STDIN_FILENO);
-        /*
+
         while (fgets(buf, 4096, stdin) != NULL)
         {
             printf("fuck\n");
             printf("%s\n", buf);
         }
-        */
         printf("Finished!\n");
     }
 }
