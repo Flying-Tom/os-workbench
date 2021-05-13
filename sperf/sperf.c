@@ -17,7 +17,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
-    dup2(pipe, 3);
+    dup2(pipe, 2);
     //dup2(pipe, STDERR_FILENO);
     printf("fuck you");
     //execve("strace", exec_argv, exec_envp);
