@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <assert.h>
+#include <fcntl.h>
 
 int channel[2];
 int main(int argc, char *argv[], char *envp[])
