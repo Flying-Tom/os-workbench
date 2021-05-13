@@ -60,6 +60,7 @@ void parent(int pipe)
         }
         memset(buf, '\0', sizeof(buf));
     }
+    printf("syscall_num:%d\n", syscall_num);
     printf("Finished!\n");
 }
 
