@@ -103,7 +103,7 @@ void parent(int pipe)
         total_exec_time += syscall_rec[i].time;
     }
 
-    for (int i = 0; i <= syscall_num > 5 ? 5 : syscall_num; i++)
+    for (int i = 0; i <= (syscall_num > 5 ? 5 : syscall_num); i++)
         findtimemax();
 }
 
