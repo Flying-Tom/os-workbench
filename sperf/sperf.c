@@ -83,8 +83,8 @@ void parent(int pipe)
     char syscall_name[32];
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
-
-    while (fgets(buf, sizeof(buf), outputfile) != NULL)
+    FILE fp = fopen(outputfile, "r");
+    while (fgets(buf, sizeof(buf), fp) != NULL)
     {
         //printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
