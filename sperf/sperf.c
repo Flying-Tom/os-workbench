@@ -125,7 +125,7 @@ int main(int argc, char *argv[], char *envp[])
         /* parent process */
         close(channel[1]);
         parent(channel[0]);
-        //close(channel[0]);
+        close(channel[0]);
     }
     return 0;
 }
