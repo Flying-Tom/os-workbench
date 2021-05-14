@@ -97,7 +97,7 @@ int main(int argc, char *argv[], char *envp[])
         assert(0);
     }
 
-    for (int i = 0, i < sizeof(envp) / sizeof(char *), i++)
+    for (int i = 0; i < sizeof(envp) / sizeof(char *); i++)
         printf("%s\n", envp[i]);
     pid_t pid = fork();
     if (pid == 0)
