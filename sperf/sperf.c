@@ -43,18 +43,18 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
 
-    strcpy(path, getenv("PATH"));
-    temp = strtok(path, ":");
-    while (temp != NULL)
-    {
-        printf("%s\n", temp);
-        temp = strtok(NULL, ":");
-    }
-
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
-    execve("strace", exec_argv, exec_envp);
+
+    strcpy(path, getenv("PATH"));
+    temp = strtok(path, ":");
+
+    while (execve(strcat(strcat(temp, "/"), "strace"), exec_argv, exec_envp) == -1 && temp != NULL)
+    {
+        //printf("%s\n", temp);
+        temp = strtok(NULL, ":");
+    }
 }
 
 void parent(int pipe)
