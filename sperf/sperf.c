@@ -8,6 +8,8 @@
 
 int channel[2];
 char buf[4096];
+char path[2048];
+char *temp = NULL;
 
 struct Syscall
 {
@@ -41,14 +43,12 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
 
-    char test[2048];
-    strcpy(test, getenv("PATH"));
-    char *testp;
-    testp = strtok(test, ":");
-    while (testp != NULL)
+    strcpy(path, getenv("PATH"));
+    temp = strtok(test, ":");
+    while (temp != NULL)
     {
-        printf("%s\n", testp);
-        testp = strtok(NULL, ":");
+        printf("%s\n", temp);
+        temp = strtok(NULL, ":");
     }
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
