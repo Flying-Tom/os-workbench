@@ -49,7 +49,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     //dup2(trash, STDOUT_FILENO);
     //dup2(trash, STDERR_FILENO);
 
-    memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
+    memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
 
     char exec_path[128];
     strcpy(path, getenv("PATH"));
@@ -57,7 +57,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    printf("fuuuck\n");
     for (int i = 0; i < 5; i++)
         printf("%s\n", exec_argv[i]);
 
