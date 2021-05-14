@@ -9,7 +9,6 @@
 int channel[2];
 char buf[4096];
 char path[2048];
-char outputfile[256];
 char *temp = NULL;
 
 struct Syscall
@@ -42,16 +41,13 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     char *exec_argv[exec_argc + 10];
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
-    exec_argv[2] = "-o";
-    exec_argv[3] = outputfile;
 
-    sprintf(outputfile, "/proc/self/fd/%d", pipe);
-    memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
+    memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
 
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
-    //dup2(trash, STDOUT_FILENO);
-    dup2(trash, STDERR_FILENO);
+    dup2(trash, STDOUT_FILENO);
+    dup2(pipe, STDERR_FILENO);
     char exec_path[128];
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
