@@ -59,13 +59,18 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcat(exec_path, "/strace");
 
     //printf("%s\n", exec_path);
-    while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
+    while (temp != NULL)
     {
-        printf("%s\n", exec_path);
-        memset(exec_path, '\0', sizeof(exec_path));
-        temp = strtok(NULL, ":");
-        strcpy(exec_path, temp);
-        strcat(exec_path, "/strace");
+        if (execve(exec_path, exec_argv, exec_envp) == -1)
+        {
+            printf("%s\n", exec_path);
+            memset(exec_path, '\0', sizeof(exec_path));
+            temp = strtok(NULL, ":");
+            strcpy(exec_path, temp);
+            strcat(exec_path, "/strace");
+        }
+        else
+            break;
     }
     printf("%s\n", exec_path);
 }
