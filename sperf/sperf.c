@@ -115,10 +115,10 @@ int main(int argc, char *argv[], char *envp[])
         perror("Open Pipe Failed!");
         assert(0);
     }
-
+    /*
     for (int i = 0; i < 5; i++)
         printf("%s\n", argv[i]);
-
+    */
     pid_t pid = fork();
     if (pid == 0)
     {
