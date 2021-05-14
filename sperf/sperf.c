@@ -5,6 +5,8 @@
 #include <string.h>
 #include <fcntl.h>
 #include <sys/wait.h>
+#include <time.h>
+#include <windows.h>
 
 int channel[2];
 char buf[4096];
@@ -75,7 +77,6 @@ void parent(int pipe)
     int syscall_rec_cnt = 0;
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
-        //printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
         sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
