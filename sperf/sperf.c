@@ -63,8 +63,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
         temp = strtok(NULL, ":");
         strcpy(exec_path, temp);
         strcat(exec_path, "/strace");
-        printf("%s\n", exec_path);
     }
+    printf("%s\n", exec_path);
 }
 
 void parent(int pipe)
