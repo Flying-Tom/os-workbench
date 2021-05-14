@@ -48,7 +48,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
-    //dup2(trash, STDOUT_FILENO);
+    dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
 
     strcpy(path, getenv("PATH"));
@@ -79,6 +79,7 @@ void parent(int pipe)
     char syscall_name[32];
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
+    printf("fuck\n");
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
         printf("%s\n", buf);
