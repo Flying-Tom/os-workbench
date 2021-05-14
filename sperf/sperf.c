@@ -60,8 +60,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     for (int i = 0; i < 5; i++)
         printf("%s\n", exec_argv[i]);
 
-    assert(0);
-
     execve("/usr/bin/strace", exec_argv, exec_envp);
 
     /*
@@ -134,6 +132,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         close(channel[0]);
+        assert(0);
         child(channel[1], argc - 1, argv, envp);
     }
     else
