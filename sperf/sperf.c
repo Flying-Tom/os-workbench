@@ -45,6 +45,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     sprintf(exec_argv[3], "/proc/self/fd/%d", pipe);
 
+    printf("fccck");
+
     int trash = open("/dev/null", O_WRONLY);
     //dup2(trash, STDOUT_FILENO);
     //dup2(trash, STDERR_FILENO);
