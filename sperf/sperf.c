@@ -6,8 +6,6 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <time.h>
-#include <windows.h>
-
 int channel[2];
 char buf[4096];
 char path[2048];
