@@ -52,6 +52,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     dup2(pipe, STDERR_FILENO);
 
     strcpy(path, getenv("PATH"));
+    printf("%s\n", path);
+
     temp = strtok(path, ":");
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
@@ -60,7 +62,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     while (temp != NULL)
     {
-        printf("%s\n", exec_path);
+        //printf("%s\n", exec_path);
         if (execve(exec_path, exec_argv, exec_envp) == -1)
         {
             memset(exec_path, '\0', sizeof(exec_path));
@@ -78,7 +80,6 @@ void parent(int pipe)
     char syscall_name[32];
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
-    printf("fuck\n");
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
         printf("%s\n", buf);
