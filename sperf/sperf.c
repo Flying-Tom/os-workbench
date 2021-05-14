@@ -43,7 +43,13 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     char test[256];
     strcpy(test, getenv("PATH"));
-    printf("%s\n", getenv("PATH"));
+    char *testp;
+    testp = strtok(test, ":");
+    while (testp != NULL)
+    {
+        printf("%s\n", testp);
+        testp = strtok(NULL, ":");
+    }
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     dup2(trash, STDOUT_FILENO);
