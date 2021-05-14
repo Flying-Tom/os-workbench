@@ -57,7 +57,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     while (execve("strace", exec_argv, exec_envp) == -1 && temp != NULL)
     {
-        printf("%s\n", temp);
+        //printf("%s\n", temp);
         temp = strtok(NULL, ":");
     }
 }
