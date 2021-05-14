@@ -49,7 +49,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
     dup2(trash, STDOUT_FILENO);
-    //dup2(pipe, STDERR_FILENO);
+    dup2(pipe, STDERR_FILENO);
 
     strcpy(path, getenv("PATH"));
 
@@ -57,10 +57,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    //execve("/bin/strace", exec_argv, exec_envp);
-
-    execvp("strace", exec_argv);
-    /*
     while (temp != NULL)
     {
         //printf("%s\n", exec_path);
@@ -72,8 +68,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
             strcat(exec_path, "/strace");
         }
     }
-    printf("%s\n", exec_path);
-    */
 }
 
 void parent(int pipe)
