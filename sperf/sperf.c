@@ -97,10 +97,11 @@ void parent(int pipe)
         if (time(NULL) > now)
         {
             now++;
+            for (int i = 0, total_exec_time; i <= syscall_num; i++)
+                total_exec_time += syscall_rec[i].time;
+
             for (int i = 0; i <= syscall_num; i++)
-            {
                 printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-            }
         }
     }
     syscall_num--;
