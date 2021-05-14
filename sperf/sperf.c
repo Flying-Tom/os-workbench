@@ -45,7 +45,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
-
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     exec_argv[exec_argc + 2] = ">";
     exec_argv[exec_argc + 3] = "/dev/null";
@@ -112,6 +111,10 @@ void parent(int pipe)
 
                 for (int i = 0; i <= syscall_num; i++)
                     printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+
+                for (int i = 0; i < 80; i++)
+                    printf("%c", '\0');
+                fflush(stdout);
             }
         }
     }
@@ -123,6 +126,8 @@ void parent(int pipe)
 
     for (int i = 0; i <= (syscall_num > 5 ? 5 : syscall_num); i++)
         findtimemax();
+
+    fflush(stdout);
 }
 
 int main(int argc, char *argv[], char *envp[])
