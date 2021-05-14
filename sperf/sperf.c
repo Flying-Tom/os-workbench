@@ -49,7 +49,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
 
     int trash = open("/dev/null", O_WRONLY);
-    //dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
+    dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
 
     char exec_path[128];
     strcpy(path, getenv("PATH"));
@@ -57,8 +57,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    for (int i = 0; i < 20; i++)
-        printf("%s\n", exec_envp[i]);
     while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
         memset(exec_path, '\0', sizeof(exec_path));
@@ -86,14 +84,12 @@ void parent(int pipe)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
-                //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
                 syscall_rec[syscall_rec_cnt].time += syscall_time;
                 break;
             }
         }
         if (syscall_rec_cnt > syscall_num)
         {
-            //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
             syscall_num++;
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
             syscall_rec[syscall_rec_cnt].time = syscall_time;
@@ -117,23 +113,19 @@ int main(int argc, char *argv[], char *envp[])
         perror("Open Pipe Failed!");
         assert(0);
     }
-    /*
-    for (int i = 0; i < 5; i++)
-        printf("%s\n", argv[i]);
-    */
     pid_t pid = fork();
     if (pid == 0)
     {
         /* child process */
-        close(channel[0]);
+        //close(channel[0]);
         child(channel[1], argc - 1, argv, envp);
     }
     else
     {
         /* parent process */
-        close(channel[1]);
+        //close(channel[1]);
         parent(channel[0]);
-        close(channel[0]);
+        //close(channel[0]);
     }
     return 0;
 }
