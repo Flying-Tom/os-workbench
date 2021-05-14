@@ -70,7 +70,10 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
             strcat(exec_path, "/strace");
         }
         else
+        {
+            assert(0);
             break;
+        }
     }
     printf("%s\n", exec_path);
 }
