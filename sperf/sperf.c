@@ -49,14 +49,13 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
-    printf("%s\n", temp);
-    /*
+    printf("%s\n", strcat(temp, "/"), "strace"));
+
     while (execve("strace", exec_argv, exec_envp) == -1 && temp != NULL)
     {
         printf("%s\n", temp);
         temp = strtok(NULL, ":");
     }
-    */
 }
 
 void parent(int pipe)
