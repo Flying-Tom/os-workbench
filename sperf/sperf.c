@@ -44,7 +44,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
-    execve("/usr/bin/strace", exec_argv, exec_envp);
+    execve("strace", exec_argv, exec_envp);
 }
 
 void parent(int pipe)
@@ -96,9 +96,10 @@ int main(int argc, char *argv[], char *envp[])
         perror("Open Pipe Failed!");
         assert(0);
     }
-
+    /*
     for (int i = 0; i < 5; i++)
         printf("%s\n", envp[i]);
+    */
     pid_t pid = fork();
     if (pid == 0)
     {
