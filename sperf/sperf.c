@@ -39,6 +39,8 @@ void findtimemax()
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
+    char exec_path[128];
+
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
 
@@ -46,9 +48,9 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
-    dup2(trash, STDOUT_FILENO);
+    //dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
-    char exec_path[128];
+
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
     strcpy(exec_path, temp);
