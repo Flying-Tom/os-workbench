@@ -42,7 +42,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     exec_argv[2] = "-o";
-
+    assert(0);
     sprintf(exec_argv[3], "/proc/self/fd/%d", pipe);
 
     int trash = open("/dev/null", O_WRONLY);
@@ -132,7 +132,6 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         close(channel[0]);
-        assert(0);
         child(channel[1], argc - 1, argv, envp);
     }
     else
