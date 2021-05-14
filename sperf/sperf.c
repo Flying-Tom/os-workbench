@@ -46,24 +46,18 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     //memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
 
-    for (int i = 1; i <= exec_argc; i++)
-    {
-        exec_argv[i + 1] = argv[i];
-    }
-
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
-    //dup2(trash, STDOUT_FILENO);
+    dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
 
     strcpy(path, getenv("PATH"));
-    printf("%s\n", path);
 
     temp = strtok(path, ":");
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    execve("/usr/bin/strace", exec_argv, exec_envp);
+    execve("/bin/strace", exec_argv, exec_envp);
 
     /*
     while (temp != NULL)
