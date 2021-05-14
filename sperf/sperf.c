@@ -97,7 +97,8 @@ void parent(int pipe)
         if (time(NULL) > now)
         {
             now++;
-            for (int i = 0, total_exec_time = 0; i <= syscall_num; i++)
+            total_exec_time = 0;
+            for (int i = 0; i <= syscall_num; i++)
                 total_exec_time += syscall_rec[i].time;
 
             for (int i = 0; i <= syscall_num; i++)
@@ -105,6 +106,7 @@ void parent(int pipe)
         }
     }
     syscall_num--;
+    total_exec_time = 0;
     for (int i = 0; i <= syscall_num; i++)
     {
         total_exec_time += syscall_rec[i].time;
