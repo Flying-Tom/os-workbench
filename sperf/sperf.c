@@ -56,9 +56,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    //printf("%s\n", exec_path);
-    for (int i = 0; i < 5; i++)
-        printf("%s\n", exec_argv[i]);
+    printf("%s\n", temp);
+
     while (temp != NULL)
     {
         printf("%s\n", exec_path);
