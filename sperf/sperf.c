@@ -45,11 +45,11 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[2] = "-o";
     exec_argv[3] = outputfile;
 
-    sprintf(outputfile, "/proc/%d/fd/%d", getpid(), pipe);
+    sprintf(outputfile, "/proc/self/fd/%d", pipe);
     memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
 
     int trash = open("/dev/null", O_WRONLY);
-    dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
+    //dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
 
     char exec_path[128];
     strcpy(path, getenv("PATH"));
@@ -57,6 +57,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
+    for (int i = 0; i < 5; i++)
+        printf("%s\n", exec_argc[i]);
     while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
         memset(exec_path, '\0', sizeof(exec_path));
