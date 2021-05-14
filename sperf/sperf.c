@@ -92,6 +92,7 @@ void parent(int pipe)
                 if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
                 {
                     syscall_rec[syscall_rec_cnt].time += syscall_time;
+                    total_exec_time += syscall_time;
                     break;
                 }
             }
@@ -100,14 +101,12 @@ void parent(int pipe)
                 syscall_num++;
                 memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
                 syscall_rec[syscall_rec_cnt].time = syscall_time;
+                total_exec_time += syscall_time;
             }
 
             if (time(NULL) > now)
             {
                 now++;
-                total_exec_time = 0;
-                for (int i = 0; i <= syscall_num; i++)
-                    total_exec_time += syscall_rec[i].time;
 
                 for (int i = 0; i <= syscall_num; i++)
                     printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
@@ -117,11 +116,6 @@ void parent(int pipe)
                 fflush(stdout);
             }
         }
-    }
-    total_exec_time = 0;
-    for (int i = 0; i <= syscall_num; i++)
-    {
-        total_exec_time += syscall_rec[i].time;
     }
 
     for (int i = 0; i <= (syscall_num > 5 ? 5 : syscall_num); i++)
