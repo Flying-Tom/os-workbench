@@ -58,7 +58,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcat(exec_path, "/strace");
 
     for (int i = 0; i < 6; i++)
-        printf("%s\n", exec_argv[i]);
+        printf("%s\n", exec_envp[i]);
     while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
         memset(exec_path, '\0', sizeof(exec_path));
