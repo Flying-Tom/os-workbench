@@ -47,7 +47,10 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[1] = "-T";
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
-    exec_argv[exec_argc + 2] = NULL;
+    exec_argv[exec_argc + 2] = ">";
+    exec_argv[exec_argc + 3] = "/dev/null";
+    exec_argv[exec_argc + 4] = "2>&1";
+    exec_argv[exec_argc + 5] = NULL;
 
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
