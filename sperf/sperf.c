@@ -58,16 +58,12 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    while (temp != NULL)
+    while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
-        //printf("%s\n", exec_path);
-        if (execve(exec_path, exec_argv, exec_envp) == -1)
-        {
-            memset(exec_path, '\0', sizeof(exec_path));
-            temp = strtok(NULL, ":");
-            strcpy(exec_path, temp);
-            strcat(exec_path, "/strace");
-        }
+        memset(exec_path, '\0', sizeof(exec_path));
+        temp = strtok(NULL, ":");
+        strcpy(exec_path, temp);
+        strcat(exec_path, "/strace");
     }
 }
 
@@ -79,7 +75,7 @@ void parent(int pipe)
     int syscall_rec_cnt = 0;
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
-        printf("%s\n", buf);
+        //printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
         sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
         memset(buf, '\0', sizeof(buf));
