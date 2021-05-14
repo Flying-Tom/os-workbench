@@ -47,7 +47,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
 
-    printf("fucccck\n");
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
     printf("%s\n", temp);
@@ -118,6 +117,7 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         close(channel[0]);
+        printf("fucccck\n");
         child(channel[1], argc - 1, argv, envp);
     }
     else
