@@ -45,7 +45,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[2] = "-o";
     exec_argv[3] = outputfile;
 
-    sprintf(outputfile, "/proc/self/fd/%d", pipe);
+    sprintf(outputfile, "/proc/%d/fd/%d", getpid(), pipe);
     memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
 
     int trash = open("/dev/null", O_WRONLY);
