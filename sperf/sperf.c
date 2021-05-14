@@ -108,10 +108,10 @@ void parent(int pipe)
             {
                 now++;
                 printf("%d\n", syscall_num);
-                /*
+
                 for (int i = 0; i <= syscall_num; i++)
-                    printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
-                */
+                    printf("%d:%s(%.0lf%%)\n", i, syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+
                 for (int i = 0; i < 80; i++)
                     printf("%c", '\0');
                 fflush(stdout);
