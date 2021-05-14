@@ -56,7 +56,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     //printf("%s\n", exec_path);
     for (int i = 0; i < 5; i++)
-        printf("%s\n", exec_path[i]);
+        printf("%s\n", exec_argv[i]);
     while (temp != NULL)
     {
         printf("%s\n", exec_path);
