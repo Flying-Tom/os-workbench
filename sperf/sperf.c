@@ -44,7 +44,12 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
 
-    memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
+    //memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
+
+    for (int i = 1; i <= exec_argc; i++)
+    {
+        exec_argv[i + 1] = argv[i];
+    }
 
     int trash = open("/dev/null", O_WRONLY);
     assert(trash > 0);
