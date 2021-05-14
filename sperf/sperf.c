@@ -52,7 +52,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     assert(trash > 0);
     //dup2(trash, STDOUT_FILENO);
     //dup2(trash, STDERR_FILENO);
-    assert(0);
     char exec_path[128];
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
