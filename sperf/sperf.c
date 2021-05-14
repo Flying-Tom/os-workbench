@@ -55,6 +55,8 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcat(exec_path, "/strace");
 
     //printf("%s\n", exec_path);
+    for (int i = 0; i < 5; i++)
+        printf("%s\n", exec_path[i]);
     while (temp != NULL)
     {
         printf("%s\n", exec_path);
@@ -125,7 +127,7 @@ int main(int argc, char *argv[], char *envp[])
     else
     {
         /* parent process */
-        //close(channel[1]);
+        close(channel[1]);
         parent(channel[0]);
         //close(channel[0]);
     }
