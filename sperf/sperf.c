@@ -42,7 +42,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     char test[256];
-    test = getenv("PATH");
+    strcpy(test, getenv("PATH"));
     printf("%s\n", getenv("PATH"));
 
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
