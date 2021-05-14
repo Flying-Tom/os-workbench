@@ -9,6 +9,7 @@
 int channel[2];
 char buf[4096];
 char path[2048];
+char outputfile[256];
 char *temp = NULL;
 
 struct Syscall
@@ -39,7 +40,6 @@ void findtimemax()
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
-    char outputfile[256];
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     exec_argv[2] = "-o";
@@ -84,7 +84,7 @@ void parent(int pipe)
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
 
-    while (fgets(buf, sizeof(buf), stdin) != NULL)
+    while (fgets(buf, sizeof(buf), outputfile) != NULL)
     {
         //printf("%s\n", buf);
         memset(syscall_name, '\0', sizeof(syscall_name));
