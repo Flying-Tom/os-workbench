@@ -6,7 +6,7 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <time.h>
-int channel[2];
+int channel[2], now;
 char buf[4096];
 char path[2048];
 char *temp = NULL;
@@ -93,9 +93,18 @@ void parent(int pipe)
             memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
             syscall_rec[syscall_rec_cnt].time = syscall_time;
         }
+
+        if (time(NULL) > now)
+        {
+            now++;
+            for (int i = 0; i <= syscall_num; i++)
+            {
+                printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+            }
+        }
     }
     syscall_num--;
-    for (int i = 0; i <= syscall_num; i++)
+    for (int i = 0, total_exec_time; i <= syscall_num; i++)
     {
         total_exec_time += syscall_rec[i].time;
     }
@@ -107,6 +116,7 @@ void parent(int pipe)
 int main(int argc, char *argv[], char *envp[])
 {
     assert(argc >= 2);
+    now = time(NULL);
     if (pipe(channel))
     {
         perror("Open Pipe Failed!");
