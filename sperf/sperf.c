@@ -6,10 +6,12 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <time.h>
-int channel[2], now;
+int channel[2];
 char buf[4096];
 char path[2048];
 char *temp = NULL;
+
+time_t now;
 
 struct Syscall
 {
@@ -73,6 +75,8 @@ void parent(int pipe)
     char syscall_name[32];
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
+
+    now = time(NULL);
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
         memset(syscall_name, '\0', sizeof(syscall_name));
@@ -119,7 +123,6 @@ void parent(int pipe)
 int main(int argc, char *argv[], char *envp[])
 {
     assert(argc >= 2);
-    now = time(NULL);
     if (pipe(channel))
     {
         perror("Open Pipe Failed!");
