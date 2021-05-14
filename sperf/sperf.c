@@ -47,7 +47,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     sprintf(outputfile, "/proc/self/fd/%d", pipe);
     memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
-
+    assert(0);
     int trash = open("/dev/null", O_WRONLY);
     dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
 
@@ -56,7 +56,6 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     temp = strtok(path, ":");
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
-    assert(0);
 
     while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
