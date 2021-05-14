@@ -79,34 +79,37 @@ void parent(int pipe)
     now = time(NULL);
     while (fgets(buf, sizeof(buf), stdin) != NULL)
     {
-        memset(syscall_name, '\0', sizeof(syscall_name));
-        sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
-        memset(buf, '\0', sizeof(buf));
-
-        for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
+        if (buf[0] != '+')
         {
-            if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
+            memset(syscall_name, '\0', sizeof(syscall_name));
+            sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
+            memset(buf, '\0', sizeof(buf));
+
+            for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
             {
-                syscall_rec[syscall_rec_cnt].time += syscall_time;
-                break;
+                if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
+                {
+                    syscall_rec[syscall_rec_cnt].time += syscall_time;
+                    break;
+                }
             }
-        }
-        if (syscall_rec_cnt > syscall_num)
-        {
-            syscall_num++;
-            memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
-            syscall_rec[syscall_rec_cnt].time = syscall_time;
-        }
+            if (syscall_rec_cnt > syscall_num)
+            {
+                syscall_num++;
+                memcpy(syscall_rec[syscall_rec_cnt].name, syscall_name, sizeof(syscall_name));
+                syscall_rec[syscall_rec_cnt].time = syscall_time;
+            }
 
-        if (time(NULL) > now)
-        {
-            now++;
-            total_exec_time = 0;
-            for (int i = 0; i <= syscall_num; i++)
-                total_exec_time += syscall_rec[i].time;
+            if (time(NULL) > now)
+            {
+                now++;
+                total_exec_time = 0;
+                for (int i = 0; i <= syscall_num; i++)
+                    total_exec_time += syscall_rec[i].time;
 
-            for (int i = 0; i <= syscall_num; i++)
-                printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+                for (int i = 0; i <= syscall_num; i++)
+                    printf("%s(%.0lf%%)\n", syscall_rec[i].name, 100 * syscall_rec[i].time / total_exec_time);
+            }
         }
     }
     syscall_num--;
