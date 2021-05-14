@@ -112,7 +112,6 @@ void parent(int pipe)
             }
         }
     }
-    syscall_num--;
     total_exec_time = 0;
     for (int i = 0; i <= syscall_num; i++)
     {
