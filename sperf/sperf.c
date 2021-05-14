@@ -49,7 +49,9 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     memcpy(exec_argv + 4, argv + 1, exec_argc * sizeof(char *));
 
     int trash = open("/dev/null", O_WRONLY);
-    dup2(trash, STDOUT_FILENO), dup2(trash, STDERR_FILENO);
+    assert(0);
+    dup2(trash, STDOUT_FILENO);
+    dup2(trash, STDERR_FILENO);
     assert(0);
     char exec_path[128];
     strcpy(path, getenv("PATH"));
