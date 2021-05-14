@@ -43,6 +43,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     char test[256];
     strcpy(test, getenv("PATH"));
+    printf("%s\n", test);
     char *testp;
     testp = strtok(test, ":");
     while (testp != NULL)
