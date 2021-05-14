@@ -39,11 +39,13 @@ void findtimemax()
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
+    char outputfile[256];
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     exec_argv[2] = "-o";
+    exec_argv[3] = outputfile;
 
-    //sprintf(exec_argv[3], "/proc/self/fd/%d", pipe);
+    sprintf(outputfile, "/proc/self/fd/%d", pipe);
 
     int trash = open("/dev/null", O_WRONLY);
     //dup2(trash, STDOUT_FILENO);
