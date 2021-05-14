@@ -42,7 +42,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
     int trash = open("/dev/null", O_WRONLY);
-
+    printf("fucccck\n");
     memcpy(exec_argv + 2, argv + 1, exec_argc * sizeof(char *));
     dup2(trash, STDOUT_FILENO);
     dup2(pipe, STDERR_FILENO);
@@ -117,7 +117,6 @@ int main(int argc, char *argv[], char *envp[])
     {
         /* child process */
         close(channel[0]);
-        printf("fucccck\n");
         child(channel[1], argc - 1, argv, envp);
     }
     else
