@@ -49,6 +49,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     strcpy(path, getenv("PATH"));
     temp = strtok(path, ":");
+    printf("fucccck\n");
     printf("%s\n", temp);
 
     while (execve("strace", exec_argv, exec_envp) == -1 && temp != NULL)
