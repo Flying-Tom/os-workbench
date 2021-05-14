@@ -88,7 +88,7 @@ void parent(int pipe)
         {
             if (strcmp(syscall_rec[syscall_rec_cnt].name, syscall_name) == 0)
             {
-                //printf("%s\n", syscall_rec[syscall_rec_cnt].name);
+                printf("%s\n", syscall_rec[syscall_rec_cnt].name);
                 syscall_rec[syscall_rec_cnt].time += syscall_time;
                 break;
             }
