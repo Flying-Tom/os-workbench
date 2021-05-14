@@ -44,7 +44,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     int trash = open("/dev/null", O_WRONLY);
 
     strcpy(path, getenv("PATH"));
-    temp = strtok(test, ":");
+    temp = strtok(path, ":");
     while (temp != NULL)
     {
         printf("%s\n", temp);
