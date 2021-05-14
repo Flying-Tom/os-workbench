@@ -53,7 +53,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
-    execve("/usr/bin/strace", exec_envp);
+    execve("/usr/bin/strace", exec_argv, exec_envp);
     /*
     while (execve(exec_path, exec_argv, exec_envp) == -1 && temp != NULL)
     {
