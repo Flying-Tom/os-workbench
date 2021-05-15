@@ -4,7 +4,6 @@
 #include <assert.h>
 #include <string.h>
 #include <fcntl.h>
-#include <sys/wait.h>
 #include <time.h>
 
 time_t now;
