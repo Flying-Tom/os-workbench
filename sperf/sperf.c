@@ -7,7 +7,6 @@
 #include <sys/wait.h>
 #include <time.h>
 int channel[2];
-char buf[4096];
 char path[2048];
 char *temp = NULL;
 
@@ -73,19 +72,17 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
 void parent(int pipe)
 {
-    //dup2(pipe, STDIN_FILENO);
-    char syscall_name[32], temp;
+    char syscall_name[32], buf[4096], char_buf;
     double syscall_time = 0;
-    int syscall_rec_cnt = 0;
-    int length = 0;
+    int syscall_rec_cnt = 0, length = 0;
 
     now = time(NULL);
     printf("======sperf stat======\n");
-    while (read(pipe, &temp, 1) > 0)
+    while (read(pipe, &char_buf, 1) > 0)
     {
         if (buf[0] == '+')
             break;
-        buf[length++] = temp;
+        buf[length++] = char_buf;
         if (buf[length - 1] == '\n' && buf[length - 2] == '>')
         {
             memset(syscall_name, '\0', sizeof(syscall_name));
