@@ -119,7 +119,7 @@ void parent(int pipe)
 
                 for (int i = 0; i < 80; i++)
                     printf("%c", '\0');
-                printf("================\n");
+                //printf("================\n");
                 fflush(stdout);
             }
         }
