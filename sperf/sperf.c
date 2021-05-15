@@ -80,6 +80,7 @@ void parent(int pipe)
     int length = 0;
 
     now = time(NULL);
+    printf("fuck\n");
     while (read(pipe, &temp, 1) > 0)
     {
         if (buf[0] != '+')
