@@ -6,9 +6,6 @@
 #include <fcntl.h>
 #include <sys/wait.h>
 #include <time.h>
-int channel[2];
-char path[2048];
-char *temp = NULL;
 
 time_t now;
 
@@ -40,7 +37,7 @@ void findtimemax()
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
-    char exec_path[128];
+    char exec_path[128], path[2048];
 
     exec_argv[0] = "strace";
     exec_argv[1] = "-T";
@@ -57,7 +54,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
     strcpy(path, getenv("PATH"));
 
-    temp = strtok(path, ":");
+    char *temp = strtok(path, ":");
     strcpy(exec_path, temp);
     strcat(exec_path, "/strace");
 
@@ -130,6 +127,7 @@ void parent(int pipe)
 int main(int argc, char *argv[], char *envp[])
 {
     assert(argc >= 2);
+    int channel[2];
     if (pipe(channel))
     {
         perror("Open Pipe Failed!");
