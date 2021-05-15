@@ -18,22 +18,6 @@ struct Syscall
 int syscall_num = -1;
 double total_exec_time = 0;
 
-void findtimemax()
-{
-    double syscall_time_max = 0;
-    int syscall_id = 0;
-    for (int i = 0; i <= syscall_num; i++)
-    {
-        if (syscall_rec[i].time > syscall_time_max)
-        {
-            syscall_time_max = syscall_rec[i].time;
-            syscall_id = i;
-        }
-    }
-    printf("%s(%.0lf%%)\n", syscall_rec[syscall_id].name, 100 * syscall_rec[syscall_id].time / total_exec_time);
-    syscall_rec[syscall_id].time = 0;
-}
-
 void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 {
     char *exec_argv[exec_argc + 10];
@@ -119,8 +103,20 @@ void parent(int pipe)
     }
 
     for (int i = 0; i <= (syscall_num > 5 ? 5 : syscall_num); i++)
-        findtimemax();
-
+    {
+        double syscall_time_max = 0;
+        int syscall_id = 0;
+        for (int i = 0; i <= syscall_num; i++)
+        {
+            if (syscall_rec[i].time > syscall_time_max)
+            {
+                syscall_time_max = syscall_rec[i].time;
+                syscall_id = i;
+            }
+        }
+        printf("%s(%.0lf%%)\n", syscall_rec[syscall_id].name, 100 * syscall_rec[syscall_id].time / total_exec_time);
+        syscall_rec[syscall_id].time = 0;
+    }
     fflush(stdout);
 }
 
