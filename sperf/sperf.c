@@ -73,7 +73,7 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 
 void parent(int pipe)
 {
-    dup2(pipe, STDIN_FILENO);
+    //dup2(pipe, STDIN_FILENO);
     char syscall_name[32], temp;
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
