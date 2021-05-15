@@ -85,6 +85,7 @@ void parent(int pipe)
         if (buf[0] != '+')
             break;
         buf[length++] = temp;
+        printf("%s\n", buf);
         if (buf[length - 1] == '\n' && buf[length - 2] == '>')
         {
             memset(syscall_name, '\0', sizeof(syscall_name));
