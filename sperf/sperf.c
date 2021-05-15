@@ -74,18 +74,23 @@ void child(int pipe, int exec_argc, char *argv[], char *exec_envp[])
 void parent(int pipe)
 {
     dup2(pipe, STDIN_FILENO);
-    char syscall_name[32];
+    char syscall_name[32], temp;
     double syscall_time = 0;
     int syscall_rec_cnt = 0;
+    int length = 0;
 
     now = time(NULL);
-    while (fgets(buf, sizeof(buf), stdin) != NULL)
+    while (read(pipe, &temp, 1) > 0)
     {
         if (buf[0] != '+')
+            break;
+        buf[length++] = temp;
+        if (buf[length - 1] == '\n' && buf[length - 2] == '>')
         {
             memset(syscall_name, '\0', sizeof(syscall_name));
             sscanf(buf, "%[^(]%*[^<]<%lf>\n", syscall_name, &syscall_time);
             memset(buf, '\0', sizeof(buf));
+            length = 0;
 
             for (syscall_rec_cnt = 0; syscall_rec_cnt <= syscall_num; syscall_rec_cnt++)
             {
