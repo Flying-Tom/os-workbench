@@ -7,6 +7,9 @@ int func_cnt = 0;
 int main(int argc, char *argv[])
 {
     static char line[4096];
+    for (int i = 1; i <= 5; i++)
+        mkstemp(func_template);
+
     while (1)
     {
         printf("crepl> ");
@@ -15,7 +18,6 @@ int main(int argc, char *argv[])
         {
             break;
         }
-        mkstemp(func_template);
         printf("Got %zu chars.\n", strlen(line)); // ??
     }
 }
