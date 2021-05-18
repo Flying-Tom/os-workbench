@@ -39,7 +39,8 @@ void FuncBuild(char buf[])
                 file_path,
                 tmp_path,
                 NULL,
-            } execvp("cp", cp_argv);
+            };
+        execvp("cp", cp_argv);
     }
     else
     {
