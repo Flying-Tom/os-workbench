@@ -6,9 +6,9 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
 int fd;
-char file_path[] = "/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c";
-char tmp_path[] = "/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c";
-char so_path[] = "/home/flyingtom/os-workbench/crepl/tmp/crepltmp.so";
+char file_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
+char tmp_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c"};
+char so_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.so"};
 
 void FuncBuild(char buf[])
 {
@@ -28,7 +28,7 @@ void FuncBuild(char buf[])
             "-o",
             so_path,
         };
-    //printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
+    printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
     if (execvp("gcc", exec_argv) == -1)
     {
