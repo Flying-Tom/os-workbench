@@ -6,7 +6,9 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
 int fd;
-char file_path[128] = {'\0'}, tmp_path[128] = {'\0'}, so_path[128] = {'\0'};
+char file_path[] = "/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c";
+char tmp_path[] = "/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c";
+char so_path[] = "/home/flyingtom/os-workbench/crepl/tmp/crepltmp.so";
 
 void FuncBuild(char buf[])
 {
@@ -44,10 +46,12 @@ void ExprCal(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
+    /*
     fd = mkstemp(func_template);
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
     strcpy(tmp_path, strcat(file_path, "tmp"));
+    */
     while (1)
     {
         printf("crepl> ");
