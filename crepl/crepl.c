@@ -30,21 +30,25 @@ void FuncBuild(char buf[])
         };
     printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
-    if (execvp("gcc", exec_argv) == -1)
+    int pid = fork();
+    if (pid == 0)
     {
-        puts("\033[31mCompile Error\033[0m");
-        char *cp_argv[] =
-            {
-                "cp",
-                file_path,
-                tmp_path,
-                NULL,
-            };
-        execvp("cp", cp_argv);
-    }
-    else
-    {
-        fprintf(fp, "%s", buf);
+        if (execvp("gcc", exec_argv) == -1)
+        {
+            puts("\033[31mCompile Error\033[0m");
+            char *cp_argv[] =
+                {
+                    "cp",
+                    file_path,
+                    tmp_path,
+                    NULL,
+                };
+            execvp("cp", cp_argv);
+        }
+        else
+        {
+            fprintf(fp, "%s", buf);
+        }
     }
 }
 
