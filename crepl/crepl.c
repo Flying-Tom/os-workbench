@@ -11,7 +11,7 @@ void FuncBuild(char buf[])
     printf("int func()\n");
     FILE *fp = fdopen(fd, "a+");
     //fprintf(fp, "%s", buf);
-    fprintf(fp, "fuck");
+    fprintf(fp, "fuck\n");
     fclose(fp);
 }
 
