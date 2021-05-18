@@ -17,7 +17,7 @@ void FuncBuild(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    fd = mkstemp(func_template, O_APPEND);
+    fd = mkostemp(func_template, O_APPEND);
     while (1)
     {
         printf("crepl> ");
