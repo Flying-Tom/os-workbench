@@ -8,8 +8,8 @@ int fd;
 
 void FuncBuild(char buf[])
 {
-    printf("int func() fd:%d\n", fd);
     FILE *fp = fdopen(fd, "a+");
+    printf("int func() fd:%d\n", fd);
     fprintf(fp, "%s\n", buf);
     fclose(fp);
 }
