@@ -10,7 +10,7 @@ void FuncBuild(char buf[])
 {
     printf("int func()\n");
     FILE *fp = fdopen(fd, "a+");
-    fprintf(buf, "%s");
+    fprintf(&buf, "%s");
     fclose(fp);
 }
 
