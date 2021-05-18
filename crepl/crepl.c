@@ -14,10 +14,12 @@ int main(int argc, char *argv[])
     {
         printf("crepl> ");
         fflush(stdout);
+
         if (!fgets(line, sizeof(line), stdin))
-        {
             break;
+        else
+        {
+            printf("Got %zu chars.\n", strlen(line));
         }
-        printf("Got %zu chars.\n", strlen(line)); // ??
     }
 }
