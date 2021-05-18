@@ -6,7 +6,7 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int fd;
-char file_path[128] = {'\0'}, tmp_path[128] = {'\0'};
+char file_path[128] = {'\0'}, tmp_path[128] = {'\0'}, so_path[128] = {'\0'};
 
 void FuncBuild(char buf[])
 {
@@ -14,6 +14,8 @@ void FuncBuild(char buf[])
     fprintf(fp, "%s", buf);
     fclose(fp);
 
+    strcpy(so_path, tmp_path);
+    strcat(so_path, ".so");
     printf("tmp_path:%s\n", tmp_path);
     char *exec_argv[] =
         {
@@ -22,7 +24,7 @@ void FuncBuild(char buf[])
             "-shared",
             "-fPIC",
             "-o",
-            strcat(tmp_path, ".so"),
+            so_path,
         };
     printf("gcc %s -shared -fPIC -o %s\n", tmp_path, strcat(tmp_path, ".so"));
 
