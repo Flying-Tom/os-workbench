@@ -6,7 +6,7 @@ char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int fd;
 
-void FuncBuild(char *buf)
+void FuncBuild(char buf[])
 {
     printf("int func()\n");
     FILE *fp = fdopen(fd, "a+");
