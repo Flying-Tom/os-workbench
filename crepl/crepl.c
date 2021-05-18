@@ -50,6 +50,9 @@ int main(int argc, char *argv[])
     readlink(line, file_path, sizeof(file_path) - 1);
     strcpy(tmp_path, strcat(file_path, "tmp"));
     */
+    unlink(file_path);
+    unlink(tmp_path);
+    unlink(so_path);
     while (1)
     {
         printf("crepl> ");
