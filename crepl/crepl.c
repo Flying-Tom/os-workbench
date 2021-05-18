@@ -4,6 +4,12 @@
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
+
+void FuncBuild(char buf[])
+{
+    printf("int func()\n");
+}
+
 int main(int argc, char *argv[])
 {
     static char line[4096];
@@ -20,7 +26,7 @@ int main(int argc, char *argv[])
         else
         {
             if (strncmp("int", line, 3) == 0)
-                printf("int func()\n");
+                FuncBuild(line);
             else
                 printf("expr\n");
             printf("Got %zu chars.\n", strlen(line));
