@@ -25,6 +25,7 @@ void FuncBuild(char buf[])
             "-fPIC",
             "-o",
             so_path,
+            NULL,
         };
     printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
