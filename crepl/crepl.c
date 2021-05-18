@@ -9,6 +9,7 @@ int fd;
 
 void FuncBuild(char buf[])
 {
+    fd = mkstemp(func_template);
     printf("int func() fd:%d\n", fd);
     write(fd, buf, strlen(buf));
     close(fd);
@@ -17,7 +18,6 @@ void FuncBuild(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    fd = mkstemp(func_template);
     while (1)
     {
         printf("crepl> ");
