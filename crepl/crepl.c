@@ -1,8 +1,8 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-//char func_template[] = "crepl-XXXXXX";
-char func_template[];
+char func_template[] = "/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int main(int argc, char *argv[])
 {
@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
         {
             break;
         }
+        mkstemp(func_template);
         printf("Got %zu chars.\n", strlen(line)); // ??
     }
 }
