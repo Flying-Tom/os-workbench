@@ -33,7 +33,7 @@ void FuncBuild(char buf[])
     if (execvp("gcc", exec_argv) == -1)
     {
         puts("\033[31mCompile Error\033[0m");
-        execvp("cp", {"cp", file_path, tmp_path});
+        execvp("cp", (char *){"cp", file_path, tmp_path});
     }
     else
     {
