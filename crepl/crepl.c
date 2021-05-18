@@ -11,6 +11,7 @@ void FuncBuild(char buf[])
 {
     fd = mkstemp(func_template);
     printf("int func() fd:%d\n", fd);
+    printf("fd:%d buf:%s \n", fd, buf);
     write(fd, buf, strlen(buf));
     close(fd);
 }
