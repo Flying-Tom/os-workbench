@@ -10,7 +10,7 @@ int fd;
 void FuncBuild(char buf[])
 {
     printf("int func() fd:%d\n", fd);
-    write(fd, buf, -1);
+    write(fd, buf, strlen(buf));
     close(fd);
 }
 
