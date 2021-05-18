@@ -15,7 +15,7 @@ void FuncBuild(char buf[])
     fclose(fp);
 }
 
-void ExprBuild(char buf[])
+void ExprCal(char buf[])
 {
 }
 
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     fd = mkstemp(func_template);
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
-    strcpy(tmp_path, strcat("tmp", file_path), sizeof(tmp_path));
+    strcpy(tmp_path, strcat("tmp", file_path));
     while (1)
     {
         printf("crepl> ");
