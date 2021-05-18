@@ -14,6 +14,7 @@ void FuncBuild(char buf[])
     fprintf(fp, "%s", buf);
     fclose(fp);
 
+    printf("tmp_path:%s\n", tmp_path);
     char *exec_argv[] =
         {
             "gcc",
