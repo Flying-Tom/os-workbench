@@ -19,6 +19,10 @@ int main(int argc, char *argv[])
             break;
         else
         {
+            if (strncmp("int", line, 3)) == 0)
+            printf("int func()\n");
+            else
+                printf("expr\n");
             printf("Got %zu chars.\n", strlen(line));
         }
     }
