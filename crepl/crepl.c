@@ -7,13 +7,11 @@ int func_cnt = 0;
 int fd;
 FILE *fp;
 
-void FuncBuild(char *buf)
+void FuncBuild(char buf[])
 {
     fp = fdopen(fd, "a+");
     printf("int func() fd:%d\n", fd);
-    printf("bf");
     fprintf(fp, "%s\n", buf);
-    printf("af");
     fclose(fp);
 }
 
@@ -35,6 +33,7 @@ int main(int argc, char *argv[])
             else
                 printf("expr\n");
             printf("Got %zu chars.\n", strlen(line));
+            memset(line, '\0', sizeof(line));
         }
     }
 }
