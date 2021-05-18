@@ -24,7 +24,7 @@ void FuncBuild(char buf[])
 
     if (execvp("gcc", exec_argv) == -1)
     {
-        printf("Compile Error");
+        printf("Compile Error\n");
     }
     else
     {
@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
     strcpy(tmp_path, strcat(file_path, "tmp"));
+    printf("%s", tmp_path);
     while (1)
     {
         printf("crepl> ");
