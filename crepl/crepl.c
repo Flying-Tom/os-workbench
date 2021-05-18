@@ -15,12 +15,14 @@ void FuncBuild(char buf[])
     fclose(fp);
 
     char *exec_argv[] =
-        {"gcc",
-         tmp_path,
-         "-shared",
-         "-fPIC",
-         "-o",
-         strcat(tmp_path, ".so")};
+        {
+            "gcc",
+            tmp_path,
+            "-shared",
+            "-fPIC",
+            "-o",
+            strcat(tmp_path, ".so"),
+        };
 
     if (execvp("gcc", exec_argv) == -1)
     {
@@ -42,7 +44,6 @@ int main(int argc, char *argv[])
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
     strcpy(tmp_path, strcat(file_path, "tmp"));
-    printf("%s\n", tmp_path);
     while (1)
     {
         printf("crepl> ");
