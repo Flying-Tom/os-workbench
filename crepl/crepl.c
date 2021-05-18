@@ -13,6 +13,23 @@ void FuncBuild(char buf[])
     FILE *fp = fopen(tmp_path, "a+");
     fprintf(fp, "%s", buf);
     fclose(fp);
+
+    char *exec_argv[] =
+    { "gcc",
+      tmp_path,
+      "-shared",
+      "-fPIC",
+      "-o",
+      strcat(tmp_path, ".so")
+    }
+
+    if (execvp("gcc", exec_argv) == -1)
+    {
+        printf("fuck");
+    }
+    else
+    {
+    }
 }
 
 void ExprCal(char buf[])
