@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     fd = mkstemp(func_template);
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
-    strcpy(tmp_path, strcat("tmp", file_path));
+    strcpy(tmp_path, strcat(file_path, "tmp"));
     while (1)
     {
         printf("crepl> ");
