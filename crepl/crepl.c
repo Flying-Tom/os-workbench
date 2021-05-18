@@ -10,7 +10,7 @@ char file_path[128] = {'\0'}, tmp_path[128] = {'\0'};
 
 void FuncBuild(char buf[])
 {
-    FILE *fp = fopen(file_path, "a+");
+    FILE *fp = fopen(tmp_path, "a+");
     fprintf(fp, "%s", buf);
     fclose(fp);
 }
