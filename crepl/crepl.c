@@ -6,14 +6,17 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int fd;
-char file_path[128] = {'\0'};
+char file_path[128] = {'\0'}, tmp_path[128] = {'\0'};
 
 void FuncBuild(char buf[])
 {
-
     FILE *fp = fopen(file_path, "a+");
     fprintf(fp, "%s", buf);
     fclose(fp);
+}
+
+void ExprBuild(char buf[])
+{
 }
 
 int main(int argc, char *argv[])
@@ -22,6 +25,7 @@ int main(int argc, char *argv[])
     fd = mkstemp(func_template);
     sprintf(line, "/proc/self/fd/%d", fd);
     readlink(line, file_path, sizeof(file_path) - 1);
+    strcpy(tmp_path, strcat("tmp", file_path), sizeof(tmp_path));
     while (1)
     {
         printf("crepl> ");
@@ -34,7 +38,7 @@ int main(int argc, char *argv[])
             if (strncmp("int", line, 3) == 0)
                 FuncBuild(line);
             else
-                printf("expr\n");
+                ExprCal(line);
             printf("Got %zu chars.\n", strlen(line));
             memset(line, '\0', sizeof(line));
         }
