@@ -3,7 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 
-char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
+char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
 int fd;
 char file_path[128] = {'\0'}, tmp_path[128] = {'\0'}, so_path[128] = {'\0'};
