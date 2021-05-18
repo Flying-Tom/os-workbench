@@ -16,8 +16,6 @@ void FuncBuild(char buf[])
     fprintf(fp, "%s", buf);
     fclose(fp);
 
-    strcpy(so_path, tmp_path);
-    strcat(so_path, ".so");
     printf("tmp_path:%s\n", tmp_path);
     char *exec_argv[] =
         {
