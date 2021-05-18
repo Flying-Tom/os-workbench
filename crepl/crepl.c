@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-char func_template[] = "/tmp/crepl-XXXXXX";
+char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int main(int argc, char *argv[])
 {
