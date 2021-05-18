@@ -27,7 +27,7 @@ void FuncBuild(char buf[])
 
     if (execvp("gcc", exec_argv) == -1)
     {
-        printf("\033[31m Compile Error \033[0m\n");
+        puts("\033[31mCompile Error\033[0m");
     }
     else
     {
