@@ -15,17 +15,16 @@ void FuncBuild(char buf[])
     fclose(fp);
 
     char *exec_argv[] =
-    { "gcc",
-      tmp_path,
-      "-shared",
-      "-fPIC",
-      "-o",
-      strcat(tmp_path, ".so")
-    }
+        {"gcc",
+         tmp_path,
+         "-shared",
+         "-fPIC",
+         "-o",
+         strcat(tmp_path, ".so")};
 
     if (execvp("gcc", exec_argv) == -1)
     {
-        printf("fuck");
+        printf("Compile Error");
     }
     else
     {
