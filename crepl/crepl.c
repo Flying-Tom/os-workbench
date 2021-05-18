@@ -10,11 +10,11 @@ char file_path[128] = {'\0'};
 
 void FuncBuild(char buf[])
 {
-    
-    FILE *fp = fopen(file_path,'a+');
+
+    FILE *fp = fopen(file_path, "a+");
     printf("int func() fd:%d\n", fd);
     printf("fd:%d buf:%s \n", fd, buf);
-    fprintf(fp,"%s\n",buf);
+    fprintf(fp, "%s\n", buf);
     fclose(fp);
 }
 
