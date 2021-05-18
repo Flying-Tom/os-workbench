@@ -1,24 +1,23 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int fd;
-FILE *fp;
 
 void FuncBuild(char buf[])
 {
-    fp = fdopen(fd, "a+");
     printf("int func() fd:%d\n", fd);
-    fprintf(fp, "%s\n", buf);
-    fclose(fp);
+    write(fd, buf, 4096);
+    close(fd);
 }
 
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    fd = mkstemp(func_template);
+    fd = mkostemp(func_template, O_APPEND);
     while (1)
     {
         printf("crepl> ");
