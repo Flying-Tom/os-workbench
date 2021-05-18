@@ -5,10 +5,11 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
 int fd;
+FILE *fp;
 
 void FuncBuild(char *buf)
 {
-    FILE *fp = fdopen(fd, "a+");
+    fp = fdopen(fd, "a+");
     printf("int func() fd:%d\n", fd);
     printf("%s\n", buf);
     fprintf(fp, "%s\n", buf);
