@@ -2,13 +2,14 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <dlfcn.h>
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
 int fd;
 char file_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
 char tmp_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c"};
-char so_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.so"};
+char so_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepl.so"};
 
 void FuncBuild(char buf[])
 {
@@ -32,9 +33,11 @@ void FuncBuild(char buf[])
     if (execvp("gcc", exec_argv) == -1)
     {
         puts("\033[31mCompile Error\033[0m");
+        execvp("cp", {"cp", file_path, tmp_path});
     }
     else
     {
+        fprintf(fp, "%s", buf);
     }
 }
 
