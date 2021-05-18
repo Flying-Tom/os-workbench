@@ -4,18 +4,20 @@
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/crepl-XXXXXX";
 int func_cnt = 0;
+int fd;
 
 void FuncBuild(char buf[])
 {
     printf("int func()\n");
+    FILE *fp = fdopen(fd, "a+");
+    fprintf(buf, "%s");
+    fclose(fp);
 }
 
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    for (int i = 1; i <= 5; i++)
-        mkstemp(func_template);
-
+    int fd = mkstemp(func_template);
     while (1)
     {
         printf("crepl> ");
