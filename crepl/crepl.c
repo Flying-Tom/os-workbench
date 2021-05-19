@@ -22,9 +22,8 @@ char *exec_argv[] =
         NULL,
 };
 
-bool Compile()
+void Compile()
 {
-    bool ret = true;
     int pid = fork();
     int compile_pipe[2];
     pipe(compile_pipe);
@@ -35,24 +34,29 @@ bool Compile()
     }
     else
     {
-        puts("\033[31mCompile Error\033[0m");
-        int cp_pid = fork();
-        if (cp_pid == 0)
+        char buf[512];
+        if (fread(buf, 512, 512, stdin) > 0)
         {
-            char *cp_argv[] =
-                {
-                    "cp",
-                    file_path,
-                    tmp_path,
-                    NULL,
-                };
-            execvp("cp", cp_argv);
+            puts("\033[31mCompile Error\033[0m");
+            int cp_pid = fork();
+            if (cp_pid == 0)
+            {
+                char *cp_argv[] =
+                    {
+                        "cp",
+                        file_path,
+                        tmp_path,
+                        NULL,
+                    };
+                execvp("cp", cp_argv);
+            }
         }
         else
-            return false;
+        {
+            puts("\032[31mOK\032[0m");
+            fprintf(fp, "%s", buf);
+        }
     }
-
-    return false;
 }
 
 void FuncBuild(char buf[])
