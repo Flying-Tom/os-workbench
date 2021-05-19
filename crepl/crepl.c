@@ -81,7 +81,7 @@ void ExprCal(char buf[])
         {
             int (*func)();
             func = dlsym(handle, wrapper_name);
-            printf("%d\n", func());
+            printf(" %s = %d\n", buf, func());
         }
         dlclose(handle);
     }
@@ -98,8 +98,6 @@ int main(int argc, char *argv[])
     readlink(line, src_path, sizeof(src_path) - 1);
     sprintf(line, "/proc/self/fd/%d", fd_so);
     readlink(line, so_path, sizeof(src_path) - 1);
-    //printf("%s\n", src_path);
-    //printf("%s\n", so_path);
     while (1)
     {
         printf("crepl> ");
