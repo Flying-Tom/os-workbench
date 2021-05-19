@@ -51,9 +51,8 @@ bool Compile()
         else
             return false;
     }
-    else return true;
-}
-return false;
+
+    return false;
 }
 
 void FuncBuild(char buf[])
