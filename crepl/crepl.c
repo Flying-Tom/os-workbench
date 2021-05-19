@@ -38,7 +38,7 @@ void Compile()
         close(compile_pipe[1]);
         char buf[512];
         read(compile_pipe[0], buf, 256);
-        if (strlen(buf) != 0)
+        if (strlen(buf) > 1)
         {
             printf("%s\n", buf);
             puts("\033[31mCompile Error\033[0m");
