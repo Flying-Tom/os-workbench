@@ -48,6 +48,7 @@ bool Compile()
             return true;
         }
     }
+    return false;
 }
 
 void FuncBuild(char buf[])
