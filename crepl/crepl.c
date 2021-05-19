@@ -43,10 +43,7 @@ bool Compile()
             return false;
         }
         else
-        {
-            puts("\033[32m  OK\033[0m");
             return true;
-        }
     }
     return false;
 }
@@ -61,6 +58,7 @@ void FuncBuild(char buf[])
 
     if (Compile())
     {
+        printf("\033[32m  Added:\033[0m %s\n", buf);
         void *handle = NULL;
         if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
         {
@@ -84,7 +82,7 @@ void ExprCal(char buf[])
         {
             int (*func)();
             func = dlsym(handle, wrapper_name);
-            printf("%d", func());
+            printf("%d\n", func());
         }
     }
 }
