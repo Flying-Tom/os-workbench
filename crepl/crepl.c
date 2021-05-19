@@ -101,7 +101,7 @@ int main(int argc, char *argv[])
                 if (Compile(line, EXPR))
                 {
                     int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                    printf(" = %d\n", line, func());
+                    printf(" = %d\n", func());
                     dlclose(handle);
                 }
             }
