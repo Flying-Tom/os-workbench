@@ -40,8 +40,9 @@ bool Compile()
             puts("\033[31m  Compile Error\033[0m");
             return false;
         }
+        assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
+        return true;
     }
-    assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
     return false;
 }
 
