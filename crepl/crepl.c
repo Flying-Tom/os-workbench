@@ -71,13 +71,17 @@ void FuncBuild(char buf[])
 void ExprCal(char buf[])
 {
     char wrapper[512];
+    char wrapper_name[32];
     buf[strlen(buf) - 1] = '\0';
-    sprintf(wrapper, "int __expr_wrapper_%d(){ return %s;}", expr_cnt, buf);
+    sprintf(wrapper_name, "__expr_wrapper_%d", expr_cnt);
+    sprintf(wrapper, "int %s(){ return %s; }", wrapper_name, expr_cnt, buf);
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
     fclose(fp);
     if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
     {
+        void *func = dlsym(handle, wrapper_name);
+        func();
     }
 }
 
