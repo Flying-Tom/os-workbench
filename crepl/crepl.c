@@ -17,6 +17,7 @@ char *exec_argv[] =
         "gcc",
         "-x",
         "c",
+        "-w",
         src_path,
         "-shared",
         "-fPIC",
