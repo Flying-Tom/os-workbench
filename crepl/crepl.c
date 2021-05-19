@@ -35,6 +35,7 @@ void Compile()
     else
     {
         char buf[512];
+        printf("fuck\n");
         if (fread(buf, 1, 512, stdin) > 0)
         {
             puts("\033[31mCompile Error\033[0m");
