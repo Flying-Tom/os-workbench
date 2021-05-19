@@ -29,13 +29,15 @@ void Compile()
     pipe(compile_pipe);
     if (pid == 0)
     {
+        close(compile_pipe[0]);
         dup2(compile_pipe[1], STDOUT_FILENO);
         execvp("gcc", exec_argv);
     }
     else
     {
-        char buf[512];
-        if (read(compile_pipe[0], buf, 512) > 0)
+        close(compile_pipe[1]);
+        char buf;
+        if (read(compile_pipe[0], buf, 1) > 0)
         {
             puts("\033[31mCompile Error\033[0m");
             int cp_pid = fork();
@@ -65,9 +67,8 @@ void FuncBuild(char buf[])
     FILE *fp = fopen(tmp_path, "a+");
     fprintf(fp, "%s", buf);
     fclose(fp);
-
-    printf("tmp_path:%s\n", tmp_path);
-    printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
+    //printf("tmp_path:%s\n", tmp_path);
+    //printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
     Compile();
 }
