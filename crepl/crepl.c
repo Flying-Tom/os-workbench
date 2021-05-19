@@ -8,13 +8,15 @@
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
 int fd;
-char file_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
-char tmp_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c"};
-char so_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepl.so"};
+//char src_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
+char src_path[256];
+char so_path[256];
 char *exec_argv[] =
     {
         "gcc",
-        tmp_path,
+        "-x",
+        "c",
+        src_path,
         "-shared",
         "-fPIC",
         "-o",
@@ -42,23 +44,11 @@ void Compile()
         if (strlen(buf) > 1)
         {
             puts("\033[31mCompile Error\033[0m");
-            int cp_pid = fork();
-            if (cp_pid == 0)
-            {
-                char *cp_argv[] =
-                    {
-                        "cp",
-                        file_path,
-                        tmp_path,
-                        NULL,
-                    };
-                execvp("cp", cp_argv);
-            }
         }
         else
         {
             puts("\033[32mOK\033[0m");
-            FILE *fp = fopen(file_path, "a+");
+            FILE *fp = fopen(src_path, "a+");
             //fprintf(fp, "%s", buf);
         }
     }
@@ -66,11 +56,11 @@ void Compile()
 
 void FuncBuild(char buf[])
 {
-    FILE *fp = fopen(tmp_path, "a+");
+    FILE *fp = fopen(src_path, "a+");
     fprintf(fp, "%s", buf);
     fclose(fp);
     //printf("tmp_path:%s\n", tmp_path);
-    printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
+    printf("gcc %s -shared -fPIC -o %s\n", src_path, so_path);
 
     Compile();
 }
@@ -89,12 +79,17 @@ int main(int argc, char *argv[])
     /*
     fd = mkstemp(func_template);
     sprintf(line, "/proc/self/fd/%d", fd);
-    readlink(line, file_path, sizeof(file_path) - 1);
-    strcpy(tmp_path, strcat(file_path, "tmp"));
+    readlink(line, src_path, sizeof(src_path) - 1);
+    strcpy(tmp_path, strcat(src_path, "tmp"));
     */
-    unlink(file_path);
-    unlink(tmp_path);
-    unlink(so_path);
+    char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
+    char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
+    int fd_src = mkstemp(template_src);
+    int fd_so = mkstemps(template_so);
+    sprintf(line, "/proc/self/fd/%d", fd_src);
+    readlink(line, src_path, sizeof(src_path) - 1);
+    sprintf(line, "/proc/self/fd/%d", fd_so);
+    readlink(line, so_path, sizeof(src_path) - 1);
     while (1)
     {
         printf("crepl> ");
