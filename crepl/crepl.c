@@ -60,6 +60,7 @@ void FuncBuild(char buf[])
     {
         printf("\033[32m  Added:\033[0m %s", buf);
         assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
+        dlclose(handle);
     }
 }
 
