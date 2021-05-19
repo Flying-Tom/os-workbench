@@ -37,7 +37,7 @@ void Compile()
     {
         close(compile_pipe[1]);
         char buf[512];
-        if (read(compile_pipe[0], buf, 1) > 0)
+        if (read(compile_pipe[0], buf, 128) > 0)
         {
             puts("\033[31mCompile Error\033[0m");
             int cp_pid = fork();
