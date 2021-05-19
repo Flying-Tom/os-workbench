@@ -50,7 +50,6 @@ bool Compile(char buf[], int mode)
     else
     {
         char wrapper[512];
-        buf[strlen(buf) - 1] = '\0';
         sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
         fprintf(fp, "%s", wrapper);
     }
@@ -98,10 +97,11 @@ int main(int argc, char *argv[])
             }
             else
             {
+                line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
                     int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                    printf(" %s = %d\n", buf, func());
+                    printf(" %s = %d\n", line, func());
                     dlclose(handle);
                 }
             }
