@@ -8,6 +8,8 @@
 #include <sys/wait.h>
 
 char src_path[256], so_path[256];
+char template_src[] = {"/tmp/Crepl_SRCXXXXXX"};
+char template_so[] = {"/tmp/Crepl_SOXXXXXX"};
 char *exec_argv[] =
     {
         "gcc",
@@ -26,6 +28,12 @@ void *handle = NULL;
 bool Compile()
 {
     bool ret = false;
+    int fd_src = mkstemp(template_src);
+    int fd_so = mkstemp(template_so);
+    sprintf(line, "/proc/self/fd/%d", fd_src);
+    readlink(line, src_path, sizeof(src_path) - 1);
+    sprintf(line, "/proc/self/fd/%d", fd_so);
+    readlink(line, so_path, sizeof(src_path) - 1);
     int gcc_status = 0;
     int pid = fork();
     if (pid == 0)
@@ -79,14 +87,6 @@ void ExprCal(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    char template_src[] = {"/tmp/Crepl_SRCXXXXXX"};
-    char template_so[] = {"/tmp/Crepl_SOXXXXXX"};
-    int fd_src = mkstemp(template_src);
-    int fd_so = mkstemp(template_so);
-    sprintf(line, "/proc/self/fd/%d", fd_src);
-    readlink(line, src_path, sizeof(src_path) - 1);
-    sprintf(line, "/proc/self/fd/%d", fd_so);
-    readlink(line, so_path, sizeof(src_path) - 1);
     while (1)
     {
         printf("crepl> ");
