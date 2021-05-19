@@ -72,7 +72,7 @@ void ExprCal(char buf[])
     char wrapper[512];
     char wrapper_name[32];
     buf[strlen(buf) - 1] = '\0';
-    sprintf(wrapper_name, "__expr_wrapper_%d", expr_cnt);
+    sprintf(wrapper_name, "__expr_wrapper_%d", expr_cnt++);
     sprintf(wrapper, "int %s(){ return (%s); }", wrapper_name, buf);
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
