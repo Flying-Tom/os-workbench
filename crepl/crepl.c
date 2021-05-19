@@ -58,7 +58,7 @@ void FuncBuild(char buf[])
 
     if (Compile())
     {
-        printf("\033[32m  Added:\033[0m %s\n", buf);
+        printf("\033[32m  Added:\033[0m %s", buf);
         void *handle = NULL;
         if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
         {
