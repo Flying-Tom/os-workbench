@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <stdbool.h>
 #include <dlfcn.h>
+#include <sys/wait.h>
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
@@ -31,24 +32,20 @@ void Compile()
     pipe(compile_pipe);
     if (pid == 0)
     {
-        close(compile_pipe[0]);
-        dup2(compile_pipe[1], STDERR_FILENO);
         execvp("gcc", exec_argv);
     }
     else
     {
-        close(compile_pipe[1]);
-        char buf[512];
-        read(compile_pipe[0], buf, 256);
-        printf("%s\n", buf);
-        if (strlen(buf) > 1)
+        int gcc_status = 0;
+        wait(&gcc_status);
+        if (WEXITSTATUS(gcc_status) != 0)
         {
             puts("\033[31mCompile Error\033[0m");
         }
         else
         {
             puts("\033[32mOK\033[0m");
-            FILE *fp = fopen(src_path, "a+");
+            //FILE *fp = fopen(src_path, "a+");
             //fprintf(fp, "%s", buf);
         }
     }
@@ -56,7 +53,7 @@ void Compile()
 
 void FuncBuild(char buf[])
 {
-    FILE *fp = fopen(src_path, "a+");
+    FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", buf);
     fclose(fp);
     //printf("tmp_path:%s\n", tmp_path);
@@ -84,16 +81,14 @@ int main(int argc, char *argv[])
     */
     char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
     char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
-    unlink(template_src);
-    unlink(template_so);
     int fd_src = mkstemp(template_src);
     int fd_so = mkstemp(template_so);
     sprintf(line, "/proc/self/fd/%d", fd_src);
     readlink(line, src_path, sizeof(src_path) - 1);
     sprintf(line, "/proc/self/fd/%d", fd_so);
     readlink(line, so_path, sizeof(src_path) - 1);
-    printf("%s\n", src_path);
-    printf("%s\n", so_path);
+    //printf("%s\n", src_path);
+    //printf("%s\n", so_path);
     while (1)
     {
         printf("crepl> ");
