@@ -59,7 +59,7 @@ void FuncBuild(char buf[])
     {
         printf("\033[32m  Added:\033[0m %s", buf);
         void *handle = NULL;
-        if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+        if ((handle = dlopen(so_path, RTLD_LAZY)) != NULL)
         {
         }
     }
@@ -77,7 +77,7 @@ void ExprCal(char buf[])
     fclose(fp);
     if (Compile())
     {
-        if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+        if ((handle = dlopen(so_path, RTLD_LAZY)) != NULL)
         {
             int (*func)();
             func = dlsym(handle, wrapper_name);
