@@ -22,7 +22,6 @@ char *exec_argv[] =
         "-fPIC",
         "-o",
         so_path,
-        "2>&1",
         NULL,
 };
 
@@ -37,10 +36,8 @@ void Compile()
     else
     {
         wait(&gcc_status);
-        if (WEXITSTATUS(gcc_status) != 0)
-        {
+        if (WEXITSTATUS(gcc_status))
             puts("\033[31m  Compile Error\033[0m");
-        }
         else
         {
             puts("\033[32m  OK\033[0m");
