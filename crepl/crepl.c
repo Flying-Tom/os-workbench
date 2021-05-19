@@ -30,7 +30,7 @@ void Compile()
     if (pid == 0)
     {
         close(compile_pipe[0]);
-        dup2(compile_pipe[1], STDOUT_FILENO);
+        dup2(compile_pipe[1], STDERR_FILENO);
         execvp("gcc", exec_argv);
     }
     else
