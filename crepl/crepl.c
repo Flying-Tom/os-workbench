@@ -85,7 +85,6 @@ void ExprCal(char buf[])
         if (pid == 0)
         {
             printf(" %s = %d\n", buf, func());
-            exit(0);
         }
         else
         {
