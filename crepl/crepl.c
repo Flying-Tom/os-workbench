@@ -29,6 +29,7 @@ enum
     FUNC,
     EXPR,
 };
+int expr_cnt = 0;
 void *handle = NULL;
 
 bool Compile(char buf[], int mode)
@@ -50,7 +51,7 @@ bool Compile(char buf[], int mode)
     else
     {
         char wrapper[512];
-        sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
+        sprintf(wrapper, "int __expr_wrapper__%d(){ return (%s); }", expr_cnt, buf);
         fprintf(fp, "%s", wrapper);
     }
     fclose(fp);
@@ -70,6 +71,8 @@ bool Compile(char buf[], int mode)
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
                 ret = true;
+            if (mode == EXPR)
+                expr_cnt++;
         }
     }
     return ret;
@@ -99,8 +102,9 @@ int main(int argc, char *argv[])
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
-
-                    int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                    char wrapper_name[512];
+                    sprintf(wrapper_name, "__expr_wrapper__%d", expr_cnt++);
+                    int (*func)(void) = dlsym(handle, wrapper_name);
                     printf(" %s = %d\n", line, func());
                 }
             }
