@@ -36,7 +36,7 @@ void Compile()
     {
         dup2(compile_pipe[0], STDIN_FILENO);
         char buf[512];
-        if (fread(buf, 1, 512, stdin) > 0)
+        if (false)
         {
             puts("\033[31mCompile Error\033[0m");
             int cp_pid = fork();
