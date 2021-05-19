@@ -83,7 +83,10 @@ void ExprCal(char buf[])
         int (*func)() = dlsym(handle, wrapper_name);
         int pid = fork();
         if (pid == 0)
+        {
             printf(" %s = %d\n", buf, func());
+            exit(0);
+        }
         else
         {
             wait(NULL);
