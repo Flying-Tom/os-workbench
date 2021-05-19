@@ -57,7 +57,7 @@ void Compile()
         {
             puts("\033[32mOK\033[0m");
             FILE *fp = fopen(file_path, "a+");
-            fprintf(fp, "%s", buf);
+            //fprintf(fp, "%s", buf);
         }
     }
 }
