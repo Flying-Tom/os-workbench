@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
                 {
                     char wrapper_name[512];
                     sprintf(wrapper_name, "__expr_wrapper__%d", expr_cnt++);
+                    printf("%s\n", wrapper_name);
                     int (*func)(void) = dlsym(handle, wrapper_name);
                     printf(" %s = %d\n", line, func());
                 }
