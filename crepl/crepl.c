@@ -23,13 +23,40 @@ char *exec_argv[] =
         so_path,
         NULL,
 };
+
+enum
+{
+    FUNC,
+    EXPR,
+};
 void *handle = NULL;
 
-bool Compile()
+bool Compile(char buf[], int mode)
 {
     bool ret = false;
-    int gcc_status = 0;
-    int pid = fork();
+    char file_name[4096];
+    int fd_src = mkstemp(template_src);
+    int fd_so = mkstemp(template_so);
+    sprintf(file_name, "/proc/self/fd/%d", fd_src);
+    readlink(file_name, src_path, sizeof(src_path) - 1);
+    sprintf(file_name, "/proc/self/fd/%d", fd_so);
+    readlink(file_name, so_path, sizeof(src_path) - 1);
+
+    FILE *fp = fopen(src_path, "w");
+    if (mode == FUNC)
+    {
+        fprintf(fp, "%s", buf);
+    }
+    else
+    {
+        char wrapper[512];
+        buf[strlen(buf) - 1] = '\0';
+        sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
+        fprintf(fp, "%s", wrapper);
+    }
+    fclose(fp);
+
+    int pid = fork(), gcc_status = 0;
     if (pid == 0)
     {
         execvp("gcc", exec_argv);
@@ -50,43 +77,9 @@ bool Compile()
     return ret;
 }
 
-void FuncBuild(char buf[])
-{
-    FILE *fp = fopen(src_path, "w");
-    fprintf(fp, "%s", buf);
-    fclose(fp);
-
-    if (Compile())
-    {
-        printf("\033[32m  Added:\033[0m %s", buf);
-    }
-}
-
-void ExprCal(char buf[])
-{
-    char wrapper[512];
-    buf[strlen(buf) - 1] = '\0';
-    sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
-    FILE *fp = fopen(src_path, "w");
-    fprintf(fp, "%s", wrapper);
-    fclose(fp);
-    if (Compile())
-    {
-        int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-        printf(" %s = %d\n", buf, func());
-        dlclose(handle);
-    }
-}
-
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    int fd_src = mkstemp(template_src);
-    int fd_so = mkstemp(template_so);
-    sprintf(line, "/proc/self/fd/%d", fd_src);
-    readlink(line, src_path, sizeof(src_path) - 1);
-    sprintf(line, "/proc/self/fd/%d", fd_so);
-    readlink(line, so_path, sizeof(src_path) - 1);
     while (1)
     {
         printf("crepl> ");
@@ -97,9 +90,21 @@ int main(int argc, char *argv[])
         else
         {
             if (strncmp("int", line, 3) == 0)
-                FuncBuild(line);
+            {
+                if (Compile(line, FUNC))
+                {
+                    printf("\033[32m  Added:\033[0m %s", line);
+                }
+            }
             else
-                ExprCal(line);
+            {
+                if (Compile(line, EXPR))
+                {
+                    int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                    printf(" %s = %d\n", buf, func());
+                    dlclose(handle);
+                }
+            }
             //memset(line, '\0', sizeof(line));
         }
     }
