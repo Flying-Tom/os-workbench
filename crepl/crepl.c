@@ -80,9 +80,9 @@ void ExprCal(char buf[])
         assert((handle = dlopen(so_path, RTLD_LAZY)) != NULL);
 
         int (*func)();
-        
+
         func = dlsym(handle, wrapper_name);
-        printf(" %s = %d\n", buf, __expr_wrapper_());
+        printf(" %s = %d\n", buf, func());
         dlclose(handle);
     }
 }
