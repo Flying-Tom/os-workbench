@@ -28,12 +28,13 @@ void *handle = NULL;
 bool Compile()
 {
     bool ret = false;
+    char buf[4096];
     int fd_src = mkstemp(template_src);
     int fd_so = mkstemp(template_so);
-    sprintf(line, "/proc/self/fd/%d", fd_src);
-    readlink(line, src_path, sizeof(src_path) - 1);
-    sprintf(line, "/proc/self/fd/%d", fd_so);
-    readlink(line, so_path, sizeof(src_path) - 1);
+    sprintf(buf, "/proc/self/fd/%d", fd_src);
+    readlink(buf, src_path, sizeof(src_path) - 1);
+    sprintf(buf, "/proc/self/fd/%d", fd_so);
+    readlink(buf, so_path, sizeof(src_path) - 1);
     int gcc_status = 0;
     int pid = fork();
     if (pid == 0)
