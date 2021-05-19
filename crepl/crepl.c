@@ -10,6 +10,42 @@ int fd;
 char file_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
 char tmp_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepltmp.c"};
 char so_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/crepl.so"};
+char *exec_argv[] =
+    {
+        "gcc",
+        tmp_path,
+        "-shared",
+        "-fPIC",
+        "-o",
+        so_path,
+        NULL,
+};
+
+bool Compile()
+{
+    bool ret = true;
+    int pid = fork();
+    if (pid == 0)
+    {
+        if (execvp("gcc", exec_argv) == -1)
+        {
+            puts("\033[31mCompile Error\033[0m");
+            if (fork() == 0)
+            {
+                char *cp_argv[] =
+                    {
+                        "cp",
+                        file_path,
+                        tmp_path,
+                        NULL,
+                    };
+                execvp("cp", cp_argv);
+            }
+        }
+        else
+            return true;
+    }
+}
 
 void FuncBuild(char buf[])
 {
@@ -18,42 +54,18 @@ void FuncBuild(char buf[])
     fclose(fp);
 
     printf("tmp_path:%s\n", tmp_path);
-    char *exec_argv[] =
-        {
-            "gcc",
-            tmp_path,
-            "-shared",
-            "-fPIC",
-            "-o",
-            so_path,
-            NULL,
-        };
     printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
-    int pid = fork();
-    if (pid == 0)
-    {
-        if (execvp("gcc", exec_argv) == -1)
-        {
-            puts("\033[31mCompile Error\033[0m");
-            char *cp_argv[] =
-                {
-                    "cp",
-                    file_path,
-                    tmp_path,
-                    NULL,
-                };
-            execvp("cp", cp_argv);
-        }
-        else
-        {
-            fprintf(fp, "%s", buf);
-        }
-    }
+    if (Compile())
+        fprintf(fp, "%s", buf);
 }
 
 void ExprCal(char buf[])
 {
+    void *handle = NULL;
+    if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+    {
+    }
 }
 
 int main(int argc, char *argv[])
