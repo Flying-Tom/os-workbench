@@ -31,7 +31,8 @@ bool Compile()
         if (execvp("gcc", exec_argv) == -1)
         {
             puts("\033[31mCompile Error\033[0m");
-            if (fork() == 0)
+            int cp_pid = fork();
+            if (cp_pid == 0)
             {
                 char *cp_argv[] =
                     {

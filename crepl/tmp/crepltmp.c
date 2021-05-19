@@ -1,2 +1,2 @@
-int fib(int n) { if (n <= 1) return 1; return fib(n - 1) + fib(n - 2); }
-int fib(int n) { if (n <= 1) return 1; return fib(n - 1) + fib(n - 2); }
+int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
+int gcd(int a, int b) { return b ? gcd(b, a % b) : a; }
