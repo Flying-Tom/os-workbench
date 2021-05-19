@@ -27,24 +27,22 @@ char *exec_argv[] =
 
 void Compile()
 {
+    int gcc_status = 0;
     int pid = fork();
-    int compile_pipe[2];
-    pipe(compile_pipe);
     if (pid == 0)
     {
         execvp("gcc", exec_argv);
     }
     else
     {
-        int gcc_status = 0;
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status) != 0)
         {
-            puts("\033[31mCompile Error\033[0m");
+            puts("\033[31m  Compile Error\033[0m");
         }
         else
         {
-            puts("\033[32mOK\033[0m");
+            puts("\033[32m  OK\033[0m");
             //FILE *fp = fopen(src_path, "a+");
             //fprintf(fp, "%s", buf);
         }
