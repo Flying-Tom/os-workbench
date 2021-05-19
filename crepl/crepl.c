@@ -84,6 +84,8 @@ int main(int argc, char *argv[])
     */
     char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
     char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
+    unlink(template_src);
+    unlink(template_so);
     int fd_src = mkstemp(template_src);
     int fd_so = mkstemp(template_so);
     sprintf(line, "/proc/self/fd/%d", fd_src);
