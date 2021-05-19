@@ -8,7 +8,6 @@
 #include <sys/wait.h>
 
 char src_path[256], so_path[256];
-char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 char *exec_argv[] =
     {
         "gcc",
@@ -80,8 +79,8 @@ void ExprCal(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
-    char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
+    char template_src[] = {"/tmp/Crepl_SRCXXXXXX"};
+    char template_so[] = {"/tmp/Crepl_SOXXXXXX"};
     int fd_src = mkstemp(template_src);
     int fd_so = mkstemp(template_so);
     sprintf(line, "/proc/self/fd/%d", fd_src);
