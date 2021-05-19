@@ -78,7 +78,7 @@ void ExprCal(char buf[])
     fclose(fp);
     if (Compile())
     {
-        assert((handle = dlopen(so_path, RTLD_LAZY)) != NULL);
+        assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
 
         int (*func)() = dlsym(handle, wrapper_name);
         printf(" %s = %d\n", buf, func());
