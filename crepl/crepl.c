@@ -85,6 +85,7 @@ void ExprCal(char buf[])
             func = dlsym(handle, wrapper_name);
             printf("%d\n", func());
         }
+        dlclose(handle);
     }
 }
 
