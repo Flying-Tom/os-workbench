@@ -81,16 +81,9 @@ void ExprCal(char buf[])
         assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
 
         int (*func)() = dlsym(handle, wrapper_name);
-        int pid = fork();
-        if (pid == 0)
-        {
-            printf(" %s = %d\n", buf, func());
-        }
-        else
-        {
-            wait(NULL);
-            dlclose(handle);
-        }
+
+        printf(" %s = %d\n", buf, func());
+        dlclose(handle);
     }
 }
 
