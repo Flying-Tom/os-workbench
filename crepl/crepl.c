@@ -53,8 +53,6 @@ void FuncBuild(char buf[])
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", buf);
     fclose(fp);
-    //printf("tmp_path:%s\n", tmp_path);
-    //printf("gcc %s -shared -fPIC -o %s\n", src_path, so_path);
 
     if (Compile())
     {
@@ -66,10 +64,9 @@ void FuncBuild(char buf[])
 
 void ExprCal(char buf[])
 {
-    char wrapper[512], wrapper_name[32];
+    char wrapper[512];
     buf[strlen(buf) - 1] = '\0';
-    sprintf(wrapper_name, "__expr_wrapper__");
-    sprintf(wrapper, "int %s(){ return (%s); }", wrapper_name, buf);
+    sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
     fclose(fp);
@@ -77,8 +74,7 @@ void ExprCal(char buf[])
     {
         assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
 
-        int (*func)() = dlsym(handle, wrapper_name);
-        printf("fuck\n");
+        int (*func)() = dlsym(handle, "__expr_wrapper__");
         printf(" %s = %d\n", buf, func());
         dlclose(handle);
     }
