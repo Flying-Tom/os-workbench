@@ -40,7 +40,7 @@ bool Compile()
         if (WEXITSTATUS(gcc_status))
         {
             puts("\033[31m  Compile Error\033[0m");
-            return false
+            return false;
         }
         else
         {
