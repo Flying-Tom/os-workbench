@@ -105,8 +105,8 @@ int main(int argc, char *argv[])
                     {
                         int (*func)(void) = dlsym(handle, "__expr_wrapper__");
                         printf(" %s = %d\n", line, func());
-                        dlclose(handle);
                     }
+                    dlclose(handle);
                 }
             }
             //memset(line, '\0', sizeof(line));
