@@ -41,6 +41,8 @@ bool Compile()
                     };
                 execvp("cp", cp_argv);
             }
+            else
+                return false;
         }
         else
             return true;
