@@ -100,9 +100,13 @@ int main(int argc, char *argv[])
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
-                    int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                    printf(" = %d\n", func());
-                    dlclose(handle);
+                    int pid = fork();
+                    if (pid == 0)
+                    {
+                        int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                        printf(" %s = %d\n", line, func());
+                        dlclose(handle);
+                    }
                 }
             }
             //memset(line, '\0', sizeof(line));
