@@ -8,7 +8,7 @@
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
 int func_cnt = 0;
-int fd;
+int expr_cnt = 0;
 //char src_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
 char src_path[256];
 char so_path[256];
@@ -24,8 +24,9 @@ char *exec_argv[] =
         so_path,
         NULL,
 };
+void *handle = NULL;
 
-void Compile()
+bool Compile()
 {
     int gcc_status = 0;
     int pid = fork();
@@ -37,12 +38,14 @@ void Compile()
     {
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status))
+        {
             puts("\033[31m  Compile Error\033[0m");
+            return false
+        }
         else
         {
             puts("\033[32m  OK\033[0m");
-            //FILE *fp = fopen(src_path, "a+");
-            //fprintf(fp, "%s", buf);
+            return true;
         }
     }
 }
@@ -55,12 +58,19 @@ void FuncBuild(char buf[])
     //printf("tmp_path:%s\n", tmp_path);
     printf("gcc %s -shared -fPIC -o %s\n", src_path, so_path);
 
-    Compile();
+    if (Compile())
+    {
+        void *handle = NULL;
+        if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+        {
+        }
+    }
 }
 
 void ExprCal(char buf[])
 {
-    void *handle = NULL;
+    char wrapper[512];
+    sprintf(wrapper, "int __expr_wrapper_%d(){ return %s;}", expr_cnt, buf);
     if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
     {
     }
@@ -69,12 +79,6 @@ void ExprCal(char buf[])
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    /*
-    fd = mkstemp(func_template);
-    sprintf(line, "/proc/self/fd/%d", fd);
-    readlink(line, src_path, sizeof(src_path) - 1);
-    strcpy(tmp_path, strcat(src_path, "tmp"));
-    */
     char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
     char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
     int fd_src = mkstemp(template_src);
