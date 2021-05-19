@@ -68,7 +68,7 @@ void FuncBuild(char buf[])
     fprintf(fp, "%s", buf);
     fclose(fp);
     //printf("tmp_path:%s\n", tmp_path);
-    //printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
+    printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
     Compile();
 }
