@@ -78,12 +78,14 @@ void ExprCal(char buf[])
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
     fclose(fp);
-    printf("fuck\n");
-    if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+    if (Compile())
     {
-        int (*func)();
-        func = dlsym(handle, wrapper_name);
-        printf("%d", func());
+        if ((handle = dlopen(so_path, RTLD_NOW)) != NULL)
+        {
+            int (*func)();
+            func = dlsym(handle, wrapper_name);
+            printf("%d", func());
+        }
     }
 }
 
