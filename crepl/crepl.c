@@ -71,6 +71,7 @@ void FuncBuild(char buf[])
 void ExprCal(char buf[])
 {
     char wrapper[512];
+    buf[strlen(buf) - 1] = '\0';
     sprintf(wrapper, "int __expr_wrapper_%d(){ return %s;}", expr_cnt, buf);
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
