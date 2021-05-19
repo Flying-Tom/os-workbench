@@ -7,10 +7,8 @@
 #include <dlfcn.h>
 #include <sys/wait.h>
 
+char src_path[256], so_path[256];
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
-//char src_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
-char src_path[256];
-char so_path[256];
 char *exec_argv[] =
     {
         "gcc",
@@ -42,9 +40,8 @@ bool Compile()
             puts("\033[31m  Compile Error\033[0m");
             return false;
         }
-        else
-            return true;
     }
+    assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
     return false;
 }
 
@@ -72,8 +69,6 @@ void ExprCal(char buf[])
     fclose(fp);
     if (Compile())
     {
-        assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
-        printf(">>????\n");
         int (*func)(void) = dlsym(handle, "__expr_wrapper__");
         printf(" %s = %d\n", buf, func());
         dlclose(handle);
@@ -104,7 +99,6 @@ int main(int argc, char *argv[])
                 FuncBuild(line);
             else
                 ExprCal(line);
-            //printf("Got %zu chars.\n", strlen(line));
             memset(line, '\0', sizeof(line));
         }
     }
