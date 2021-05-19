@@ -100,8 +100,18 @@ int main(int argc, char *argv[])
                 if (Compile(line, EXPR))
                 {
                     int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                    printf(" %s = %d\n", line, func());
-                    dlclose(handle);
+                    int pid = fork();
+                    if (pid == 0)
+                    {
+                        printf(" %s = %d\n", line, func());
+                        exit(0);
+                    }
+                    else
+                    {
+                        wait(NULL);
+                        dlclose(handle);
+                    }
+
                 }
             }
             //memset(line, '\0', sizeof(line));
