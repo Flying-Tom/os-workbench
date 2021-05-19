@@ -26,30 +26,34 @@ bool Compile()
 {
     bool ret = true;
     int pid = fork();
+    int compile_pipe[2];
+    pipe(compile_pipe);
     if (pid == 0)
     {
-        if (execvp("gcc", exec_argv) == -1)
+        dup2(compile_pipe[1], STDERR_FILENO);
+        execvp("gcc", exec_argv);
+    }
+    else
+    {
+        puts("\033[31mCompile Error\033[0m");
+        int cp_pid = fork();
+        if (cp_pid == 0)
         {
-            puts("\033[31mCompile Error\033[0m");
-            int cp_pid = fork();
-            if (cp_pid == 0)
-            {
-                char *cp_argv[] =
-                    {
-                        "cp",
-                        file_path,
-                        tmp_path,
-                        NULL,
-                    };
-                execvp("cp", cp_argv);
-            }
-            else
-                return false;
+            char *cp_argv[] =
+                {
+                    "cp",
+                    file_path,
+                    tmp_path,
+                    NULL,
+                };
+            execvp("cp", cp_argv);
         }
         else
-            return true;
+            return false;
     }
-    return false;
+    else return true;
+}
+return false;
 }
 
 void FuncBuild(char buf[])
