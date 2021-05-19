@@ -54,6 +54,7 @@ void Compile()
         else
         {
             puts("\032[31mOK\032[0m");
+            FILE *fp = fopen(file_path, "a+");
             fprintf(fp, "%s", buf);
         }
     }
@@ -68,8 +69,7 @@ void FuncBuild(char buf[])
     printf("tmp_path:%s\n", tmp_path);
     printf("gcc %s -shared -fPIC -o %s\n", tmp_path, so_path);
 
-    if (Compile())
-        fprintf(fp, "%s", buf);
+    Compile();
 }
 
 void ExprCal(char buf[])
