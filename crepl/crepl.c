@@ -7,8 +7,6 @@
 #include <sys/wait.h>
 
 char func_template[] = "/home/flyingtom/os-workbench/crepl/tmp/creplXXXXXX";
-int func_cnt = 0;
-int expr_cnt = 0;
 //char src_path[] = {"/home/flyingtom/os-workbench/crepl/tmp/creplsrc.c"};
 char src_path[256];
 char so_path[256];
@@ -72,7 +70,7 @@ void ExprCal(char buf[])
     char wrapper[512];
     char wrapper_name[32];
     buf[strlen(buf) - 1] = '\0';
-    sprintf(wrapper_name, "__expr_wrapper_%d", expr_cnt++);
+    sprintf(wrapper_name, "__expr_wrapper_");
     sprintf(wrapper, "int %s(){ return (%s); }", wrapper_name, buf);
     FILE *fp = fopen(src_path, "w");
     fprintf(fp, "%s", wrapper);
