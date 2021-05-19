@@ -26,6 +26,7 @@ void *handle = NULL;
 
 bool Compile()
 {
+    bool ret = false;
     int gcc_status = 0;
     int pid = fork();
     if (pid == 0)
@@ -38,12 +39,14 @@ bool Compile()
         if (WEXITSTATUS(gcc_status))
         {
             puts("\033[31m  Compile Error\033[0m");
-            return false;
         }
-        assert((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL);
-        return true;
+        else
+        {
+            if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
+                ret = true;
+        }
     }
-    return false;
+    return ret;
 }
 
 void FuncBuild(char buf[])
@@ -98,7 +101,7 @@ int main(int argc, char *argv[])
                 FuncBuild(line);
             else
                 ExprCal(line);
-            memset(line, '\0', sizeof(line));
+            //memset(line, '\0', sizeof(line));
         }
     }
 }
