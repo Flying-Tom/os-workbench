@@ -55,7 +55,8 @@ bool Compile(char buf[], int mode)
     }
     fclose(fp);
 
-    int pid = fork(), gcc_status = 0;
+    pid_t pid = fork();
+    int gcc_status = 0;
     if (pid == 0)
     {
         execvp("gcc", exec_argv);
@@ -64,9 +65,7 @@ bool Compile(char buf[], int mode)
     {
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status))
-        {
             puts("\033[31m  Compile Error\033[0m");
-        }
         else
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
@@ -100,13 +99,9 @@ int main(int argc, char *argv[])
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
-                    int pid = fork();
-                    if (pid == 0)
-                    {
-                        int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                        printf(" %s = %d\n", line, func());
-                    }
-                    dlclose(handle);
+
+                    int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                    printf(" %s = %d\n", line, func());
                 }
             }
             //memset(line, '\0', sizeof(line));
