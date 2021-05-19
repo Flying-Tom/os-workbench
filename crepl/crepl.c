@@ -71,8 +71,6 @@ bool Compile(char buf[], int mode)
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
                 ret = true;
-            if (mode == EXPR)
-                expr_cnt++;
         }
     }
     return ret;
