@@ -28,7 +28,6 @@ char *exec_argv[] = {
     "-fPIC",
     "-o",
     so_path,
-    " > /dev/null",
     NULL,
 };
 
@@ -56,8 +55,8 @@ bool Compile(char buf[], int mode)
     if (pid == 0)
     {
         int trash = open("/dev/null", O_WRONLY);
-        //dup2(trash, STDOUT_FILENO);
-        //dup2(trash, STDERR_FILENO);
+        dup2(trash, STDOUT_FILENO);
+        dup2(trash, STDERR_FILENO);
         execvp("gcc", exec_argv);
         assert(0);
     }
