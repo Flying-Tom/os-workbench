@@ -70,6 +70,11 @@ bool Compile(char buf[], int mode)
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
                 ret = true;
+            else
+            {
+                puts("Load so Failed!");
+                assert(0);
+            }
         }
     }
     return ret;
