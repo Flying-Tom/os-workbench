@@ -40,7 +40,6 @@ void *handle = NULL;
 
 bool Compile(char buf[], int mode)
 {
-    srand(time(NULL));
     sprintf(src_path, "/tmp/Crepl_src");
     sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
 
@@ -86,6 +85,7 @@ bool Compile(char buf[], int mode)
 int main(int argc, char *argv[])
 {
     static char line[4096];
+    srand(time(NULL));
     while (1)
     {
         printf("crepl> ");
