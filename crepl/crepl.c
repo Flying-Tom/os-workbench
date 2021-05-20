@@ -65,7 +65,10 @@ bool Compile(char buf[], int mode)
 
     pid_t pid = fork();
     if (pid == 0)
+    {
         execvp("gcc", exec_argv);
+        assert(0);
+    }
     else
     {
         int gcc_status = 0;
