@@ -99,7 +99,7 @@ int main(int argc, char *argv[])
             if (strncmp("int", line, 3) == 0)
             {
                 if (Compile(line, FUNC))
-                    printf("\033[32m  Added:\033[0m %s", line);
+                    printf("\033[32m  Added:\033[0m %s\n", line);
             }
             else
             {
