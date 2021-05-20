@@ -64,10 +64,7 @@ bool Compile(char buf[], int mode)
         int gcc_status = 0;
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status))
-        {
-            puts("Compile Error");
-            //puts("\033[31m  Compile Error\033[0m");
-        }
+            puts("\033[31m  Compile Error\033[0m");
         else
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
