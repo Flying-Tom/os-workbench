@@ -9,7 +9,7 @@
 
 #ifdef __x86_64__
 #define ARCH "-m64"
-#elif
+#else
 #define ARCH "-m32"
 #endif
 
