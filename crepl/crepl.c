@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
                 if (Compile(line, FUNC))
                 {
                     //printf("\033[32m  Added:\033[0m %s", line);
-                    puts("\033[32m OK. \033[0m")
+                    puts("\033[32m OK. \033[0m");
                 }
             }
             else
