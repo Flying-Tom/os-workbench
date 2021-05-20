@@ -62,7 +62,7 @@ bool Compile(char buf[], int mode)
     }
 
     fclose(fp);
-
+    int gcc_status = 0;
     pid_t pid = fork();
     if (pid == 0)
     {
@@ -71,7 +71,7 @@ bool Compile(char buf[], int mode)
     }
     else
     {
-        int gcc_status = 0;
+        //int gcc_status = 0;
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status))
             puts("\033[31m  Compile Error\033[0m");
