@@ -38,7 +38,6 @@ enum
 };
 void *handle = NULL;
 int (*wrapper_func)(void);
-int expr_cnt = 0;
 
 bool Compile(char buf[], int mode)
 {
@@ -61,8 +60,7 @@ bool Compile(char buf[], int mode)
         fprintf(fp, "%s", buf);
         break;
     case EXPR:
-        expr_cnt++;
-        sprintf(wrapper, "int __expr_wrapper__%d(){ return (%s); }", expr_cnt, buf);
+        sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
         fprintf(fp, "%s", wrapper);
         break;
     default:
@@ -93,9 +91,19 @@ bool Compile(char buf[], int mode)
             }
             if (mode == EXPR)
             {
-                char wrapper_name[128];
-                sprintf(wrapper_name, "__expr_wrapper__%d", expr_cnt);
-                wrapper_func = dlsym(handle, wrapper_name);
+                wrapper_func = NULL;
+                wrapper_func = dlsym(handle, "__expr_wrapper__");
+                fork();
+                if (pid == 0)
+                {
+                    printf(" %s = %d\n", line, wrapper_func());
+                    exit(0);
+                }
+                else
+                {
+                    wait(NULL);
+                    dlclose(handle);
+                }
 
                 assert(wrapper_func);
             }
@@ -124,11 +132,9 @@ int main(int argc, char *argv[])
             else
             {
                 line[strlen(line) - 1] = '\0';
-                if (Compile(line, EXPR))
-                {
-                    printf(" %s = %d\n", line, wrapper_func());
-                }
+                Compile(line, EXPR);
             }
         }
     }
+}
 }
