@@ -27,6 +27,7 @@ char *exec_argv[] = {
     "-fPIC",
     "-o",
     so_path,
+    " > /dev/null",
     NULL,
 };
 
