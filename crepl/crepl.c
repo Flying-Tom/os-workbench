@@ -101,10 +101,17 @@ int main(int argc, char *argv[])
             {
                 if (Compile(line, EXPR))
                 {
-                    int (*wrapper_func)(void) = dlsym(handle, "__expr_wrapper__");
-                    //printf(" %s = %d\n", line, wrapper_func());
-                    printf("= %d\n", wrapper_func());
-                    dlclose(handle);
+                    int pid = fork();
+                    if (pid == 0)
+                    {
+                        int (*wrapper_func)(void) = dlsym(handle, "__expr_wrapper__");
+                        printf("= %d\n", wrapper_func());
+                    }
+                    else
+                    {
+                        wait(NULL);
+                        dlclose(handle);
+                    }
                 }
             }
         }
