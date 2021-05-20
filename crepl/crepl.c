@@ -46,16 +46,20 @@ bool Compile(char buf[], int mode)
     readlink(file_name, so_path, sizeof(src_path) - 1);
 
     FILE *fp = fopen(src_path, "w");
-    if (mode == FUNC)
+    switch (mode)
     {
+    case FUNC:
         fprintf(fp, "%s", buf);
-    }
-    else
-    {
+        break;
+    case EXPR:
         char wrapper[512];
         sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
         fprintf(fp, "%s", wrapper);
+        break;
+    default:
+        break;
     }
+
     fclose(fp);
 
     pid_t pid = fork();
