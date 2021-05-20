@@ -14,9 +14,8 @@
 #define ARCH "-m32"
 #endif
 
-char src_path[256] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_src"};
+char src_path[256] = {"/tmp/Crepl_src"};
 char so_path[256];
-char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
 char *exec_argv[] =
     {
         "gcc",
@@ -46,7 +45,7 @@ bool Compile(char buf[], int mode)
     char file_name[4096];
 
     srand(time(NULL));
-    sprintf(so_path, "/home/flyingtom/os-workbench/crepl/tmp/Crepl_%d.so", rand());
+    sprintf(so_path, "/tmp/Crepl_%d.so", rand());
 
     char wrapper[512];
     FILE *fp = fopen(src_path, "w");
