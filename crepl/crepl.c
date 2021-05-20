@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
                     }
                     else
                     {
-                        dlclose(handle);
+                        //dlclose(handle);
                         wait(NULL);
                     }
                 }
