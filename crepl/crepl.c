@@ -8,8 +8,8 @@
 #include <sys/wait.h>
 
 char src_path[256], so_path[256];
-char template_src[] = {"/tmp/Crepl_SRCXXXXXX"};
-char template_so[] = {"/tmp/Crepl_SOXXXXXX"};
+char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
+char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
 char *exec_argv[] =
     {
         "gcc",
