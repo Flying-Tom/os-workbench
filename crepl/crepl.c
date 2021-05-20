@@ -44,7 +44,7 @@ bool Compile(char buf[], int mode)
     bool ret = false;
     char file_name[4096];
 
-    scrand(time(NULL));
+    srand(time(NULL));
     sprintf(so_path, "/home/flyingtom/os-workbench/crepl/tmp/Crepl_%d.so", rand());
 
     char wrapper[512];
