@@ -36,6 +36,8 @@ bool Compile(char buf[], int mode)
 {
     bool ret = false;
     char file_name[4096];
+    unlink(template_src);
+    unlink(template_so);
     int fd_src = mkstemp(template_src);
     int fd_so = mkstemp(template_so);
     sprintf(file_name, "/proc/self/fd/%d", fd_src);
