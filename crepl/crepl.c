@@ -13,8 +13,8 @@
 #define ARCH "-m32"
 #endif
 
-char src_path[256], so_path[256];
-char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
+char src_path[256] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_src"};
+char so_path[256];
 char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
 char *exec_argv[] =
     {
@@ -43,14 +43,9 @@ bool Compile(char buf[], int mode)
 {
     bool ret = false;
     char file_name[4096];
-    unlink(template_src);
-    unlink(template_so);
-    int fd_src = mkstemp(template_src);
-    int fd_so = mkstemp(template_so);
-    sprintf(file_name, "/proc/self/fd/%d", fd_src);
-    readlink(file_name, src_path, sizeof(src_path) - 1);
-    sprintf(file_name, "/proc/self/fd/%d", fd_so);
-    readlink(file_name, so_path, sizeof(src_path) - 1);
+
+    scrand(time(NULL));
+    sprintf(so_path, "/home/flyingtom/os-workbench/crepl/tmp/Crepl_%d.so", rand());
 
     char wrapper[512];
     FILE *fp = fopen(src_path, "w");
