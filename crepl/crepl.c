@@ -37,7 +37,6 @@ enum
     EXPR,
 };
 void *handle = NULL;
-int (*wrapper_func)(void);
 
 bool Compile(char buf[], int mode)
 {
@@ -82,11 +81,6 @@ bool Compile(char buf[], int mode)
                 puts("Load so Failed!");
                 assert(0);
             }
-            if (mode == EXPR)
-            {
-                wrapper_func = dlsym(handle, "__expr_wrapper__");
-                assert(wrapper_func);
-            }
         }
     }
     return ret;
@@ -114,6 +108,7 @@ int main(int argc, char *argv[])
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
+                    int (*wrapper_func)(void) = dlsym(handle, "__expr_wrapper__");
                     printf(" %s = %d\n", line, wrapper_func());
                     dlclose(handle);
                 }
