@@ -104,6 +104,10 @@ int main(int argc, char *argv[])
                         printf(" %s = %d\n", line, func());
                         dlclose(handle);
                     }
+                    else
+                    {
+                        wait(NULL);
+                    }
                 }
             }
         }
