@@ -100,6 +100,7 @@ int main(int argc, char *argv[])
                 if (Compile(line, EXPR))
                 {
                     int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                    assert(func != NULL);
                     printf(" %s = %d\n", line, func());
                     dlclose(handle);
                 }
