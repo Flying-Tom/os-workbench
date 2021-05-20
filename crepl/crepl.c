@@ -114,17 +114,8 @@ int main(int argc, char *argv[])
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
-                    int pid = fork();
-                    if (pid == 0)
-                    {
-                        printf(" %s = %d\n", line, wrapper_func());
-                        exit(0);
-                    }
-                    else
-                    {
-                        dlclose(handle);
-                        wait(NULL);
-                    }
+                    printf(" %s = %d\n", line, wrapper_func());
+                    dlclose(handle);
                 }
             }
         }
