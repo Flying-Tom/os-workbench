@@ -41,8 +41,8 @@ bool Compile(char buf[], int mode)
 {
     bool ret = false;
     srand(time(NULL));
-    sprintf(src_path, "/tmp/crepl/Crepl_src");
-    sprintf(so_path, "/tmp/crepl/Crepl_%d.so", rand() % 100000);
+    sprintf(src_path, "/tmp/Crepl_src");
+    sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
 
     FILE *fp = fopen(src_path, "w");
     if (mode == FUNC)
