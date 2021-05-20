@@ -106,6 +106,7 @@ int main(int argc, char *argv[])
                     if (pid == 0)
                     {
                         int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                        assert(func);
                         printf(" %s = %d\n", line, func());
                         exit(0);
                     }
