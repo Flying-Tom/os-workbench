@@ -7,6 +7,12 @@
 #include <dlfcn.h>
 #include <sys/wait.h>
 
+#ifdef __x86_64__
+#define ARCH "-m64"
+#elif
+#define ARCH "-m32"
+#endif
+
 char src_path[256], so_path[256];
 char template_src[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SRCXXXXXX"};
 char template_so[] = {"/home/flyingtom/os-workbench/crepl/tmp/Crepl_SOXXXXXX"};
@@ -15,7 +21,8 @@ char *exec_argv[] =
         "gcc",
         "-x",
         "c",
-        //"-w",
+        "-w",
+        ARCH,
         src_path,
         "-shared",
         "-fPIC",
