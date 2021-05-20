@@ -54,6 +54,9 @@ bool Compile(char buf[], int mode)
     pid_t pid = fork();
     if (pid == 0)
     {
+        int trash = open("/dev/null", O_WRONLY);
+        dup2(trash, STDOUT_FILENO);
+        dup2(pipe, STDERR_FILENO);
         execvp("gcc", exec_argv);
         assert(0);
     }
