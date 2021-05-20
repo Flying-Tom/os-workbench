@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
     srand(time(NULL));
     while (1)
     {
-        printf("crepl> ");
+        printf(">> ");
         fflush(stdout);
 
         if (!fgets(line, sizeof(line), stdin))
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
                     if (pid == 0)
                     {
                         int (*wrapper_func)(void) = dlsym(handle, "__expr_wrapper__");
-                        printf("= %d\n", wrapper_func());
+                        printf("  %s == %d.\n", line, wrapper_func());
                     }
                     else
                     {
