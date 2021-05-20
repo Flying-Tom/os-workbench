@@ -6,6 +6,7 @@
 #include <stdbool.h>
 #include <dlfcn.h>
 #include <sys/wait.h>
+#include <fcntl.h>
 #include <time.h>
 
 #ifdef __x86_64__
@@ -56,7 +57,7 @@ bool Compile(char buf[], int mode)
     {
         int trash = open("/dev/null", O_WRONLY);
         dup2(trash, STDOUT_FILENO);
-        dup2(pipe, STDERR_FILENO);
+        dup2(trash, STDERR_FILENO);
         execvp("gcc", exec_argv);
         assert(0);
     }
