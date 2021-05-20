@@ -30,6 +30,7 @@ enum
     EXPR,
 };
 void *handle = NULL;
+int (*wrapper_func)(void);
 
 bool Compile(char buf[], int mode)
 {
@@ -75,6 +76,11 @@ bool Compile(char buf[], int mode)
                 puts("Load so Failed!");
                 assert(0);
             }
+            if (mode == EXPR)
+            {
+                wrapper_func = dlsym(handle, "__expr_wrapper__");
+                assert(wrapper_func);
+            }
         }
     }
     return ret;
@@ -105,9 +111,7 @@ int main(int argc, char *argv[])
                     int pid = fork();
                     if (pid == 0)
                     {
-                        int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                        assert(func);
-                        printf(" %s = %d\n", line, func());
+                        printf(" %s = %d\n", line, wrapper_func());
                         exit(0);
                     }
                     else
