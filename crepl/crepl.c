@@ -107,10 +107,11 @@ int main(int argc, char *argv[])
                     {
                         int (*func)(void) = dlsym(handle, "__expr_wrapper__");
                         printf(" %s = %d\n", line, func());
-                        dlclose(handle);
+                        exit(0);
                     }
                     else
                     {
+                        dlclose(handle);
                         wait(NULL);
                     }
                 }
