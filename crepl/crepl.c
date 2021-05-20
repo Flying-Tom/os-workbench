@@ -120,6 +120,7 @@ int main(int argc, char *argv[])
                         wait(NULL);
                         dlclose(handle);
                     }
+                    unlink(so_path);
                 }
             }
         }
