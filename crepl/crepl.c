@@ -90,19 +90,20 @@ int main(int argc, char *argv[])
             if (strncmp("int", line, 3) == 0)
             {
                 if (Compile(line, FUNC))
-                {
                     printf("\033[32m  Added:\033[0m %s", line);
-                }
             }
             else
             {
                 line[strlen(line) - 1] = '\0';
                 if (Compile(line, EXPR))
                 {
-                    int (*func)(void) = dlsym(handle, "__expr_wrapper__");
-                    assert(func != NULL);
-                    printf(" %s = %d\n", line, func());
-                    dlclose(handle);
+                    int pid = fork();
+                    if (pid == 0)
+                    {
+                        int (*func)(void) = dlsym(handle, "__expr_wrapper__");
+                        printf(" %s = %d\n", line, func());
+                        dlclose(handle);
+                    }
                 }
             }
         }
