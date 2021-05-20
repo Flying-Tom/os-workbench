@@ -6,7 +6,6 @@
 #include <stdbool.h>
 #include <dlfcn.h>
 #include <sys/wait.h>
-#include <fcntl.h>
 #include <time.h>
 
 #ifdef __x86_64__
