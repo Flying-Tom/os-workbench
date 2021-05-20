@@ -16,19 +16,18 @@
 
 char src_path[256];
 char so_path[256];
-char *exec_argv[] =
-    {
-        "gcc",
-        "-x",
-        "c",
-        "-w",
-        ARCH,
-        src_path,
-        "-shared",
-        "-fPIC",
-        "-o",
-        so_path,
-        NULL,
+char *exec_argv[] = {
+    "gcc",
+    "-x",
+    "c",
+    "-w",
+    ARCH,
+    src_path,
+    "-shared",
+    "-fPIC",
+    "-o",
+    so_path,
+    NULL,
 };
 
 enum
@@ -41,8 +40,6 @@ void *handle = NULL;
 bool Compile(char buf[], int mode)
 {
     bool ret = false;
-    char file_name[4096];
-
     srand(time(NULL));
     sprintf(src_path, "/tmp/Crepl_src");
     sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
@@ -52,7 +49,6 @@ bool Compile(char buf[], int mode)
         fprintf(fp, "%s", buf);
     else
         fprintf(fp, "int __expr_wrapper__(){ return (%s); }", buf);
-
     fclose(fp);
 
     pid_t pid = fork();
