@@ -93,6 +93,7 @@ bool Compile(char buf[], int mode)
             {
                 wrapper_func = NULL;
                 wrapper_func = dlsym(handle, "__expr_wrapper__");
+                printf(" %s = %d\n", buf, wrapper_func());
                 fork();
                 if (pid == 0)
                 {
