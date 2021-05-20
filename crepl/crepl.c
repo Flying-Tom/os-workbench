@@ -96,7 +96,7 @@ bool Compile(char buf[], int mode)
                 fork();
                 if (pid == 0)
                 {
-                    printf(" %s = %d\n", line, wrapper_func());
+                    printf(" %s = %d\n", buf, wrapper_func());
                     exit(0);
                 }
                 else
