@@ -91,7 +91,12 @@ bool Compile(char buf[], int mode)
             }
             if (mode == EXPR)
             {
-                wrapper_func = dlsym(handle, "__expr_wrapper__");
+                wrapper_func = NULL;
+                while (wrapper_func == NULL)
+                {
+                    wrapper_func = dlsym(handle, "__expr_wrapper__");
+                }
+
                 assert(wrapper_func);
             }
         }
