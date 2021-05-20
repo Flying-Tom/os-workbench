@@ -70,13 +70,13 @@ bool Compile(char buf[], int mode)
     fclose(fp);
 
     pid_t pid = fork();
+    int gcc_status = 0;
     if (pid == 0)
     {
         execvp("gcc", exec_argv);
     }
     else
     {
-        int gcc_status = 0;
         wait(&gcc_status);
         if (WEXITSTATUS(gcc_status))
             puts("\033[31m  Compile Error\033[0m");
@@ -91,21 +91,7 @@ bool Compile(char buf[], int mode)
             }
             if (mode == EXPR)
             {
-                wrapper_func = NULL;
                 wrapper_func = dlsym(handle, "__expr_wrapper__");
-                printf(" %s = %d\n", buf, wrapper_func());
-                fork();
-                if (pid == 0)
-                {
-                    printf(" %s = %d\n", buf, wrapper_func());
-                    exit(0);
-                }
-                else
-                {
-                    wait(NULL);
-                    dlclose(handle);
-                }
-
                 assert(wrapper_func);
             }
         }
@@ -133,7 +119,20 @@ int main(int argc, char *argv[])
             else
             {
                 line[strlen(line) - 1] = '\0';
-                Compile(line, EXPR);
+                if (Compile(line, EXPR))
+                {
+                    int pid = fork();
+                    if (pid == 0)
+                    {
+                        printf(" %s = %d\n", line, wrapper_func());
+                        exit(0);
+                    }
+                    else
+                    {
+                        dlclose(handle);
+                        wait(NULL);
+                    }
+                }
             }
         }
     }
