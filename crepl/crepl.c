@@ -39,7 +39,6 @@ void *handle = NULL;
 
 bool Compile(char buf[], int mode)
 {
-    bool ret = false;
     srand(time(NULL));
     sprintf(src_path, "/tmp/Crepl_src");
     sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
@@ -66,7 +65,7 @@ bool Compile(char buf[], int mode)
         else
         {
             if ((handle = dlopen(so_path, RTLD_LAZY | RTLD_GLOBAL)) != NULL)
-                ret = true;
+                return true;
             else
             {
                 puts("Load so Failed!");
@@ -74,7 +73,7 @@ bool Compile(char buf[], int mode)
             }
         }
     }
-    return ret;
+    return false;
 }
 
 int main(int argc, char *argv[])
