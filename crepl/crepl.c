@@ -14,7 +14,7 @@
 #define ARCH "-m32"
 #endif
 
-char src_path[256] = {"/tmp/Crepl_src"};
+char src_path[256];
 char so_path[256];
 char *exec_argv[] =
     {
@@ -44,22 +44,14 @@ bool Compile(char buf[], int mode)
     char file_name[4096];
 
     srand(time(NULL));
-    sprintf(so_path, "/tmp/Crepl_%d.so", rand());
+    sprintf(src_path, "/tmp/Crepl_src");
+    sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
 
-    char wrapper[512];
     FILE *fp = fopen(src_path, "w");
-    switch (mode)
-    {
-    case FUNC:
+    if (mode == FUNC)
         fprintf(fp, "%s", buf);
-        break;
-    case EXPR:
-        sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
-        fprintf(fp, "%s", wrapper);
-        break;
-    default:
-        break;
-    }
+    else
+        fprintf(fp, "int __expr_wrapper__(){ return (%s); }", buf);
 
     fclose(fp);
 
