@@ -92,7 +92,10 @@ int main(int argc, char *argv[])
             if (strncmp("int", line, 3) == 0)
             {
                 if (Compile(line, FUNC))
-                    printf("\033[32m  Added:\033[0m %s", line);
+                {
+                    //printf("\033[32m  Added:\033[0m %s", line);
+                    puts("\033[32m OK. \033[0m")
+                }
             }
             else
             {
@@ -100,7 +103,8 @@ int main(int argc, char *argv[])
                 if (Compile(line, EXPR))
                 {
                     int (*wrapper_func)(void) = dlsym(handle, "__expr_wrapper__");
-                    printf(" %s = %d\n", line, wrapper_func());
+                    //printf(" %s = %d\n", line, wrapper_func());
+                    printf(" = %d\n", l wrapper_func());
                     dlclose(handle);
                 }
             }
