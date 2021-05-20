@@ -45,6 +45,7 @@ bool Compile(char buf[], int mode)
     sprintf(file_name, "/proc/self/fd/%d", fd_so);
     readlink(file_name, so_path, sizeof(src_path) - 1);
 
+    char wrapper[512];
     FILE *fp = fopen(src_path, "w");
     switch (mode)
     {
@@ -52,7 +53,6 @@ bool Compile(char buf[], int mode)
         fprintf(fp, "%s", buf);
         break;
     case EXPR:
-        char wrapper[512];
         sprintf(wrapper, "int __expr_wrapper__(){ return (%s); }", buf);
         fprintf(fp, "%s", wrapper);
         break;
