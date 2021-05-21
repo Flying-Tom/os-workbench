@@ -37,11 +37,11 @@ enum
     EXPR,
 };
 void *handle = NULL;
-
+int so_cnt = 0;
 bool Compile(char buf[], int mode)
 {
     sprintf(src_path, "/tmp/Crepl_src");
-    sprintf(so_path, "/tmp/Crepl_%d.so", rand() % 100000);
+    sprintf(so_path, "/tmp/Crepl_%06d.so", ++so_cnt);
 
     FILE *fp = fopen(src_path, "w");
     if (mode == FUNC)
