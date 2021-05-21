@@ -7,7 +7,6 @@
 #include <dlfcn.h>
 #include <sys/wait.h>
 #include <fcntl.h>
-#include <time.h>
 
 #ifdef __x86_64__
 #define ARCH "-m64"
@@ -82,7 +81,6 @@ bool Compile(char buf[], int mode)
 int main(int argc, char *argv[])
 {
     static char line[4096];
-    srand(time(NULL));
     while (1)
     {
         printf(">> ");
