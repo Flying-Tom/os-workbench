@@ -23,7 +23,7 @@ static void os_run()
     int *a = NULL;
     for (int i = 1; i <= 5; i++)
     {
-        a = pmm->alloc(1 MB);
+        a = pmm->alloc(4 MB);
         pmm->free(a);
     }
     /*
