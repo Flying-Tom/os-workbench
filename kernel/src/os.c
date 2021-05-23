@@ -21,7 +21,7 @@ static void os_run()
     //pmm->alloc(17);
 
     int *a = NULL;
-    for (int i = 1; i <= 500; i++)
+    for (int i = 1; i <= 50000; i++)
     {
         a = pmm->alloc(40 KB);
         pmm->free(a);
