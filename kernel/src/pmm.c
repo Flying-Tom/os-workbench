@@ -12,7 +12,7 @@ static void *kalloc(size_t size)
         ret = buddy_alloc(size);
     else
         ret = slab_alloc(size);
-    unlock(&test_lk);
+    //unlock(&test_lk);
     return ret;
 }
 
