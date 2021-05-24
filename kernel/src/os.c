@@ -42,13 +42,13 @@ static void os_run()
     for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
-        pmm->alloc(rand_m);
-        printf("%d: Alloc %d success\n", i, rand_m);
+        printf("%p\n", pmm->alloc(rand_m));
+        //printf("%d: Alloc %d success\n", i, rand_m);
     }
     for (int i = 1; i < 100; i++)
     {
         size_t rand_m = rand() % 128 + 1;
-        pmm->alloc(rand_m);
+        printf("%p\n", pmm->alloc(rand_m));
         printf("%d: Alloc %d success\n", i, rand_m KB);
     }
 #endif
