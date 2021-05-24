@@ -2,7 +2,7 @@
 
 lock_t page_lk = LOCK_INIT();
 lock_t pm_global_lk = LOCK_INIT();
-lock_t cpu_lk[16];
+lock_t cache_lk[MAX_CPU_NUM];
 
 uintptr_t slab_start, slab_end, slab_cur;
 
@@ -63,7 +63,7 @@ void *slab_alloc(size_t size)
     }
     unlock(&pm_global_lk);
 
-    lock(&page_lk);
+    lock(&cache_lk[cur_cpu_id]);
     size_t i = 0, j = 0;
     Log("object_cache->slab_free->bitmap[0]:%u", object_cache->slab_free->bitmap[0]);
     while (object_cache->slab_free->bitmap[i] + 1ULL == 0ULL)
@@ -82,6 +82,9 @@ void slab_init(uintptr_t start, uintptr_t end)
     Log("slab system starts from %p to %p", start, end);
     slab_cur = slab_start = start;
     slab_end = end;
+
+    for (int i = 0; i < MAX_CPU_NUM; i++)
+        cache_lk[i] = LOCK_INIT();
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("total_page_num:%d", total_page_num);
