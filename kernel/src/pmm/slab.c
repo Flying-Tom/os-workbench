@@ -78,6 +78,7 @@ void *slab_alloc(size_t size)
 
 void slab_init(uintptr_t start, uintptr_t end)
 {
+    Log("slab system starts from %p to %p", start, end);
     slab_cur = slab_start = start;
     slab_end = end;
 
