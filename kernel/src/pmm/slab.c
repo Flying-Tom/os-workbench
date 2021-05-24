@@ -8,12 +8,12 @@ uintptr_t slab_start, slab_end, slab_cur;
 static page_header *slab_get_page()
 {
     page_header *ret = NULL;
-    if (slab_cur + PAGE_SIZE < slab_end)
+    if (slab_cur + PAGE_SIZE / sizeof(uintptr_t) < slab_end)
     {
-        //printf("slab_cur:%p\n", slab_cur);
+        printf("slab_cur:%p\n", slab_cur);
         ret = (page_header *)((uint8_t *)slab_cur + PAGE_SIZE - sizeof(page_header));
-        slab_cur += PAGE_SIZE;
-        //printf("slab_cur:%p\n", slab_cur);
+        slab_cur += PAGE_SIZE / sizeof(uintptr_t);
+        printf("slab_cur:%p\n", slab_cur);
     }
     return ret;
 }
