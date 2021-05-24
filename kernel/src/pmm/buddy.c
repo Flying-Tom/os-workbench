@@ -8,7 +8,7 @@ uintptr_t buddy_start, buddy_end, budnode_area_start;
 static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
 {
     void *ret = NULL;
-    if (cur_order < PAGE_ORDER || buddy[id].status == BUD_FULL || tar_order > buddy[i].order)
+    if (cur_order < PAGE_ORDER || buddy[id].status == BUD_FULL || tar_order > buddy[id].order)
         return NULL;
 
     if ((ret = buddy_alloc_search(id * 2, cur_order - 1, tar_order)) == NULL)
@@ -55,7 +55,7 @@ void buddy_init(uintptr_t start, uintptr_t end)
 {
     size_t budnode_area_size = ((uintptr_t)(end - start) >> 11) * sizeof(buddy_node);
     budnode_area_start = start;
-    buddy_start = (void *)((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1);
+    buddy_start = ((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1);
     buddy_end = end;
-    budnode_init(1, buddy_root_order, buddy_start);
+    budnode_init(1, buddy_root_order, (void *)buddy_start);
 }
