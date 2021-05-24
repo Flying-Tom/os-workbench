@@ -1,7 +1,7 @@
 #include <common.h>
 
-#define SMOKE
-//#define NORMAL
+//#define SMOKE
+#define NORMAL
 //#define STRESSED
 
 static void os_init()
@@ -18,8 +18,8 @@ static void os_run()
     }
     printf("Tests Start!\n");
 #ifdef SMOKE
-    //pmm->alloc(17);
 
+    /*
     int *a = NULL;
     for (int i = 1; i <= 50; i++)
     {
@@ -27,6 +27,7 @@ static void os_run()
         printf("a:%p\n", a);
         pmm->free(a);
     }
+    */
     /*
     for (int i = 1; i < 4; i++)
     {
