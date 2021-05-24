@@ -11,7 +11,7 @@ static page_header *slab_get_page()
     if (slab_cur + PAGE_SIZE < slab_end)
     {
         ret = (page_header *)((uint8_t *)slab_cur + PAGE_SIZE - sizeof(page_header));
-        slab_cur += PAGE_SIZE );
+        slab_cur += PAGE_SIZE;
     }
     return ret;
 }
