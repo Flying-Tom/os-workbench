@@ -9,7 +9,7 @@
 #define max(a, b) ((a > b) ? (a) : (b))
 #define min(a, b) ((a < b) ? (a) : (b))
 
-#define DEBUG
+//#define DEBUG
 /*
 #define _Log(format, ...)                           \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
