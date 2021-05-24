@@ -1,6 +1,8 @@
 #include <pmm.h>
 
 #define MAX_BUD_ORDER 24
+#define MAX_BUD_MASK ~(uintptr_t)0xffffff
+
 lock_t buddy_lk = LOCK_INIT();
 uint8_t buddy_root_order = MAX_BUD_ORDER;
 uintptr_t buddy_start, buddy_end, budnode_area_start;
@@ -54,9 +56,9 @@ static void budnode_init(int id, uint8_t order, void *ptr)
 void buddy_init(uintptr_t start, uintptr_t end)
 {
     Log("buddy system starts from %p to %p", start, end);
-    size_t budnode_area_size = ((uintptr_t)(end - start) >> 11) * sizeof(buddy_node);
+    size_t budnode_area_size = ((uintptr_t)(end - start) >> (MAX_BUD_ORDER - PAGE_ORDER)) * sizeof(buddy_node);
     budnode_area_start = start;
-    buddy_start = ((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1);
+    buddy_start = ((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1) & MAX_BUD_MASK;
     buddy_end = end;
     Log("buddy system really used space: %p -> %p", buddy_start, buddy_end);
     budnode_init(1, buddy_root_order, (void *)buddy_start);
