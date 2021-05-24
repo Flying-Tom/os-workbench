@@ -1,7 +1,10 @@
 #include <pmm.h>
 
+lock_t test_lk = LOCK_INIT();
+
 static void *kalloc(size_t size)
 {
+    lock(&test_lk);
     void *ret = NULL;
     Log("kalloc: %d", size);
     size = binalign(size);
@@ -9,6 +12,7 @@ static void *kalloc(size_t size)
         ret = buddy_alloc(size);
     else
         ret = slab_alloc(size);
+    unlock(&test_lk);
     return ret;
 }
 
