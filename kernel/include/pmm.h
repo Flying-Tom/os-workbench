@@ -6,6 +6,7 @@
 
 /* const macro */
 #define PAGE_SIZE (4 KB)
+#define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 12
 
@@ -47,13 +48,13 @@ Cache cache[MAX_CPU_NUM][8];
 enum
 {
     BUD_EMPTY,
-    BUD_AVAILABLE,
     BUD_SPLITTED,
     BUD_FULL
 };
 
 typedef struct buddy_node
 {
+    void *addr;
     uint8_t status;
     uint8_t order;
 } buddy_node;
@@ -66,7 +67,7 @@ void *slab_alloc(size_t size);
 
 /* buddy system */
 void buddy_init();
-void *global_alloc(size_t size);
+void *buddy_alloc(size_t size);
 
 /* Tool func */
 
