@@ -38,7 +38,7 @@ static void pmm_init()
     slab_init(pm_start, pm_interval);
     buddy_init(pm_interval, pm_end);
 
-    assert((pm_end - pm_start) % PAGE_SIZE == 0);
+    assert((pm_end - pm_start) % PAGE_SIZE != 0);
     Log("pmm_init finished");
 }
 
