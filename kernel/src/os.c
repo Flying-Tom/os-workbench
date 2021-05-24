@@ -49,7 +49,7 @@ static void os_run()
     {
         size_t rand_m = rand() % 128 + 1;
         printf("%p\n", pmm->alloc(rand_m));
-        printf("%d: Alloc %d success\n", i, rand_m KB);
+        //printf("%d: Alloc %d success\n", i, rand_m KB);
     }
 #endif
 #ifdef STRESSED
