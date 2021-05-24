@@ -30,10 +30,6 @@ static void pmm_init()
     slab_init(pm_start, (pm_start + pm_end) / 2);
     buddy_init((pm_start + pm_end) / 2, pm_end);
 
-    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
-    Log("total_page_num:%d", total_page_num);
-    max_order = log(total_page_num);
-    Log("max_order:%d", max_order);
 
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("Total pages:%d", total_page_num);

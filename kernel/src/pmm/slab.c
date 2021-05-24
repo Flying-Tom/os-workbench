@@ -80,4 +80,9 @@ void slab_init(uintptr_t start, uintptr_t end)
 {
     slab_cur = slab_start = start;
     slab_end = end;
+
+    total_page_num = (pm_end - pm_start) / PAGE_SIZE;
+    Log("total_page_num:%d", total_page_num);
+    max_order = log(total_page_num);
+    Log("max_order:%d", max_order);
 }
