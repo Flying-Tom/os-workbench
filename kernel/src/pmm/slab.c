@@ -1,6 +1,5 @@
 #include <pmm.h>
 
-lock_t page_lk = LOCK_INIT();
 lock_t pm_global_lk = LOCK_INIT();
 lock_t cache_lk[MAX_CPU_NUM];
 
@@ -71,7 +70,7 @@ void *slab_alloc(size_t size)
     while (object_cache->slab_free->bitmap[i] & (1 << j))
         j++;
     object_cache->slab_free->bitmap[i] |= (1 << j);
-    unlock(&page_lk);
+    unlock(&cache_lk[cur_cpu_id]);
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     return ret;

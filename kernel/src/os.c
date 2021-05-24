@@ -24,6 +24,7 @@ static void os_run()
     for (int i = 1; i <= 50; i++)
     {
         a = pmm->alloc(40 KB);
+        printf("a:%p\n", a);
         pmm->free(a);
     }
     /*
