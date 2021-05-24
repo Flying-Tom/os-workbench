@@ -53,7 +53,7 @@ static void budnode_init(int id, uint8_t order, void *ptr)
 }
 void buddy_init(uintptr_t start, uintptr_t end)
 {
-    size_t budnode_area_size = (uintptr_t(end - start) >> 11) * sizeof(buddy_node);
+    size_t budnode_area_size = ((uintptr_t)(end - start) >> 11) * sizeof(buddy_node);
     budnode_area_start = start;
     buddy_start = (void *)((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1);
     buddy_end = end;
