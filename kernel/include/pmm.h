@@ -24,6 +24,7 @@
 /*------------------------------------------*/
 
 uintptr_t pm_start, pm_end;
+size_t pm_size;
 uint8_t cpu_id, cpu_num;
 size_t total_page_num;
 uint8_t max_order;

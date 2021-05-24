@@ -26,13 +26,17 @@ static void pmm_init()
     assert(cpu_num <= MAX_CPU_NUM);
 
     pm_start = (uintptr_t)heap.start;
-    pm_end = (uintptr_t)heap.end;
-    Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
-    Log("pm_end:%p", pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
+    pm_end = (uintptr_t)heap.end;
+    pm_size = pm_end - pm_start;
 
-    slab_init(pm_start, (pm_start + pm_end) / 2);
-    buddy_init((pm_start + pm_end) / 2, pm_end);
+    Log("pm_start:%p pm_end:%p", pm_start, pm_end);
+    Log("pm_size:%d", pm_size);
+
+    uintptr_t pm_interval = align(pm_start + 3 * pm_size / 4, PAGE_SIZE);
+
+    slab_init(pm_start, pm_interval);
+    buddy_init(pm_interval, pm_end);
 
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("pmm_init finished");
