@@ -2,6 +2,7 @@
 
 lock_t page_lk = LOCK_INIT();
 lock_t pm_global_lk = LOCK_INIT();
+lock_t cpu_lk[16];
 
 uintptr_t slab_start, slab_end, slab_cur;
 
