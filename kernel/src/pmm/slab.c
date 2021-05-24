@@ -1,7 +1,20 @@
 #include <pmm.h>
 
 lock_t page_lk = LOCK_INIT();
-extern lock_t pm_global_lk;
+lock_t pm_global_lk = LOCK_INIT();
+
+uintptr_t slab_start, slab_end, slab_cur;
+
+static page_header *slab_get_page()
+{
+    page_header *ret = NULL;
+    if (slab_cur + PAGE_SIZE / sizeof(uintptr_t) < slab_end)
+    {
+        ret = (page_header *)((uint8_t *)slab_cur + PAGE_SIZE - sizeof(page_header));
+        slab_cur += PAGE_SIZE / sizeof(uintptr_t);
+    }
+    return ret;
+}
 
 static bool page_full(page_header *cur)
 {
@@ -43,7 +56,7 @@ void *slab_alloc(size_t size)
     if (page_full(object_cache->slab_free))
     {
         Log("Get new page");
-        object_cache->slab_free = (page_header *)((uint8_t *)global_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
+        object_cache->slab_free = slab_get_page();
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
         Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
@@ -61,4 +74,10 @@ void *slab_alloc(size_t size)
 
     ret = (void *)((uint8_t *)object_cache->slab_free - (PAGE_SIZE - sizeof(page_header)) + (i * 64 + j) * size);
     return ret;
+}
+
+void slab_init(uintptr_t start, uintptr_t end)
+{
+    slab_cur = slab_start = start;
+    slab_end = end;
 }

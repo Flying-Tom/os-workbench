@@ -23,7 +23,6 @@
 /*------------------------------------------*/
 
 uintptr_t pm_start, pm_end;
-uintptr_t pm_cur;
 uint8_t cpu_id, cpu_num;
 size_t total_page_num;
 uint8_t max_order;
@@ -61,10 +60,13 @@ typedef struct buddy_node
 
 buddy_node *buddy;
 
+/* slab system */
+void slab_init(uintptr_t start, uintptr_t end);
+void *slab_alloc(size_t size);
+
 /* buddy system */
 void buddy_init();
 void *global_alloc(size_t size);
-void *slab_alloc(size_t size);
 
 /* Tool func */
 

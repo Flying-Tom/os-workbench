@@ -1,27 +1,5 @@
 #include <pmm.h>
 
-lock_t pm_global_lk = LOCK_INIT();
-
-void *global_alloc(size_t size)
-{
-    /*
-    lock(&pm_global_lk);
-    void *ret = NULL;
-    uint8_t order = 0;
-    order = log(size / PAGE_SIZE) + 1;
-    Log("global_alloc %d Bytes  Its order:%d", size, order);
-    ret = (void *)PAGE(get_one_block(order));
-    unlock(&pm_global_lk);
-    return ret;
-    */
-    lock(&pm_global_lk);
-    void *ret = NULL;
-    pm_cur -= size;
-    ret = (void *)pm_cur;
-    unlock(&pm_global_lk);
-    return ret;
-}
-
 static void *kalloc(size_t size)
 {
     void *ret = NULL;
@@ -36,13 +14,6 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
-    uintptr_t page_addr = (uintptr_t)ptr / PAGE_SIZE * PAGE_SIZE;
-    page_header *cur = (page_header *)(page_addr + PAGE_SIZE - sizeof(page_header));
-
-    uint64_t items = ((uintptr_t)ptr - page_addr) / (1 << cur->slab_type);
-    //lock(&page_lk);
-    cur->bitmap[items / 64] ^= (1 << (items % 64));
-    //unlock(&page_lk);
 }
 
 static void pmm_init()
@@ -55,7 +26,8 @@ static void pmm_init()
     Log("pm_start:%p aligned pm_start:%p", pm_start, align(pm_start, PAGE_SIZE));
     Log("pm_end:%p", pm_end);
     pm_start = align(pm_start, PAGE_SIZE);
-    pm_cur = pm_end;
+
+    slab_init(pm_start, pm_end);
 
     total_page_num = (pm_end - pm_start) / PAGE_SIZE;
     Log("total_page_num:%d", total_page_num);
