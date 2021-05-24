@@ -66,7 +66,7 @@ void slab_init(uintptr_t start, uintptr_t end);
 void *slab_alloc(size_t size);
 
 /* buddy system */
-void buddy_init();
+void buddy_init(uintptr_t start, uintptr_t end);
 void *buddy_alloc(size_t size);
 
 /* Tool func */

@@ -30,9 +30,7 @@ static void pmm_init()
     slab_init(pm_start, (pm_start + pm_end) / 2);
     buddy_init((pm_start + pm_end) / 2, pm_end);
 
-
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
-    Log("Total pages:%d", total_page_num);
     Log("pmm_init finished");
 }
 
