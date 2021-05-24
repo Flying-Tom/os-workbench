@@ -58,5 +58,6 @@ void buddy_init(uintptr_t start, uintptr_t end)
     budnode_area_start = start;
     buddy_start = ((uintptr_t)budnode_area_start + budnode_area_size + MAX_BUD_ORDER - 1);
     buddy_end = end;
+    Log("buddy system really used space: %p -> %p", buddy_start, buddy_end);
     budnode_init(1, buddy_root_order, (void *)buddy_start);
 }
