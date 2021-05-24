@@ -10,8 +10,10 @@ static page_header *slab_get_page()
     page_header *ret = NULL;
     if (slab_cur + PAGE_SIZE < slab_end)
     {
+        printf("slab_cur:%p\n", slab_cur);
         ret = (page_header *)((uint8_t *)slab_cur + PAGE_SIZE - sizeof(page_header));
         slab_cur += PAGE_SIZE;
+        printf("slab_cur:%p\n", slab_cur);
     }
     return ret;
 }
