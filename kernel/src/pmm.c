@@ -1,6 +1,6 @@
 #include <pmm.h>
 
-void *pm_start, pm_end;
+void *pm_start, *pm_end;
 
 static void *kalloc(size_t size)
 {
