@@ -50,7 +50,7 @@ static void os_run()
     }
     */
 
-    for (int i = 1; i < 10; i++)
+    for (int i = 1; i < 40; i++)
     {
         size_t m = 2 MB;
         printf("%p\n", pmm->alloc(m));
