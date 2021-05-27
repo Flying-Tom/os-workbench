@@ -72,7 +72,7 @@ void *slab_alloc(size_t size)
 
 void slab_init(int cpu, void *start, size_t size)
 {
-    Log("slab system starts from %p to %p", start, end);
+    Log("slab system starts from %p", start);
 
     for (int i = 0; i < MAX_SLAB_TYPE; i++)
     {
