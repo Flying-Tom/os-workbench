@@ -31,10 +31,10 @@ static void pmm_init()
     Log("pm_start:%p pm_end:%p", pm_start, pm_end);
     Log("pm_size:%d", pm_size);
 
-    //uintptr_t pm_interval = align(pm_start + pm_size / 8 * 1, PAGE_SIZE);
+    uintptr_t pm_interval = align(pm_start + pm_size / 2, PAGE_SIZE);
 
-    slab_init(pm_start, pm_end);
-    buddy_init(pm_start, pm_end);
+    slab_init(pm_start, pm_interval);
+    buddy_init(pm_interval, pm_end);
 
     assert((pm_end - pm_start) % PAGE_SIZE == 0);
     Log("pmm_init finished");

@@ -1,10 +1,10 @@
 #include <pmm.h>
 
-#define MAX_BUD_ORDER 27
+#define MAX_BUD_ORDER 24
 #define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
 
 lock_t buddy_lk = LOCK_INIT();
-uint8_t buddy_root_order = MAX_BUD_ORDER;
+uint8_t buddy_root_order;
 uintptr_t buddy_start, buddy_end;
 
 static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
@@ -61,5 +61,12 @@ void buddy_init(uintptr_t start, uintptr_t end)
     buddy_start = align(((uintptr_t)buddy + budnode_area_size), MAX_BUD_SIZE);
     buddy_end = end;
     Log("buddy system really used space: %p -> %p", buddy_start, buddy_end);
+
+    size_t buddy_max_size = MAX_BUD_ORDER;
+    while (buddy_start + buddy_max_size <= end)
+        buddy_max_size <<= 1;
+    buddy_max_size >>= 1;
+    buddy_root_order = log(buddy_max_size);
+    Log("buddy_root_order:%d", buddy_root_order);
     budnode_init(1, buddy_root_order, (void *)buddy_start);
 }
