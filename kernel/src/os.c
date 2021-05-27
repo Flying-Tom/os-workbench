@@ -40,6 +40,7 @@ static void os_run()
 
 #ifdef NORMAL
 
+    /*
     for (int i = 1; i < 500000; i++)
     {
         //printf("Alloc\n");
@@ -47,6 +48,7 @@ static void os_run()
         printf("%p\n", pmm->alloc(rand_m));
         //printf("%d: Alloc %d success\n", i, rand_m);
     }
+    */
 
     for (int i = 1; i < 10; i++)
     {
