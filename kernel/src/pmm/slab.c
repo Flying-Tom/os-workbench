@@ -13,8 +13,8 @@ static void *slab_get_page()
         unlock(&page[CPU_CUR].lk);
         return buddy_alloc(PAGE_SIZE);
     }
-    ret = page[CPU_CUR]->entry;
-    page[CPU_CUR]->entry = ret->next;
+    ret = page[CPU_CUR].entry;
+    page[CPU_CUR].entry = ret->next;
     unlock(&page[CPU_CUR].lk);
     return ret;
 }
