@@ -41,8 +41,9 @@ static void os_run()
 #ifdef NORMAL
     for (int i = 1; i < 100; i++)
     {
+        printf("Alloc\n");
         size_t rand_m = rand() % 128 + 1;
-        printf("%p\n", pmm->alloc(rand_m));
+        printf("%p\n\n", pmm->alloc(rand_m));
         //printf("%d: Alloc %d success\n", i, rand_m);
     }
     /*
