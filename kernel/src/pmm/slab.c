@@ -36,7 +36,7 @@ static bool page_full(page_header *cur)
         i++;
     }
 
-    return (i + 1 >= PAGE_SIZE / (1 << cur->slab_type));
+    return (i + 1 >= (PAGE_SIZE - sizeof(page_header)) / (1 << cur->slab_type));
 }
 
 void *slab_alloc(size_t size)
