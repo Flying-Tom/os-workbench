@@ -5,7 +5,7 @@ lock_t cache_lk[MAX_CPU_NUM];
 
 uintptr_t slab_start, slab_end, slab_cur;
 
-static page_header *slab_get_page()
+static page_header *slab_get_page(uint8_t type)
 {
     page_header *ret = NULL;
     if (slab_cur + PAGE_SIZE < slab_end)
@@ -13,6 +13,7 @@ static page_header *slab_get_page()
         ret = (page_header *)(slab_cur + PAGE_SIZE - sizeof(page_header));
         slab_cur += PAGE_SIZE;
     }
+    ret->slab_type = type;
     return ret;
 }
 
@@ -58,7 +59,7 @@ void *slab_alloc(size_t size)
     if (page_full(object_cache->slab_free))
     {
         Log("Get new page");
-        object_cache->slab_free = slab_get_page();
+        object_cache->slab_free = slab_get_page(type);
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
     }
     unlock(&pm_global_lk);
