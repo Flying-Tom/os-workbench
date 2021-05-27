@@ -43,6 +43,7 @@ static void *slab_get_page()
 
 void *slab_alloc(size_t size)
 {
+    Log("slab alloc %d bytes", size);
     void *ret = NULL;
     int i = 0;
     while (slab_type[i] < size)
