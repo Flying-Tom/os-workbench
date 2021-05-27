@@ -58,7 +58,7 @@ void *slab_alloc(size_t size)
             unlock(&cache[CPU_CUR][i].lk);
             return NULL;
         }
-        cache_init(cache[CPU_CUR][i].entry, PAGE_SIZE, i);
+        cache_init(cache[CPU_CUR][i].entry, PAGE_SIZE, (uint8_t)i);
     }
 
     page_header *cur_page = cache[CPU_CUR][i].entry;
