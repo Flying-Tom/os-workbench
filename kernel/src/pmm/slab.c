@@ -8,13 +8,12 @@ void cache_init(void *start, size_t size, uint8_t type)
 {
     size_t unit_size = slab_type[type];
     size_t unit_max_num = size / unit_size - 1;
-    *((page_header *)start) = (page_header)
-    {
+    *((page_header *)start) = (page_header){
         .prev = NULL,
         .next = (type == MAX_SLAB_TYPE ? start + size : NULL),
         .entry = start + size,
         .cpu = cpu_current,
-        .type = type;
+        .type = type,
         .units_remaining = unit_max_num,
     };
 
