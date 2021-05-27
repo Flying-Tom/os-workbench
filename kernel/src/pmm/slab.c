@@ -25,7 +25,7 @@ static bool page_full(page_header *cur)
     {
         if (!BITMAP_FULL(cur, i))
         {
-            tmp = cur->bitmap[i];
+            //tmp = cur->bitmap[i];
             break;
         }
     }
