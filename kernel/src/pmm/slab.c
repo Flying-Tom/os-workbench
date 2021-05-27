@@ -12,7 +12,7 @@ void cache_init(void *start, size_t size, uint8_t type)
         .prev = NULL,
         .next = (type == MAX_SLAB_TYPE ? start + size : NULL),
         .entry = start + size,
-        .cpu = cpu_current,
+        .cpu = CPU_CUR,
         .type = type,
         .units_remaining = unit_max_num,
     };
