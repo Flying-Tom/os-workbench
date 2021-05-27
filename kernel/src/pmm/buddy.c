@@ -5,7 +5,7 @@
 
 lock_t buddy_lk = 0;
 uint8_t buddy_root_order;
-uintptr_t buddy_start, buddy_end;
+void *buddy_area_start;
 
 static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
 {
@@ -58,15 +58,14 @@ void buddy_init(void *start, void *end)
     Log("buddy system starts from %p to %p", start, end);
     size_t budnode_area_size = ((uintptr_t)(end - start) >> (MAX_BUD_ORDER - PAGE_ORDER)) * sizeof(buddy_node);
     buddy = (buddy_node *)start;
-    buddy_start = align(((uintptr_t)buddy + budnode_area_size), MAX_BUD_SIZE);
-    buddy_end = (uintptr_t)end;
-    Log("buddy system really used space: %p -> %p", buddy_start, buddy_end);
+    buddy_area_start = align(((uintptr_t)buddy + budnode_area_size), MAX_BUD_SIZE);
+    Log("buddy system really used space: %p -> %p", buddy_area_start, buddy_end);
 
     size_t buddy_max_size = MAX_BUD_ORDER;
-    while (buddy_start + buddy_max_size <= end)
+    while (buddy_area_start + buddy_max_size <= end)
         buddy_max_size <<= 1;
     buddy_max_size >>= 1;
     buddy_root_order = log(buddy_max_size);
     Log("buddy_root_order:%d", buddy_root_order);
-    budnode_init(1, buddy_root_order, (void *)buddy_start);
+    budnode_init(1, buddy_root_order, (void *)buddy_area_start);
 }
