@@ -1,7 +1,7 @@
 #include <pmm.h>
 
-#define MAX_BUD_ORDER 24
-#define MAX_BUD_SIZE (1 << 24)
+#define MAX_BUD_ORDER 25
+#define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
 
 lock_t buddy_lk = LOCK_INIT();
 uint8_t buddy_root_order = MAX_BUD_ORDER;
