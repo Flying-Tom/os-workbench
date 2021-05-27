@@ -31,7 +31,7 @@ static void pmm_init()
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
     size_t pm_cache_size = 0;
-    for (int i = 0; i < cpu_count; i++)
+    for (int i = 0; i < CPU_CUR; i++)
     {
         slab_init(i, pm_start, pm_cache_size);
         pm_start += pm_cache_size;
