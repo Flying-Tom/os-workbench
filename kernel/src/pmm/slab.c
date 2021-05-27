@@ -8,13 +8,13 @@ static void *slab_get_page()
 {
     page_header *ret = NULL;
     lock(&page[CPU_CUR].lk);
-    if (cache[CPU_CUR].entry == NULL)
+    if (page[CPU_CUR].entry == NULL)
     {
         unlock(&page[CPU_CUR].lk);
         return buddy_alloc(PAGE_SIZE);
     }
-    ret = cache[CPU_CUR]->entry;
-    cache[CPU_CUR]->entry = ret->next;
+    ret = page[CPU_CUR]->entry;
+    page[CPU_CUR]->entry = ret->next;
     unlock(&page[CPU_CUR].lk);
     return ret;
 }
