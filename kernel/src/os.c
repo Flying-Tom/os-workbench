@@ -39,7 +39,7 @@ static void os_run()
 #endif
 
 #ifdef NORMAL
-    for (int i = 1; i < 5000; i++)
+    for (int i = 1; i < 500000; i++)
     {
         //printf("Alloc\n");
         size_t rand_m = rand() % 128 + 1;
