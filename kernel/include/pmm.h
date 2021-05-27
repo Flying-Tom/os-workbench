@@ -23,7 +23,6 @@
 
 /*------------------------------------------*/
 
-size_t pm_size;
 uint8_t cpu_id, cpu_num;
 
 typedef struct page_header
