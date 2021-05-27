@@ -37,7 +37,7 @@ static bool page_full(page_header *cur)
         i++;
     }
 
-    Log("i:%d max_num:%d", i, (PAGE_SIZE - sizeof(page_header)) / (1 << cur->slab_type));
+    Log("i:%d max_num:%d slab_type:%d", i, (PAGE_SIZE - sizeof(page_header)) / (1 << cur->slab_type), cur->slab_type);
     return (i + 1 >= (PAGE_SIZE - sizeof(page_header)) / (1 << cur->slab_type));
 }
 
