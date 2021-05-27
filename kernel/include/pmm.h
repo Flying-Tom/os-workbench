@@ -1,5 +1,4 @@
 #include <common.h>
-#include <lock.h>
 
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
@@ -8,7 +7,8 @@
 #define PAGE_SIZE (4 KB)
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
-#define MAX_SLAB_TYPE 12
+#define MAX_SLAB_TYPE 9
+#define CPU_CUR cpu_current()
 
 /* page header */
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
@@ -23,7 +23,6 @@
 
 /*------------------------------------------*/
 
-uintptr_t pm_start, pm_end;
 size_t pm_size;
 uint8_t cpu_id, cpu_num;
 size_t total_page_num;
@@ -31,20 +30,19 @@ uint8_t max_order;
 
 typedef struct page_header
 {
-    size_t id;
-    uint8_t parent_cpu_id;
-    uint64_t bitmap[64];
-    uint8_t slab_type;
-    struct page_header *next;
+    void *prev;
+    void *next;
+    void *entry;
+    uint8_t cpu;
+    uint8_t type;
+    size_t units_remaining;
 } page_header;
 
 typedef struct Cache
 {
-    int size;
-    int num_of_slab;
-    page_header *slab_free;
+    void *entry;
+    int lk;
 } Cache;
-Cache cache[MAX_CPU_NUM][8];
 
 enum
 {
@@ -63,6 +61,7 @@ typedef struct buddy_node
 buddy_node *buddy;
 
 /* slab system */
+void *slab_start, slab_end;
 void slab_init(uintptr_t start, uintptr_t end);
 void *slab_alloc(size_t size);
 

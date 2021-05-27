@@ -3,7 +3,7 @@
 #define MAX_BUD_ORDER 24
 #define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
 
-lock_t buddy_lk = LOCK_INIT();
+lock_t buddy_lk = 0;
 uint8_t buddy_root_order;
 uintptr_t buddy_start, buddy_end;
 

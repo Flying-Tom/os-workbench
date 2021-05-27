@@ -9,6 +9,18 @@
 #define max(a, b) ((a > b) ? (a) : (b))
 #define min(a, b) ((a < b) ? (a) : (b))
 
+#define lock_t int
+
+void lock(lock_t *lk)
+{
+    while (atomic_xchg(lk, 1))
+        ;
+}
+void unlock(lock_t *lk)
+{
+    atomic_xchg(lk, 0);
+}
+
 //#define DEBUG
 /*
 #define _Log(format, ...)                           \
