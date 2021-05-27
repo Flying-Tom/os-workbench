@@ -52,6 +52,11 @@ void *slab_alloc(size_t size)
     if (cache[CPU_CUR][i].entry == NULL)
     {
         cache[CPU_CUR][i].entry = slab_get_page();
+        if (cache[CPU_CUR][i].entry == NULL)
+        {
+            unlock(&cache[CPU_CUR][i].lk);
+            return NULL;
+        }
         cache_init(cache[CPU_CUR][i].entry, PAGE_SIZE, i);
     }
 
