@@ -11,12 +11,12 @@
 
 #define lock_t int
 
-void lock(lock_t *lk)
+inline void lock(lock_t *lk)
 {
     while (atomic_xchg(lk, 1))
         ;
 }
-void unlock(lock_t *lk)
+inline void unlock(lock_t *lk)
 {
     atomic_xchg(lk, 0);
 }
