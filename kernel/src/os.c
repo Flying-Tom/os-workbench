@@ -40,17 +40,15 @@ static void os_run()
 
 #ifdef NORMAL
 
-    /*
-    for (int i = 1; i < 500000; i++)
+    for (int i = 1; i < 50; i++)
     {
         //printf("Alloc\n");
         size_t rand_m = rand() % 128 + 1;
         printf("%p\n", pmm->alloc(rand_m));
         //printf("%d: Alloc %d success\n", i, rand_m);
     }
-    */
 
-    for (int i = 1; i < 40; i++)
+    for (int i = 1; i < 10; i++)
     {
         size_t m = 2 MB;
         printf("%p\n", pmm->alloc(m));
