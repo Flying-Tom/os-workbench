@@ -59,7 +59,7 @@ typedef struct buddy_node
 buddy_node *buddy;
 
 /* slab system */
-void *slab_start, slab_end;
+void *slab_start, *slab_end;
 void slab_init(int cpu, void *start, size_t size);
 void *slab_alloc(size_t size);
 
