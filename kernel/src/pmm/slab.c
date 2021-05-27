@@ -58,9 +58,10 @@ void *slab_alloc(size_t size)
         Log("Get new page");
         object_cache->slab_free = slab_get_page();
         object_cache->slab_free->parent_cpu_id = cur_cpu_id;
-        Log("object_cache->slab_free:%p", object_cache->slab_free);
     }
     unlock(&pm_global_lk);
+
+    Log("object_cache->slab_free:%p", object_cache->slab_free);
 
     lock(&cache_lk[cur_cpu_id]);
     size_t i = 0, j = 0;
