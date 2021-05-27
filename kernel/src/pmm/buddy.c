@@ -53,7 +53,7 @@ static void budnode_init(int id, uint8_t order, void *ptr)
     budnode_init(id * 2, order - 1, ptr);
     budnode_init(id * 2 + 1, order - 1, ptr + (1 << (order - 1)));
 }
-void buddy_init(uintptr_t start, uintptr_t end)
+void buddy_init(void *start, void *end)
 {
     Log("buddy system starts from %p to %p", start, end);
     size_t budnode_area_size = ((uintptr_t)(end - start) >> (MAX_BUD_ORDER - PAGE_ORDER)) * sizeof(buddy_node);
