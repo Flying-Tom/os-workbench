@@ -8,11 +8,7 @@ uintptr_t slab_start, slab_end, slab_cur;
 static page_header *slab_get_page(uint8_t type)
 {
     page_header *ret = NULL;
-    if (slab_cur + PAGE_SIZE < slab_end)
-    {
-        ret = (page_header *)(slab_cur + PAGE_SIZE - sizeof(page_header));
-        slab_cur += PAGE_SIZE;
-    }
+    ret = (page_header *)((uint8_t *)buddy_alloc(PAGE_SIZE) + PAGE_SIZE - sizeof(page_header));
     ret->slab_type = type;
     return ret;
 }
