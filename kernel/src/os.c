@@ -39,6 +39,7 @@ static void os_run()
 #endif
 
 #ifdef NORMAL
+
     for (int i = 1; i < 500000; i++)
     {
         //printf("Alloc\n");
@@ -46,14 +47,14 @@ static void os_run()
         printf("%p\n", pmm->alloc(rand_m));
         //printf("%d: Alloc %d success\n", i, rand_m);
     }
-    /*
-    for (int i = 1; i < 100; i++)
+
+    for (int i = 1; i < 10; i++)
     {
-        size_t rand_m = rand() % 128 + 1;
-        printf("%p\n", pmm->alloc(rand_m));
+        size_t m = 2 MB;
+        printf("%p\n", pmm->alloc(m));
         //printf("%d: Alloc %d success\n", i, rand_m KB);
     }
-    */
+
 #endif
 #ifdef STRESSED
     for (int i = 0; i < 1000; i++)
