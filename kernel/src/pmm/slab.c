@@ -20,7 +20,7 @@ static bool page_full(page_header *cur)
 {
     if (cur == NULL)
         return true;
-    uint64_t i;
+    uint64_t i, tmp;
     for (i = 0; i < 64; i++)
     {
         if (!BITMAP_FULL(cur, i))
