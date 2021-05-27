@@ -4,6 +4,29 @@ Cache cache[MAX_CPU_NUM][MAX_SLAB_TYPE];
 Cache page[MAX_CPU_NUM];
 size_t slab_type[MAX_SLAB_TYPE + 1] = {8, 16, 32, 64, 128, 256, 512, 1024, 2048};
 
+void cache_init(void *start, size_t size, uint8_t type)
+{
+    size_t unit_size = slab_type[type];
+    size_t unit_max_num = size / unit_size - 1;
+    *((page_header *)start) = (page_header)
+    {
+        .prev = NULL,
+        .next = (type == MAX_SLAB_TYPE ? start + size : NULL),
+        .entry = start + size,
+        .cpu = cpu_current,
+        .type = type;
+        .units_remaining = unit_max_num,
+    };
+
+    void *pm_cur = start + unit_size;
+    for (int i = 1; i < unit_max_num; i++)
+    {
+        *((void **)pm_cur) = pm_cur + unit_size;
+        pm_cur += unit_size;
+    }
+    *((void **)pm_cur) = NULL;
+}
+
 static void *slab_get_page()
 {
     page_header *ret = NULL;
@@ -46,29 +69,6 @@ void *slab_alloc(size_t size)
     }
     unlock(&cache[CPU_CUR][i].lk);
     return ret;
-}
-
-void cache_init(void *start, size_t size, uint8_t type)
-{
-    size_t unit_size = slab_type[type];
-    size_t unit_max_num = size / unit_size - 1;
-    *((page_header *)start) = (page_header)
-    {
-        .prev = NULL,
-        .next = (type == MAX_SLAB_TYPE ? start + size : NULL),
-        .entry = start + size,
-        .cpu = cpu_current,
-        .type = type;
-        .units_remaining = unit_max_num,
-    };
-
-    void *pm_cur = start + unit_size;
-    for (int i = 1; i < unit_max_num; i++)
-    {
-        *((void **)pm_cur) = pm_cur + unit_size;
-        pm_cur += unit_size;
-    }
-    *((void **)pm_cur) = NULL;
 }
 
 void slab_init(int cpu, void *start, size_t size)
