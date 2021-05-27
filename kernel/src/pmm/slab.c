@@ -64,7 +64,7 @@ void *slab_alloc(size_t size)
     {
         if (cur_page->next != NULL)
             ((page_header *)cur_page->next)->prev = NULL;
-        cache[cur_page][i].entry = cur_page->next;
+        cache[CPU_CUR][i].entry = cur_page->next;
     }
     unlock(&cache[CPU_CUR][i].lk);
     return ret;
