@@ -7,7 +7,7 @@
 #define PAGE_SIZE (4 KB)
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
-#define MAX_SLAB_TYPE 9
+#define MAX_SLAB_TYPE 8
 #define CPU_CUR cpu_current()
 
 /* page header */
