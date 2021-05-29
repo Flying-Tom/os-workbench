@@ -11,11 +11,12 @@ static void os_init()
 
 static void os_run()
 {
-
+    /*
     for (const char *s = "Hello World from CPU #*\n"; *s; s++)
     {
         putch(*s == '*' ? '0' + cpu_current() : *s);
     }
+    */
     printf("Tests Start!\n");
 #ifdef SMOKE
 
@@ -31,28 +32,32 @@ static void os_run()
     /*
     for (int i = 1; i < 4; i++)
     {
-        size_t rand_m = 4;
-        pmm->alloc(rand_m);
-        printf("%d: Alloc %d success\n", i, rand_m);
+        size_t m = 4;
+        pmm->alloc(m);
+        printf("%d: Alloc %d success\n", i, m);
     }
     */
 #endif
 
 #ifdef NORMAL
 
+    void *addr = NULL;
     for (int i = 1; i < 50; i++)
     {
         //printf("Alloc\n");
-        size_t rand_m = rand() % 128 + 1;
-        printf("%p\n", pmm->alloc(rand_m));
-        //printf("%d: Alloc %d success\n", i, rand_m);
+        size_t m = rand() % 128 + 1;
+        addr = pmm->alloc(m);
+
+        printf("%p\n", addr);
+        //printf("%d: Alloc %d success\n", i, m);
     }
 
     for (int i = 1; i < 10; i++)
     {
         size_t m = 2 MB;
-        printf("%p\n", pmm->alloc(m));
-        //printf("%d: Alloc %d success\n", i, rand_m KB);
+        addr = pmm->alloc(m);
+        printf("%p\n", addr);
+        //printf("%d: Alloc %d success\n", i, m KB);
     }
 
 #endif
