@@ -34,6 +34,7 @@ static void *slab_get_page()
     if (page_entry[CPU_CUR] == NULL)
     {
         unlock(&page_lk[CPU_CUR]);
+        printf("currently shouldnt enter buddy");
         assert(0);
         return buddy_alloc(PAGE_SIZE);
     }
