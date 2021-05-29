@@ -35,12 +35,6 @@ typedef struct page_header
     size_t units_remaining;
 } page_header;
 
-typedef struct Cache
-{
-    void *entry;
-    int lk;
-} Cache;
-
 enum
 {
     BUD_EMPTY,
