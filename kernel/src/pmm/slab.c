@@ -100,7 +100,7 @@ void slab_free(void *ptr)
         }
         else
         {
-            if (cur_page->units_remaining + 1 == (PAGE_SIZE - sizeof(page_header) / slab_type[cur_page->type]))
+            if (cur_page->units_remaining + 1 == ((PAGE_SIZE - sizeof(page_header)) / slab_type[cur_page->type]))
             {
                 if (cur_page->prev)
                     ((page_header *)cur_page->prev)->next = cur_page->next;
