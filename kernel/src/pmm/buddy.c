@@ -30,6 +30,28 @@ static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
     return NULL;
 }
 
+static void *buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
+{
+    assert(cur_order >= 12);
+
+    if (buddy[id].addr == tar_ptr && buddy[id].status == BUD_FULL)
+    {
+        buddy[id].order = cur_order;
+        buddy[id].status = BUD_EMPTY;
+        return;
+    }
+    if (tar_ptr < buddy[id * 2 + 1].addr)
+        buddy_free_search(id * 2, cur_order - 1, tar_ptr);
+    else
+        buddy_free_search(id * 2 + 1, cur_order - 1, tar_ptr);
+
+    if (buddy[id * 2].status == BUD_EMPTY && buddy[id * 2 + 1].status == BUD_EMPTY)
+        buddy[id].status = BUD_EMPTY;
+
+    buddy[id].order = max(buddy[id * 2].order, buddy[id * 2 + 1].order);
+    
+}
+
 void *buddy_alloc(size_t size)
 {
     Log("buddy alloc %d bytes", size);
@@ -42,6 +64,7 @@ void *buddy_alloc(size_t size)
 
 void buddy_free(void *ptr)
 {
+    buddy_free_search(1, buddy_root_order, ptr);
 }
 
 static void budnode_init(int id, uint8_t order, void *ptr)
