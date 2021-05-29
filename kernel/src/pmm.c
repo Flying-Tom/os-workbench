@@ -1,6 +1,6 @@
 #include <pmm.h>
 
-void *pm_start, *pm_end;
+void *pm_start, *pm_end, *pm_cur;
 size_t pm_size;
 
 static void *kalloc(size_t size)
@@ -21,6 +21,7 @@ static void kfree(void *ptr)
 
 static void pmm_init()
 {
+    assert(0xfff = PAGE_SIZE);
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 
@@ -35,15 +36,15 @@ static void pmm_init()
     Log("pm_cache_size:%d", pm_cache_size);
 
     slab_start = (void *)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
-    pm_start = slab_start;
+    pm_cur = slab_start;
     for (int i = 0; i < cpu_num; i++)
     {
         slab_init(i, pm_start, pm_cache_size);
-        pm_start += pm_cache_size;
+        pm_cur += pm_cache_size;
     }
-    slab_end = pm_start;
+    slab_end = pm_cur;
 
-    buddy_init(pm_start, pm_end);
+    buddy_init(pm_cur, pm_end);
 
     Log("pmm_init finished");
 }
