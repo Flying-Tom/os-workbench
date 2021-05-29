@@ -17,6 +17,10 @@ static void *kalloc(size_t size)
 
 static void kfree(void *ptr)
 {
+    if (ptr >= slab_start && ptr < slab_end)
+        slab_free(ptr);
+    else
+        buddy_free(ptr);
 }
 
 static void pmm_init()
