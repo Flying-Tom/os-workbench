@@ -48,7 +48,7 @@ void *slab_alloc(size_t size)
     int i = 0;
     while (slab_type[i] < size)
         i++;
-    i--;
+
     lock(&cache[CPU_CUR][i].lk);
     if (cache[CPU_CUR][i].entry == NULL)
     {
