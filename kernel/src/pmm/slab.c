@@ -83,14 +83,12 @@ void slab_init(int cpu, void *start, size_t size)
 
     for (int i = 0; i < MAX_SLAB_TYPE; i++)
     {
-        cache_entry[cpu][i] = NULL;
         cache_lk[cpu][i] = 0;
+        cache_entry[cpu][i] = NULL;
     }
 
-    page[cpu] = (Cache){
-        .entry = start,
-        .lk = 0,
-    };
+    page_lk[cpu] = 0;
+    page_entry[cpu] = start;
 
     cache_init(start, size, MAX_SLAB_TYPE);
     Log("slab_init finished");
