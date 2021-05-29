@@ -7,11 +7,12 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     Log("kalloc: %d", size);
+    size = binalign(size);
     if (size >= PAGE_SIZE)
         ret = buddy_alloc(size);
     else
         ret = slab_alloc(size);
-    assert((uintptr_t)ret % binalign(size) == 0);
+    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
