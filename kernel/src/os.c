@@ -20,7 +20,7 @@ static void os_run()
     printf("Tests Start!\n");
 #ifdef SMOKE
 
-    int *a = NULL;
+    void *a = NULL;
     for (int i = 1; i <= 50; i++)
     {
         size_t m = rand() % (128) + 1;
