@@ -43,7 +43,7 @@ static void os_run()
 
     void *addr = NULL;
 
-    for (int i = 1; i < 5000; i++)
+    for (int i = 1; i < 500000; i++)
     {
         //printf("Alloc\n");
         size_t m = rand() % (5 KB) + 1;
