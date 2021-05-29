@@ -7,7 +7,7 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     Log("kalloc: %d", size);
-    //size = binalign(size);
+    size = binalign(size);
     if (size >= PAGE_SIZE)
         ret = buddy_alloc(size);
     else
@@ -31,7 +31,7 @@ static void pmm_init()
 
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
-    size_t pm_cache_size = align((pm_size / (cpu_count() + 3)), PAGE_SIZE);
+    size_t pm_cache_size = (pm_size / 2 / cpu_num) & PAGE_LMASK;
     Log("pm_cache_size:%d", pm_cache_size);
     for (int i = 0; i < CPU_CUR; i++)
     {
