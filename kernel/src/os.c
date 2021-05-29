@@ -41,7 +41,7 @@ static void os_run()
 
 #ifdef NORMAL
 
-    void *addr = NULL;
+    //void *addr = NULL;
     pmm->alloc(1384);
     pmm->alloc(967);
     /*
