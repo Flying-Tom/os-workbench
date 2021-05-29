@@ -45,7 +45,7 @@ static void os_run()
     for (int i = 1; i < 50; i++)
     {
         //printf("Alloc\n");
-        size_t m = rand() % 128 + 1;
+        size_t m = rand() % (5 KB) + 1;
         addr = pmm->alloc(m);
         printf("size:%d addr:%p\n", m, addr);
         //assert((uintptr_t)addr % m == 0);
@@ -54,7 +54,7 @@ static void os_run()
 
     for (int i = 1; i < 10; i++)
     {
-        size_t m = 2 MB;
+        size_t m = rand() % 6 + 1 MB;
         addr = pmm->alloc(m);
         printf("size:%d addr:%p\n", m, addr);
         //assert((uintptr_t)addr % m == 0);
