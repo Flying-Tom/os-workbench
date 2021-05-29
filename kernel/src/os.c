@@ -41,10 +41,8 @@ static void os_run()
 
 #ifdef NORMAL
 
-    //void *addr = NULL;
-    pmm->alloc(1384);
-    pmm->alloc(967);
-    /*
+    void *addr = NULL;
+
     for (int i = 1; i < 50; i++)
     {
         //printf("Alloc\n");
@@ -63,7 +61,6 @@ static void os_run()
         //assert((uintptr_t)addr % m == 0);
         //printf("%d: Alloc %d success\n", i, m KB);
     }
-    */
 
 #endif
 #ifdef STRESSED
