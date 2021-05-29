@@ -30,7 +30,7 @@ static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
     return NULL;
 }
 
-static void *buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
+static void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
 {
     assert(cur_order >= 12);
 
@@ -49,7 +49,6 @@ static void *buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
         buddy[id].status = BUD_EMPTY;
 
     buddy[id].order = max(buddy[id * 2].order, buddy[id * 2 + 1].order);
-    
 }
 
 void *buddy_alloc(size_t size)
