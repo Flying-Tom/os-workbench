@@ -1,7 +1,7 @@
 #include <pmm.h>
 
 void *pm_start, *pm_end, *pm_cur;
-uintptr_t pm_size;
+size_t pm_size;
 
 static void *kalloc(size_t size)
 {
