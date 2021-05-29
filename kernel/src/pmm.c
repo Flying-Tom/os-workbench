@@ -21,7 +21,6 @@ static void kfree(void *ptr)
 
 static void pmm_init()
 {
-    assert(0xfff == PAGE_SIZE-1);
     cpu_num = cpu_count();
     assert(cpu_num <= MAX_CPU_NUM);
 

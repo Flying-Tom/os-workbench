@@ -5,8 +5,8 @@
 
 /* const macro */
 #define PAGE_SIZE (4 KB)
-#define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE)
-#define PAGE_RMASK (uintptr_t)(PAGE_SIZE)
+#define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE - 1)
+#define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 9
