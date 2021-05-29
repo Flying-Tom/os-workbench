@@ -9,7 +9,7 @@
 #define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
-#define MAX_SLAB_TYPE 7
+#define MAX_SLAB_TYPE 6
 #define CPU_CUR cpu_current()
 
 /* page header */
@@ -51,8 +51,6 @@ typedef struct buddy_node
     uint8_t status;
     uint8_t order;
 } buddy_node;
-
-
 
 /* slab system */
 void *slab_start, *slab_end;
