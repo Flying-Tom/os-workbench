@@ -18,7 +18,11 @@
 #define slab_max_items(size) ((PAGE_SIZE - sizeof(page_header)) / size)
 
 /* buddy system*/
+
 #define MAX_BUDDY_NODE_TYPE 20
+#define MAX_BUD_ORDER 24
+#define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
+#define MAX_BUD_LMASK ~(uintptr_t)(MAX_BUD_SIZE - 1)
 
 /* bitmap */
 #define BITMAP_FULL(page, id) (page->bitmap[id] + 1ULL == 0ULL)
