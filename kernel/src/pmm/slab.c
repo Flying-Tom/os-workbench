@@ -115,7 +115,7 @@ void slab_free(void *ptr)
         }
     }
     else
-        slab_page_free(cur_page, cpu_id);
+        slab_page_free(ptr, cpu_id);
 }
 
 static void cache_init(void *start, size_t size, uint8_t type)
