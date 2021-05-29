@@ -1,7 +1,7 @@
 #include <pmm.h>
 
 void *pm_start, *pm_end, *pm_cur;
-size_t pm_size;
+uintptr_t pm_size;
 
 static void *kalloc(size_t size)
 {
@@ -33,7 +33,7 @@ static void pmm_init()
 
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
-    size_t pm_cache_size = (pm_size / 8 * 3 / cpu_num) & PAGE_LMASK;
+    uintptr_t pm_cache_size = (pm_size / 8 * 3 / cpu_num) & PAGE_LMASK;
 
     slab_start = (void *)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
     pm_cur = slab_start;
