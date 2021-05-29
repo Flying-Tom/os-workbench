@@ -35,7 +35,7 @@ typedef struct page_header
     void *entry;
     uint8_t cpu;
     uint8_t type;
-    short units_remaining;
+    size_t units_remaining;
 } page_header;
 
 enum
