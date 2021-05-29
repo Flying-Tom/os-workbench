@@ -12,6 +12,7 @@ static void *kalloc(size_t size)
         ret = buddy_alloc(size);
     else
         ret = slab_alloc(size);
+    assert((uintptr_t)ret % size == 0);
     return ret;
 }
 
