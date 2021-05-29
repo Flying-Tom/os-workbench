@@ -29,14 +29,14 @@ static void pmm_init()
 
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
-    size_t pm_cache_size = (pm_size / 4 / cpu_num) & PAGE_LMASK;
+    size_t pm_cache_size = (pm_size / 8 * 3 / cpu_num) & PAGE_LMASK;
     Log("pm_cache_size:%d", pm_cache_size);
 
     slab_start = (void *)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
     pm_cur = slab_start;
     for (int i = 0; i < cpu_num; i++)
     {
-        slab_init(i, pm_start, pm_cache_size);
+        slab_init(i, pm_cur, pm_cache_size);
         pm_cur += pm_cache_size;
     }
     slab_end = pm_cur;
