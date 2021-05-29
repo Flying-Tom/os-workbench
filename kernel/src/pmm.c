@@ -33,7 +33,7 @@ static void pmm_init()
 
     size_t pm_cache_size = (pm_size / 2 / cpu_num) & PAGE_LMASK;
     Log("pm_cache_size:%d", pm_cache_size);
-    for (int i = 0; i < CPU_CUR; i++)
+    for (int i = 0; i < cpu_num; i++)
     {
         slab_init(i, pm_start, pm_cache_size);
         pm_start += pm_cache_size;
