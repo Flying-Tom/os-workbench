@@ -65,6 +65,10 @@ void *slab_alloc(size_t size)
     return ret;
 }
 
+void slab_free(void *ptr)
+{
+}
+
 static void cache_init(void *start, size_t size, uint8_t type)
 {
     cpu_id = CPU_CUR;

@@ -40,6 +40,10 @@ void *buddy_alloc(size_t size)
     return ret;
 }
 
+void buddy_free(void *ptr)
+{
+}
+
 static void budnode_init(int id, uint8_t order, void *ptr)
 {
     if (order < PAGE_ORDER)
