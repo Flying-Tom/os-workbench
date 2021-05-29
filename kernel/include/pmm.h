@@ -24,9 +24,6 @@
 #define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
 #define MAX_BUD_LMASK ~(uintptr_t)(MAX_BUD_SIZE - 1)
 
-/* bitmap */
-#define BITMAP_FULL(page, id) (page->bitmap[id] + 1ULL == 0ULL)
-
 /*------------------------------------------*/
 
 uint8_t cpu_id, cpu_num;
@@ -38,7 +35,7 @@ typedef struct page_header
     void *entry;
     uint8_t cpu;
     uint8_t type;
-    size_t units_remaining;
+    short units_remaining;
 } page_header;
 
 enum
@@ -54,8 +51,6 @@ typedef struct buddy_node
     uint8_t status;
     uint8_t order;
 } buddy_node;
-
-buddy_node *buddy;
 
 /* slab system */
 void *slab_start, *slab_end;

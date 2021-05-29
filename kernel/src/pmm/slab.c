@@ -5,7 +5,7 @@ void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 
 size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
-void cache_init(void *start, size_t size, uint8_t type)
+static void cache_init(void *start, size_t size, uint8_t type)
 {
     size_t unit_size = slab_type[type];
     size_t unit_max_num = size / unit_size - 1;
@@ -29,16 +29,13 @@ void cache_init(void *start, size_t size, uint8_t type)
 
 static void *slab_get_page()
 {
-    page_header *ret = NULL;
     lock(&page_lk[CPU_CUR]);
     if (page_entry[CPU_CUR] == NULL)
     {
         unlock(&page_lk[CPU_CUR]);
-        //printf("currently shouldnt enter buddy\n");
-        //assert(0);
         return buddy_alloc(PAGE_SIZE);
     }
-    ret = page_entry[CPU_CUR];
+    page_header *ret = page_entry[CPU_CUR];
     page_entry[CPU_CUR] = ret->next;
     unlock(&page_lk[CPU_CUR]);
     return ret;
@@ -52,7 +49,7 @@ void *slab_alloc(size_t size)
         return slab_get_page();
     else
     {
-        int i = 0;
+        uint8_t i = 0;
         while (slab_type[i] < size)
             i++;
 
@@ -67,7 +64,7 @@ void *slab_alloc(size_t size)
                 unlock(&cache_lk[CPU_CUR][i]);
                 return NULL;
             }
-            cache_init(cache_entry[CPU_CUR][i], PAGE_SIZE, (uint8_t)i);
+            cache_init(cache_entry[CPU_CUR][i], PAGE_SIZE, i);
         }
 
         page_header *cur_page = cache_entry[CPU_CUR][i];

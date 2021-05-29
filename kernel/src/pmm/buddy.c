@@ -1,8 +1,9 @@
 #include <pmm.h>
 
-int buddy_lk = 0;
-uint8_t buddy_root_order;
-void *buddy_area_start;
+static int buddy_lk = 0;
+static uint8_t buddy_root_order;
+static void *buddy_area_start;
+static buddy_node *buddy;
 
 static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
 {
