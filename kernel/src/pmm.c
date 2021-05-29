@@ -29,7 +29,7 @@ static void pmm_init()
 
     pm_start = heap.start;
     pm_end = heap.end;
-    pm_size = (size_t)((uintptr_t)pm_end - (uintptr_t)pm_start);
+    pm_size = (uintptr_t)pm_end - (uintptr_t)pm_start;
 
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
