@@ -1,7 +1,7 @@
 #include <common.h>
 
-#define SMOKE
-//#define NORMAL
+//#define SMOKE
+#define NORMAL
 //#define STRESSED
 
 static void os_init()
@@ -20,7 +20,7 @@ static void os_run()
     printf("Tests Start!\n");
 #ifdef SMOKE
 
-    void *a = NULL;
+    /*
     for (int i = 1; i <= 50; i++)
     {
         size_t m = rand() % (128) + 1;
@@ -28,7 +28,7 @@ static void os_run()
         printf("a:%p\n", a);
         pmm->free(a);
     }
-
+    */
     /*
     for (int i = 1; i < 4; i++)
     {
@@ -43,7 +43,7 @@ static void os_run()
 
     void *addr = NULL;
 
-    for (int i = 1; i < 50; i++)
+    for (int i = 1; i < 5000; i++)
     {
         //printf("Alloc\n");
         size_t m = rand() % (5 KB) + 1;
