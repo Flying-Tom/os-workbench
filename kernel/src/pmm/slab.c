@@ -7,7 +7,7 @@ size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
 static void cache_init(void *start, size_t size, uint8_t type);
 
-static void *slab_pagealloc()
+static void *slab_page_alloc()
 {
     cpu_id = cpu_id;
     lock(&page_lk[cpu_id]);
@@ -42,7 +42,7 @@ void *slab_alloc(size_t size)
     Log("slab alloc %d bytes", size);
     void *ret = NULL;
     if (size > slab_type[MAX_SLAB_TYPE - 1])
-        return slab_pagealloc();
+        return slab_page_alloc();
     else
     {
         uint8_t i = 0;
@@ -54,7 +54,7 @@ void *slab_alloc(size_t size)
         lock(&cache_lk[cpu_id][i]);
         if (cache_entry[cpu_id][i] == NULL)
         {
-            cache_entry[cpu_id][i] = slab_pagealloc();
+            cache_entry[cpu_id][i] = slab_page_alloc();
             if (cache_entry[cpu_id][i] == NULL)
             {
                 unlock(&cache_lk[cpu_id][i]);
@@ -109,13 +109,13 @@ void slab_free(void *ptr)
 
                 if (cur_page->next)
                     ((page_header *)cur_page->next)->prev = cur_page->prev;
-                slab_pagefree(cur_page, cur_page->cpu);
+                slab_page_free(cur_page, cur_page->cpu);
             }
             unlock(&cache_lk[cur_page->cpu][cur_page->type]);
         }
     }
     else
-        slab_pagefree(cur_page, cpu_id);
+        slab_page_free(cur_page, cpu_id);
 }
 
 static void cache_init(void *start, size_t size, uint8_t type)
