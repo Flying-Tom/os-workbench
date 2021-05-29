@@ -54,6 +54,7 @@ static void os_run()
         //printf("%d: Alloc %d success\n", i, m);
     }
 
+    /*
     for (int i = 1; i < 10; i++)
     {
         size_t m = rand() % 6 + 1 MB;
@@ -62,6 +63,7 @@ static void os_run()
         //assert((uintptr_t)addr % m == 0);
         //printf("%d: Alloc %d success\n", i, m KB);
     }
+    */
 
 #endif
 #ifdef STRESSED
