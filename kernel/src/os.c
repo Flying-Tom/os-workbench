@@ -26,7 +26,7 @@ static void os_run()
         size_t m = rand() % (128) + 1;
         a = pmm->alloc(m);
         printf("a:%p\n", a);
-        //pmm->free(a);
+        pmm->free(a);
     }
 
     /*
