@@ -7,8 +7,8 @@ size_t slab_type[MAX_SLAB_TYPE + 1] = {8, 16, 32, 64, 128, 256, 512, 1024, 2048,
 
 void cache_init(void *start, size_t size, uint8_t type)
 {
-    int unit_size = slab_type[type];
-    int unit_max_num = size / unit_size - 1;
+    size_t unit_size = slab_type[type];
+    size_t unit_max_num = size / unit_size - 1;
     *((page_header *)start) = (page_header){
         .prev = NULL,
         .next = (type == MAX_SLAB_TYPE ? start + unit_size : NULL),
