@@ -52,6 +52,8 @@ void *slab_alloc(size_t size)
     while (slab_type[i] < size)
         i++;
 
+    Log("Slab type:%d", slab_type[i]);
+
     lock(&cache_lk[CPU_CUR][i]);
     if (cache_entry[CPU_CUR][i] == NULL)
     {
