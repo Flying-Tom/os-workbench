@@ -32,7 +32,7 @@ static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
 
 static void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
 {
-
+    assert(cur_order > 12);
     if (buddy[id].addr == tar_ptr && buddy[id].status == BUD_FULL)
     {
         buddy[id].order = cur_order;
@@ -62,7 +62,9 @@ void *buddy_alloc(size_t size)
 
 void buddy_free(void *ptr)
 {
+    lock(&buddy_lk);
     buddy_free_search(1, buddy_root_order, ptr);
+    unlock(&buddy_lk);
 }
 
 static void budnode_init(int id, uint8_t order, void *ptr)
