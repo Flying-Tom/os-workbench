@@ -33,7 +33,7 @@ static void slab_page_free(void *ptr, uint8_t cpu)
     lock(&page_lk[cpu]);
     *(void **)ptr = page_entry[cpu];
     page_entry[cpu] = ptr;
-    unlock(page_lk[cpu]);
+    unlock(&page_lk[cpu]);
 }
 
 void *slab_alloc(size_t size)
