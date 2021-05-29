@@ -84,7 +84,7 @@ void slab_free(void *ptr)
     cpu_id = CPU_CUR;
     if ((uintptr_t)ptr & PAGE_RMASK)
     {
-        page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_MASK);
+        page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
 
         lock(&cache_lk[cur_page->cpu][cur_page->type]);
         *(void **)ptr = cur_page->entry;
