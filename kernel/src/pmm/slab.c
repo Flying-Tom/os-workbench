@@ -5,9 +5,9 @@ void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 
 size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
-static void cache_init(void *start, size_t size, uint8_t type)
+static void cache_init(void *start, size_t size, uint8_t type);
 
-    static void *slab_get_page()
+static void *slab_get_page()
 {
     cpu_id = cpu_id;
     lock(&page_lk[cpu_id]);
