@@ -1,8 +1,8 @@
 #include <pmm.h>
 
-inline size_t log(size_t x)
+inline uint8_t log(size_t x)
 {
-    size_t ret = 0;
+    uint8_t ret = 0;
     while (x > 1)
     {
         x >>= 1;
