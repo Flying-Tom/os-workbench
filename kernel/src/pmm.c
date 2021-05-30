@@ -1,8 +1,5 @@
 #include <pmm.h>
 
-void *pm_start, *pm_end, *pm_cur;
-uintptr_t pm_size;
-
 static void *kalloc(size_t size)
 {
     void *ret = NULL;
@@ -25,6 +22,9 @@ static void kfree(void *ptr)
 
 static void pmm_init()
 {
+    void *pm_start, *pm_end, *pm_cur;
+    uintptr_t pm_size;
+
     assert(CPU_NUM <= MAX_CPU_NUM);
 
     pm_start = heap.start;
