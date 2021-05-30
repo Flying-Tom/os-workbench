@@ -33,7 +33,7 @@ static inline void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_or
 
 static inline void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
 {
-    assert(cur_order >= PAGE_ORDER);
+    //assert(cur_order >= PAGE_ORDER);
     if (buddy[id].addr == tar_ptr && buddy[id].status == BUD_FULL)
     {
         buddy[id].order = cur_order;
@@ -54,8 +54,9 @@ static inline void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
 void *buddy_alloc(size_t size)
 {
     Log("buddy alloc %d bytes", size);
+    void *ret = NULL;
     lock(&buddy_lk);
-    void *ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)(log(size - 1) + 1));
+    ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)(log(size - 1) + 1));
     unlock(&buddy_lk);
     return ret;
 }

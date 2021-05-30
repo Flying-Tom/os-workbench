@@ -37,11 +37,11 @@ static inline void slab_page_free(void *ptr, uint8_t cpu)
 void *slab_alloc(size_t size)
 {
     Log("slab alloc %d bytes", size);
-    void *ret = NULL;
     if (size > slab_type[MAX_SLAB_TYPE - 1])
         return slab_page_alloc();
     else
     {
+        void *ret = NULL;
         uint8_t i = 0;
         while (slab_type[i] < size)
             i++;
