@@ -84,6 +84,7 @@ void slab_free(void *ptr)
         page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
         int *tar_lk = &cache_lk[cur_page->cpu][cur_page->type];
         void **tar_entry = &cache_entry[cur_page->cpu][cur_page->type];
+
         lock(tar_lk);
         *(void **)ptr = cur_page->entry;
         cur_page->entry = ptr;
@@ -96,21 +97,19 @@ void slab_free(void *ptr)
             cur_page->prev = NULL;
             *tar_entry = cur_page;
         }
-        else
+        else if (cur_page->units_remaining + 1 == ((PAGE_SIZE) / slab_type[cur_page->type]))
         {
-            if (cur_page->units_remaining + 1 == ((PAGE_SIZE) / slab_type[cur_page->type]))
-            {
-                if (cur_page->prev)
-                    ((page_header *)cur_page->prev)->next = cur_page->next;
-                else
-                    *tar_entry = cur_page->next;
 
-                if (cur_page->next)
-                    ((page_header *)cur_page->next)->prev = cur_page->prev;
-                slab_page_free(cur_page, cur_page->cpu);
-            }
-            unlock(tar_lk);
+            if (cur_page->prev)
+                ((page_header *)cur_page->prev)->next = cur_page->next;
+            else
+                *tar_entry = cur_page->next;
+
+            if (cur_page->next)
+                ((page_header *)cur_page->next)->prev = cur_page->prev;
+            slab_page_free(cur_page, cur_page->cpu);
         }
+        unlock(tar_lk);
     }
     else
         slab_page_free(ptr, CPU_CUR);
