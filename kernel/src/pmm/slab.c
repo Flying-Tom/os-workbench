@@ -96,7 +96,7 @@ void slab_free(void *ptr)
             cur_page->prev = NULL;
             *tar_entry = cur_page;
         }
-        else if (cur_page->units_remaining + 1 == ((PAGE_SIZE - sizeof(page_header)) / slab_type[cur_page->type]))
+        else if (cur_page->units_remaining + 1 == ((PAGE_SIZE) / slab_type[cur_page->type]))
         {
 
             if (cur_page->prev)
