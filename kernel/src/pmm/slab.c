@@ -4,7 +4,7 @@ static int cache_lk[MAX_CPU_NUM][MAX_SLAB_TYPE], page_lk[MAX_CPU_NUM];
 static void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
-static void cache_init(void *start, size_t size, uint8_t type);
+static inline void cache_init(void *start, size_t size, uint8_t type);
 
 static inline void *slab_page_alloc()
 {
@@ -97,7 +97,7 @@ void slab_free(void *ptr)
         }
         else
         {
-            if (cur_page->units_remaining + 1 == ((PAGE_SIZE - sizeof(page_header)) / slab_type[cur_page->type]))
+            if (cur_page->units_remaining + 1 == ((PAGE_SIZE) / slab_type[cur_page->type]))
             {
                 if (cur_page->prev)
                     ((page_header *)cur_page->prev)->next = cur_page->next;
@@ -115,7 +115,7 @@ void slab_free(void *ptr)
         slab_page_free(ptr, CPU_CUR);
 }
 
-static void cache_init(void *start, size_t size, uint8_t type)
+static inline void cache_init(void *start, size_t size, uint8_t type)
 {
     size_t unit_size = slab_type[type];
     size_t unit_max_num = size / unit_size - 1;
