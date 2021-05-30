@@ -5,13 +5,14 @@ static uint8_t buddy_root_order;
 static void *buddy_area_start;
 static buddy_node *buddy;
 
-static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
+static inline void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
 {
-    void *ret = NULL;
     if (cur_order < PAGE_ORDER || buddy[id].status == BUD_FULL || tar_order > buddy[id].order)
         return NULL;
 
-    if ((ret = buddy_alloc_search(id * 2, cur_order - 1, tar_order)) == NULL)
+    void *ret = buddy_alloc_search(id * 2, cur_order - 1, tar_order);
+    
+    if (ret == NULL)
         ret = buddy_alloc_search(id * 2 + 1, cur_order - 1, tar_order);
 
     if (ret != NULL)
@@ -30,7 +31,7 @@ static void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_order)
     return NULL;
 }
 
-static void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
+static inline void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
 {
     assert(cur_order >= PAGE_ORDER);
     if (buddy[id].addr == tar_ptr && buddy[id].status == BUD_FULL)
