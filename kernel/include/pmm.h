@@ -5,8 +5,12 @@
 
 /* const macro */
 #define PAGE_SIZE (4 KB)
+/*
 #define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
+*/
+#define PAGE_LMASK ~(uintptr_t)0xfff
+#define PAGE_RMASK (uintptr_t)0xfff
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 6
@@ -23,7 +27,8 @@
 #define MAX_BUDDY_NODE_TYPE 20
 #define MAX_BUD_ORDER 24
 #define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
-#define MAX_BUD_LMASK ~(uintptr_t)(MAX_BUD_SIZE - 1)
+#define MAX_BUD_LMASK ~(uintptr_t)0xffffff
+//#define MAX_BUD_LMASK ~(uintptr_t)(MAX_BUD_SIZE - 1)
 
 /*------------------------------------------*/
 
