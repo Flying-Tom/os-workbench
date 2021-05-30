@@ -55,7 +55,7 @@ void *buddy_alloc(size_t size)
     Log("buddy alloc %d bytes", size);
     void *ret = NULL;
     lock(&buddy_lk);
-    ret = buddy_alloc_search(1, buddy_root_order, log(size - 1) + 1);
+    ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)(log(size - 1) + 1));
     unlock(&buddy_lk);
     return ret;
 }
@@ -91,7 +91,7 @@ void buddy_init(void *start, void *end)
     while (buddy_area_start + buddy_max_size <= end)
         buddy_max_size <<= 1;
     buddy_max_size >>= 1;
-    buddy_root_order = log(buddy_max_size);
+    buddy_root_order = (uint8_t)log(buddy_max_size);
     buddy--;
     Log("buddy_root_order:%d", buddy_root_order);
     budnode_init(1, buddy_root_order, buddy_area_start);
