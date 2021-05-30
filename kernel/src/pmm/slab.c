@@ -8,16 +8,15 @@ static void cache_init(void *start, size_t size, uint8_t type);
 
 static void *slab_page_alloc()
 {
-    cpu_id = CPU_CUR;
-    lock(&page_lk[cpu_id]);
-    if (page_entry[cpu_id] == NULL)
+    lock(&page_lk[CPU_CUR]);
+    if (page_entry[CPU_CUR] == NULL)
     {
-        unlock(&page_lk[cpu_id]);
+        unlock(&page_lk[CPU_CUR]);
         return buddy_alloc(PAGE_SIZE);
     }
-    page_header *ret = page_entry[cpu_id];
-    page_entry[cpu_id] = ret->next;
-    unlock(&page_lk[cpu_id]);
+    page_header *ret = page_entry[CPU_CUR];
+    page_entry[CPU_CUR] = ret->next;
+    unlock(&page_lk[CPU_CUR]);
     return ret;
 }
 
@@ -37,7 +36,6 @@ static void slab_page_free(void *ptr, uint8_t cpu)
 
 void *slab_alloc(size_t size)
 {
-    cpu_id = CPU_CUR;
     Log("slab alloc %d bytes", size);
     void *ret = NULL;
     if (size > slab_type[MAX_SLAB_TYPE - 1])
@@ -50,19 +48,19 @@ void *slab_alloc(size_t size)
 
         Log("Slab type:%d", slab_type[i]);
 
-        lock(&cache_lk[cpu_id][i]);
-        if (cache_entry[cpu_id][i] == NULL)
+        lock(&cache_lk[CPU_CUR][i]);
+        if (cache_entry[CPU_CUR][i] == NULL)
         {
-            cache_entry[cpu_id][i] = slab_page_alloc();
-            if (cache_entry[cpu_id][i] == NULL)
+            cache_entry[CPU_CUR][i] = slab_page_alloc();
+            if (cache_entry[CPU_CUR][i] == NULL)
             {
-                unlock(&cache_lk[cpu_id][i]);
+                unlock(&cache_lk[CPU_CUR][i]);
                 return NULL;
             }
-            cache_init(cache_entry[cpu_id][i], PAGE_SIZE, i);
+            cache_init(cache_entry[CPU_CUR][i], PAGE_SIZE, i);
         }
 
-        page_header *cur_page = cache_entry[cpu_id][i];
+        page_header *cur_page = cache_entry[CPU_CUR][i];
 
         ret = cur_page->entry;
         cur_page->entry = *(void **)ret;
@@ -71,16 +69,15 @@ void *slab_alloc(size_t size)
         {
             if (cur_page->next != NULL)
                 ((page_header *)cur_page->next)->prev = NULL;
-            cache_entry[cpu_id][i] = cur_page->next;
+            cache_entry[CPU_CUR][i] = cur_page->next;
         }
-        unlock(&cache_lk[cpu_id][i]);
+        unlock(&cache_lk[CPU_CUR][i]);
     }
     return ret;
 }
 
 void slab_free(void *ptr)
 {
-    cpu_id = CPU_CUR;
     if ((uintptr_t)ptr & PAGE_RMASK)
     {
         page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
@@ -114,19 +111,18 @@ void slab_free(void *ptr)
         }
     }
     else
-        slab_page_free(ptr, cpu_id);
+        slab_page_free(ptr, CPU_CUR);
 }
 
 static void cache_init(void *start, size_t size, uint8_t type)
 {
-    cpu_id = CPU_CUR;
     size_t unit_size = slab_type[type];
     size_t unit_max_num = size / unit_size - 1;
     *((page_header *)start) = (page_header){
         .prev = NULL,
         .next = (type == MAX_SLAB_TYPE ? start + unit_size : NULL),
         .entry = start + unit_size,
-        .cpu = cpu_id,
+        .cpu = CPU_CUR,
         .type = type,
         .units_remaining = unit_max_num,
     };

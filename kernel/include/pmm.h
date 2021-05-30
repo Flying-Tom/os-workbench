@@ -11,6 +11,7 @@
 #define MAX_CPU_NUM 8
 #define MAX_SLAB_TYPE 6
 #define CPU_CUR (uint8_t)(cpu_current())
+#define CPU_NUM (uint8_t)(cpu_count())
 
 /* page header */
 #define PAGE_HEADER(a) (page_header *)(pm_start + (a + 1) * PAGE_SIZE - sizeof(page_header))
@@ -26,7 +27,6 @@
 
 /*------------------------------------------*/
 
-uint8_t cpu_id, cpu_num;
 
 typedef struct page_header
 {

@@ -25,7 +25,7 @@ static void kfree(void *ptr)
 
 static void pmm_init()
 {
-    assert((cpu_num = cpu_count()) <= MAX_CPU_NUM);
+    assert(CPU_NUM <= MAX_CPU_NUM);
 
     pm_start = heap.start;
     pm_end = heap.end;
