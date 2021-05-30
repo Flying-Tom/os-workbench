@@ -64,5 +64,5 @@ void buddy_free(void *ptr);
 
 /* Tool func */
 
-//size_t log(size_t x);
+inline uint8_t log(size_t x);
 size_t binalign(size_t size);
