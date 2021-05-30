@@ -33,11 +33,11 @@ static void pmm_init()
 
     Log("pm_start:%p pm_end:%p pm_size:%d", pm_start, pm_end, pm_size);
 
-    uintptr_t pm_cache_size = (pm_size / 8 * 3 / cpu_num) & PAGE_LMASK;
+    uintptr_t pm_cache_size = (pm_size / 8 * 3 / CPU_NUM) & PAGE_LMASK;
 
     slab_start = (void *)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
     pm_cur = slab_start;
-    for (int i = 0; i < cpu_num; i++)
+    for (int i = 0; i < CPU_NUM; i++)
     {
         slab_init(i, pm_cur, pm_cache_size);
         pm_cur += pm_cache_size;
