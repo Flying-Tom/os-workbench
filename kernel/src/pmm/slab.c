@@ -82,8 +82,8 @@ void slab_free(void *ptr)
     if ((uintptr_t)ptr & PAGE_RMASK)
     {
         page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
-        int *tar_lk = cache_lk[cur_page->cpu][cur_page->type];
-        void **tar_entry = cache_entry[cur_page->cpu][cur_page->type];
+        int *tar_lk = &cache_lk[cur_page->cpu][cur_page->type];
+        void **tar_entry = &cache_entry[cur_page->cpu][cur_page->type];
         lock(tar_lk);
         *(void **)ptr = cur_page->entry;
         cur_page->entry = ptr;
