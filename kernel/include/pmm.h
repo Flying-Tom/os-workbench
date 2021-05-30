@@ -9,7 +9,7 @@
 #define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_ORDER 12
 #define MAX_CPU_NUM 8
-#define MAX_SLAB_TYPE 7
+#define MAX_SLAB_TYPE 6
 #define CPU_CUR (uint8_t)(cpu_current())
 #define CPU_NUM (uint8_t)(cpu_count())
 
