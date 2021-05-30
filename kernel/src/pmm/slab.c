@@ -72,8 +72,9 @@ void *slab_alloc(size_t size)
             cache_entry[CPU_CUR][i] = cur_page->next;
         }
         unlock(&cache_lk[CPU_CUR][i]);
+        return ret;
     }
-    return ret;
+    return NULL;
 }
 
 void slab_free(void *ptr)
