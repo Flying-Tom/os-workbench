@@ -82,18 +82,19 @@ void slab_free(void *ptr)
     if ((uintptr_t)ptr & PAGE_RMASK)
     {
         page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
-
-        lock(&cache_lk[cur_page->cpu][cur_page->type]);
+        int *tar_lk = cache_lk[cur_page->cpu][cur_page->type];
+        void **tar_entry = cache_entry[cur_page->cpu][cur_page->type];
+        lock(tar_lk);
         *(void **)ptr = cur_page->entry;
         cur_page->entry = ptr;
         cur_page->units_remaining++;
         if (cur_page->units_remaining == 1)
         {
-            cur_page->next = cache_entry[cur_page->cpu][cur_page->type];
+            cur_page->next = *tar_entry;
             if (cur_page->next)
                 ((page_header *)cur_page->next)->prev = cur_page;
             cur_page->prev = NULL;
-            cache_entry[cur_page->cpu][cur_page->type] = cur_page;
+            *tar_entry = cur_page;
         }
         else
         {
@@ -102,13 +103,13 @@ void slab_free(void *ptr)
                 if (cur_page->prev)
                     ((page_header *)cur_page->prev)->next = cur_page->next;
                 else
-                    cache_entry[cur_page->cpu][cur_page->type] = cur_page->next;
+                    *tar_entry = cur_page->next;
 
                 if (cur_page->next)
                     ((page_header *)cur_page->next)->prev = cur_page->prev;
                 slab_page_free(cur_page, cur_page->cpu);
             }
-            unlock(&cache_lk[cur_page->cpu][cur_page->type]);
+            unlock(tar_lk);
         }
     }
     else
