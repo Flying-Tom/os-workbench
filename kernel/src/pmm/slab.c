@@ -6,7 +6,7 @@ static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096}
 
 static void cache_init(void *start, size_t size, uint8_t type);
 
-static void *slab_page_alloc()
+static inline void *slab_page_alloc()
 {
     lock(&page_lk[CPU_CUR]);
     if (page_entry[CPU_CUR] == NULL)
@@ -20,7 +20,7 @@ static void *slab_page_alloc()
     return ret;
 }
 
-static void slab_page_free(void *ptr, uint8_t cpu)
+static inline void slab_page_free(void *ptr, uint8_t cpu)
 {
     if (ptr < slab_start || ptr >= slab_end)
     {
