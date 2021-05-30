@@ -8,7 +8,7 @@ static void cache_init(void *start, size_t size, uint8_t type);
 
 static void *slab_page_alloc()
 {
-    cpu_id = cpu_id;
+    cpu_id = CPU_CUR;
     lock(&page_lk[cpu_id]);
     if (page_entry[cpu_id] == NULL)
     {
