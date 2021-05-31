@@ -56,7 +56,7 @@ void *buddy_alloc(size_t size)
     Log("buddy alloc %d bytes", size);
     void *ret = NULL;
     lock(&buddy_lk);
-    ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)(log(size - 1) + 1));
+    ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)log(size));
     unlock(&buddy_lk);
     return ret;
 }
