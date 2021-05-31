@@ -13,5 +13,5 @@ inline uint8_t log(size_t x)
 
 inline size_t binalign(size_t size)
 {
-    return log(size - 1) + 1;
+    return (1 << (log(size - 1) + 1));
 }
