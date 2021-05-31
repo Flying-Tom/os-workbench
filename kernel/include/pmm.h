@@ -33,15 +33,16 @@ void slab_free(void *ptr);
 #define MAX_BUD_SIZE (1 << MAX_BUD_ORDER)
 #define MAX_BUD_LMASK ~(uintptr_t)(MAX_BUD_SIZE - 1)
 
+enum
+{
+    BUD_EMPTY,
+    BUD_SPLITTED,
+    BUD_FULL
+};
+
 typedef struct buddy_node
 {
     void *addr;
-    enum
-    {
-        BUD_EMPTY,
-        BUD_SPLITTED,
-        BUD_FULL
-    };
     uint8_t status;
     uint8_t order;
 } buddy_node;
