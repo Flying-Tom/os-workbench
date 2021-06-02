@@ -1,3 +1,4 @@
+#include <iostream>
 #include <assert.h>
 #include <stdint.h>
 
@@ -31,5 +32,6 @@ typedef struct fat_header
 
 int main(int argc, char *argv[])
 {
+    printf("sizeof(fat_header):%d\n", sizeof(fat_header));
     assert(sizeof(fat_header) == 512);
 }
