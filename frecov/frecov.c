@@ -1,3 +1,4 @@
+#include <assert.h>
 
 struct fat_header
 {
