@@ -13,6 +13,11 @@ typedef struct fat_header
     uint16_t BPB_RootEntCnt;
     uint16_t BPB_TotSec16;
     uint8_t BPB_Media;
+    uint16_t BPB_FATSz16;
+    uint16_t BPB_SecPerTrk;
+    uint16_t BPB_NumHeads;
+    uint32_t BPB_HiddSec;
+    uint32_t BPB_TotSec32;
     uint32_t BPB_FATSz32;
     uint16_t BPB_ExtFlags;
     uint16_t BPB_FSVer;
