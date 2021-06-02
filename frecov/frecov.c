@@ -10,7 +10,7 @@ typedef struct fat_header
     uint32_t BPB_RsvdSecCnt : 16;
     uint8_t BPB_NumFATs;
     uint16_t BPB_RootEntCnt;
-    uint16_t BPB_RootEntCnt;
+    uint16_t BPB_TotSec16;
     uint8_t BPB_Media;
     uint32_t BPB_FATSz32;
     uint16_t BPB_ExtFlags;
@@ -24,7 +24,7 @@ typedef struct fat_header
     uint8_t BS_BootSig;
     uint32_t BS_VolID;
     uint8_t BS_VolLab[11];
-    uint8_t BS_VolLab[8];
+    uint8_t BS_FilSysType[8];
     uint8_t padding[420];
     uint16_t Signature_word;
 } __attribute__((packed)) fat_header;
