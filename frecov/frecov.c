@@ -1,6 +1,6 @@
 #include <assert.h>
 
-struct fat_header
+typedef struct fat_header
 {
     uint8_t BS_jmpBoot[3];
     uint8_t BS_OEMName[8];
@@ -9,7 +9,7 @@ struct fat_header
     uint32_t BPB_RsvdSecCnt : 16;
     uint8_t padding[420];
     uint16_t signature;
-} __attribute__((packed));
+} __attribute__((packed)) fat_header;
 
 int main(int argc, char *argv[])
 {
