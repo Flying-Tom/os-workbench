@@ -4,38 +4,39 @@
 
 typedef struct fat_header
 {
-    uint8_t BS_jmpBoot[3];
-    uint8_t BS_OEMName[8];
-    uint32_t BPB_BytsPerSec : 16;
-    uint32_t BPB_SecPerClus : 8;
-    uint32_t BPB_RsvdSecCnt : 16;
-    uint8_t BPB_NumFATs;
-    uint16_t BPB_RootEntCnt;
-    uint16_t BPB_TotSec16;
-    uint8_t BPB_Media;
-    uint16_t BPB_FATSz16;
-    uint16_t BPB_SecPerTrk;
-    uint16_t BPB_NumHeads;
-    uint32_t BPB_HiddSec;
-    uint32_t BPB_TotSec32;
-    uint32_t BPB_FATSz32;
-    uint16_t BPB_ExtFlags;
-    uint16_t BPB_FSVer;
-    uint32_t BPB_RootClus;
-    uint16_t BPB_FSInfo;
-    uint16_t BPB_BkBootSec;
-    uint8_t BPB_Reserved[12];
-    uint8_t BS_DrvNum;
-    uint8_t BS_Reserved1;
-    uint8_t BS_BootSig;
-    uint32_t BS_VolID;
-    uint8_t BS_VolLab[11];
-    uint8_t BS_FilSysType[8];
-    uint8_t padding[420];
-    uint16_t Signature_word;
+    uint8_t BS_jmpBoot[3];        // Intel jump instruction to boot code
+    uint8_t BS_OEMName[8];        // OEM Name String
+    uint32_t BPB_BytsPerSec : 16; // Bytes per sector
+    uint32_t BPB_SecPerClus : 8;  // Sectors per cluster
+    uint32_t BPB_RsvdSecCnt : 16; // Reserved sectors
+    uint8_t BPB_NumFATs;          // Number of FATs
+    uint16_t BPB_RootEntCnt;      // Root Entry Count
+    uint16_t BPB_TotSec16;        // 16-bit Count of sectors
+    uint8_t BPB_Media;            // Media Type ID
+    uint16_t BPB_FATSz16;         // Sectors per FAT
+    uint16_t BPB_SecPerTrk;       // Sectors per track
+    uint16_t BPB_NumHeads;        // Number of heads
+    uint32_t BPB_HiddSec;         // Number of hidden sectors
+    uint32_t BPB_TotSec32;        // 32-bit Count of sectors
+    uint32_t BPB_FATSz32;         // 32-bit Count of sectors
+    uint16_t BPB_ExtFlags;        // Extended flags
+    uint16_t BPB_FSVer;           // Extended flags
+    uint32_t BPB_RootClus;        // Root directory start cluster
+    uint16_t BPB_FSInfo;          // File system information sector
+    uint16_t BPB_BkBootSec;       // File system information sector
+    uint8_t BPB_Reserved[12];     // Reserved
+    uint8_t BS_DrvNum;            // Physical drive Number
+    uint8_t BS_Reserved1;         // Reserved
+    uint8_t BS_BootSig;           // Extended boot signature
+    uint32_t BS_VolID;            // Extended boot signature
+    uint8_t BS_VolLab[11];        // Volume label
+    uint8_t BS_FilSysType[8];     // Informational FS Type
+    uint8_t padding[420];         // Reserved
+    uint16_t Signature_word;      // Signature
 } __attribute__((packed)) fat_header;
 
 int main(int argc, char *argv[])
 {
-    panic_on(sizeof(struct fat_header) != 512, "bad header");
+    printf("sizeof(fat_header):%d\n", (int)sizeof(fat_header));
+    assert(sizeof(fat_header) == 512);
 }
