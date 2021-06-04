@@ -67,9 +67,9 @@ int main(int argc, char *argv[])
     int fd = open(disk_path, O_RDONLY);
 
     fat_header *disk = mmap(NULL, disk_size, PROT_READ, MAP_SHARED, fd, 0);
-    panic(strncmp((char *)disk->BS_FilSysType, "FAT32", 5) == 0, "BS_FilSysTypem Error : %s", (char *)disk->BS_FilSysType);
+    panic(strncmp((char *)disk->BS_FilSysType, "FAT32", 5) == 0, "FAT header Error | BS_FilSysTypem : %s", (char *)disk->BS_FilSysType);
+    panic(disk->Signature_word == 0x55aa, "FAT header Error | Signature_word : %x ", disk->Signature_word);
 
     printf("%x\n", disk->BS_jmpBoot[0]);
-    assert(0);
     fclose(fp);
 }
