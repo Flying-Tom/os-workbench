@@ -1,6 +1,4 @@
-#include <stdio.h>
-#include <assert.h>
-#include <stdint.h>
+#include <frecov.h>
 
 typedef struct fat_header
 {
