@@ -3,6 +3,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <string.h>
 #include <sys/mman.h>
 
 #define _Log(format, ...)                            \

@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     int fd = open(disk_path, O_RDONLY);
 
     fat_header *disk = mmap(NULL, disk_size, PROT_READ, MAP_SHARED, fd, 0);
+    panic(strcmp((char *)disk->BS_FilSysTypem, "FAT32") == 0, "BS_FilSysTypem Error : %s", (char *)disk->BS_FilSysTypem);
 
     printf("%x\n", disk->BS_jmpBoot[0]);
     assert(0);
