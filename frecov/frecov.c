@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
     int fd = open(disk_path, O_RDONLY);
 
     fat_header *disk = mmap(NULL, disk_size, PROT_READ, MAP_SHARED, fd, 0);
+    printf("%x\n", disk->BPB_BkBootSec[0]);
 
     fclose(fp);
 }
