@@ -62,5 +62,11 @@ int main(int argc, char *argv[])
     char *disk_path = argv[1];
     FILE *fp = fopen(disk_path, "rb");
     panic(fp, "Fail to open the disk :%s", disk_path);
+    fseek(fp, 0, SEEK_END);
+    uint32_t disk_size = ftell(fp);
+    int fd = open(disk_path, O_RDONLY);
+
+    fat_header *disk = mmap(NULL, disk_size, PROT_READ, MAP_SHARED, fd, 0);
+
     fclose(fp);
 }
