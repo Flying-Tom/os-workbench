@@ -56,8 +56,9 @@ typedef struct bmp_header
 
 int main(int argc, char *argv[])
 {
-    printf("sizeof(fat_header):%d\n", (int)sizeof(fat_header));
-    assert(sizeof(fat_header) == 512);
-    assert(sizeof(bmp_header) == 0x36);
+
+    panic(sizeof(fat_header) == 512, "bad fat_header");
+    panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
+
     panic(1 == 0, "fuck");
 }
