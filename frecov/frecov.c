@@ -58,7 +58,7 @@ int main(int argc, char *argv[])
 {
     panic(sizeof(fat_header) == 512, "bad fat_header");
     panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
-    panic(argc == 2, "Wrong args");
+    panic(argc == 2, "Wrong args : argc != 2");
     char *disk_path = argv[1];
     FILE *fp = fopen(disk_path, "rb");
     panic(fp, "Fail to open the disk :%s", disk_path);
