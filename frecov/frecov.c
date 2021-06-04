@@ -59,4 +59,5 @@ int main(int argc, char *argv[])
     printf("sizeof(fat_header):%d\n", (int)sizeof(fat_header));
     assert(sizeof(fat_header) == 512);
     assert(sizeof(bmp_header) == 0x36);
+    
 }
