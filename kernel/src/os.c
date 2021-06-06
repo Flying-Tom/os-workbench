@@ -48,7 +48,7 @@ static void os_run()
         //printf("Alloc\n");
         size_t m = rand() % (128) + 1;
         addr = pmm->alloc(m);
-        pmm->free(addr);
+        //pmm->free(addr);
         printf("size:%d addr:%p\n", m, addr);
         //assert((uintptr_t)addr % m == 0);
         //printf("%d: Alloc %d success\n", i, m);
