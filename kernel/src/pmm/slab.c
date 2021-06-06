@@ -2,7 +2,7 @@
 
 static int cache_lk[MAX_CPU_NUM][MAX_SLAB_TYPE], page_lk[MAX_CPU_NUM];
 static void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
-static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 2048, 4096};
+static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
 static inline void cache_init(void *start, size_t size, uint8_t type);
 

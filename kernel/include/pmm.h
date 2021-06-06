@@ -10,7 +10,7 @@
 #define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_ORDER 12
-#define MAX_SLAB_TYPE 7
+#define MAX_SLAB_TYPE 6
 
 typedef struct page_header
 {
