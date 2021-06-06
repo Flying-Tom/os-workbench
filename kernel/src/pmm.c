@@ -42,12 +42,15 @@ static void pmm_init()
     {
         slab_init(i, pm_cur, pm_cache_size);
         pm_cur += pm_cache_size;
+        pm_size -= pm_cache_size;
     }
     slab_end = pm_cur;
 
+    Log("Wasted Memory: %lu", pm_size);
     buddy_init(pm_cur, pm_end);
 
     Log("pmm_init finished");
+    assert(0);
 }
 
 MODULE_DEF(pmm) = {
