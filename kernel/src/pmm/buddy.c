@@ -9,6 +9,13 @@ static inline void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_or
 {
     if (cur_order < PAGE_ORDER || buddy[id].status == BUD_FULL || tar_order > buddy[id].order)
     {
+        if (cur_order < PAGE_ORDER)
+            printf("1\n");
+        if (buddy[id].status == BUD_FULL)
+            printf("2\n");
+        if (tar_order > buddy[id].order)
+            printf("3\n");
+
         assert(0);
         return NULL;
     };
