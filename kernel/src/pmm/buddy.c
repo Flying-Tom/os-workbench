@@ -10,7 +10,7 @@ static inline void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_or
     if (cur_order < PAGE_ORDER || buddy[id].status == BUD_FULL || tar_order > buddy[id].order)
     {
         assert(0);
-        return NULL
+        return NULL;
     };
 
     void *ret = buddy_alloc_search(id * 2, cur_order - 1, tar_order);
