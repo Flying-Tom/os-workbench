@@ -1,6 +1,6 @@
 #include <pmm.h>
 
-static int cache_lk[MAX_CPU_NUM][MAX_SLAB_TYPE], page_lk[MAX_CPU_NUM];
+static int cache_lk[MAX_CPU_NUM], page_lk[MAX_CPU_NUM];
 static void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 4096};
 
@@ -48,14 +48,14 @@ void *slab_alloc(size_t size)
 
         Log("Slab type:%d", slab_type[i]);
 
-        lock(&cache_lk[CPU_CUR][i]);
+        lock(&cache_lk[CPU_CUR]);
         if (cache_entry[CPU_CUR][i] == NULL)
         {
             cache_entry[CPU_CUR][i] = slab_page_alloc();
 
             if (cache_entry[CPU_CUR][i] == NULL)
             {
-                unlock(&cache_lk[CPU_CUR][i]);
+                unlock(&cache_lk[CPU_CUR]);
                 return NULL;
             }
 
@@ -73,7 +73,7 @@ void *slab_alloc(size_t size)
                 ((page_header *)cur_page->next)->prev = NULL;
             cache_entry[CPU_CUR][i] = cur_page->next;
         }
-        unlock(&cache_lk[CPU_CUR][i]);
+        unlock(&cache_lk[CPU_CUR]);
     }
     return ret;
 }
@@ -83,7 +83,7 @@ void slab_free(void *ptr)
     if ((uintptr_t)ptr & PAGE_RMASK)
     {
         page_header *cur_page = (void *)((uintptr_t)ptr & PAGE_LMASK);
-        int *tar_lk = &cache_lk[cur_page->cpu][cur_page->type];
+        int *tar_lk = &cache_lk[cur_page->cpu];
         void **tar_entry = &cache_entry[cur_page->cpu][cur_page->type];
 
         lock(tar_lk);
@@ -144,7 +144,7 @@ void slab_init(uint8_t cpu, void *start, size_t size)
 
     for (int i = 0; i < MAX_SLAB_TYPE; i++)
     {
-        cache_lk[cpu][i] = 0;
+        cache_lk[cpu] = 0;
         cache_entry[cpu][i] = NULL;
     }
 
