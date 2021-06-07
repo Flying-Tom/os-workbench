@@ -30,7 +30,7 @@ static inline void *buddy_alloc_search(int id, uint8_t cur_order, uint8_t tar_or
         buddy[id].order = 0;
         return buddy[id].addr;
     }
-    assert(0);
+    //assert(0);
     return NULL;
 }
 
