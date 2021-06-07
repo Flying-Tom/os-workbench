@@ -14,8 +14,8 @@
 
 typedef struct page_header
 {
-    void *prev;
-    void *next;
+    struct page_header *prev;
+    struct page_header *next;
     void *entry;
     uint8_t cpu;
     uint8_t type;
