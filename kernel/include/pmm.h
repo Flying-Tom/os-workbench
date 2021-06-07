@@ -10,7 +10,7 @@
 #define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_RMASK (uintptr_t)(PAGE_SIZE - 1)
 #define PAGE_ORDER 12
-#define MAX_SLAB_TYPE 6
+#define MAX_SLAB_TYPE 7
 
 typedef struct page_header
 {
@@ -24,7 +24,7 @@ typedef struct page_header
 
 void *slab_start, *slab_end;
 void slab_init(uint8_t cpu, void *start, size_t size);
-void *slab_alloc(size_t size);
+void *slab_alloc(uint8_t order);
 void slab_free(void *ptr);
 
 /* buddy system */
@@ -48,13 +48,13 @@ typedef struct buddy_node
 } buddy_node;
 
 void buddy_init(void *start, void *end);
-void *buddy_alloc(size_t size);
+void *buddy_alloc(uint8_t order);
 void buddy_free(void *ptr);
 
 /* Tool func and macro */
 
 uint8_t log(size_t x);
-size_t binalign(size_t size);
+uint8_t calorder(size_t size);
 
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align

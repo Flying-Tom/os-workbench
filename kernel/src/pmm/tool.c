@@ -11,7 +11,7 @@ inline uint8_t log(size_t x)
     return ret;
 }
 
-inline size_t binalign(size_t size)
+inline uint8_t calorder(size_t size)
 {
-    return (1 << (log(size - 1) + 1));
+    return ((log(size - 1) + 1));
 }

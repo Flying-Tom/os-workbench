@@ -63,12 +63,12 @@ static inline void buddy_free_search(int id, uint8_t cur_order, void *tar_ptr)
     buddy[id].order = max(buddy[id * 2].order, buddy[id * 2 + 1].order);
 }
 
-void *buddy_alloc(size_t size)
+void *buddy_alloc(uint8_t order)
 {
-    Log("buddy alloc %d bytes", size);
+    Log("buddy alloc %d bytes", 1 << order);
     void *ret = NULL;
     lock(&buddy_lk);
-    ret = buddy_alloc_search(1, buddy_root_order, (uint8_t)(log(size - 1) + 1));
+    ret = buddy_alloc_search(1, buddy_root_order, order);
     unlock(&buddy_lk);
     return ret;
 }

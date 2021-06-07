@@ -4,7 +4,7 @@ static void *kalloc(size_t size)
 {
     void *ret = NULL;
     Log("kalloc: %d", size);
-    size = binalign(size);
+    uint8_t order = calorder(size);
     if (size >= PAGE_SIZE)
         ret = buddy_alloc(size);
     else
