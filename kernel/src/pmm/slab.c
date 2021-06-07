@@ -10,18 +10,14 @@ static inline void cache_init(void *start, size_t size, uint8_t type);
 
 void *slab_alloc(uint8_t order)
 {
-    Log("slab alloc %d bytes", 1 << order);
+    Log("slab alloc %d bytes", slab_type[order]);
     void *ret = NULL;
 
-    assert(order < PAGE_ORDER);
-    uint8_t i = 0;
-    i = max(0, order - 5);
-
-    Log("Slab type:%d", slab_type[i]);
+    assert(order < MAX_SLAB_TYPE);
 
     page_header *cur_page = NULL;
     lock(&cache_lk[CPU_CUR]);
-    if (cache_entry[CPU_CUR][i] == NULL)
+    if (cache_entry[CPU_CUR][order] == NULL)
     {
 
         if (free_pagelist[CPU_CUR] == NULL)
@@ -40,19 +36,19 @@ void *slab_alloc(uint8_t order)
             cur_page->next = NULL;
             free_pagelist[CPU_CUR] = temp;
         }
-        cache_entry[CPU_CUR][i] = free_pagelist[CPU_CUR];
+        cache_entry[CPU_CUR][order] = free_pagelist[CPU_CUR];
         cur_page = (page_header *)free_pagelist[CPU_CUR];
         free_pagelist[CPU_CUR] = cur_page->next;
-        cache_init(cache_entry[CPU_CUR][i], PAGE_SIZE, i);
+        cache_init(cache_entry[CPU_CUR][order], PAGE_SIZE, order);
     }
 
-    cur_page = cache_entry[CPU_CUR][i];
+    cur_page = cache_entry[CPU_CUR][order];
 
     ret = cur_page->entry;
     cur_page->units_remaining--;
     if (cur_page->units_remaining == 0)
     {
-        cache_entry[CPU_CUR][i] = cur_page->next;
+        cache_entry[CPU_CUR][order] = cur_page->next;
         cur_page->next = NULL;
         cur_page->prev = NULL;
     }
