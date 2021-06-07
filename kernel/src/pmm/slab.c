@@ -4,8 +4,6 @@ static int cache_lk[MAX_CPU_NUM];
 static void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 2048, 4096};
 
-static page_header *free_pagelist[MAX_CPU_NUM];
-
 static inline void cache_init(void *start, size_t size, uint8_t type);
 
 void *slab_alloc(uint8_t order)
@@ -20,23 +18,22 @@ void *slab_alloc(uint8_t order)
     if (cache_entry[CPU_CUR][order] == NULL)
     {
 
-        if (free_pagelist[CPU_CUR] == NULL)
+        if (page_entry[CPU_CUR] == NULL)
         {
-            void *temp = buddy_alloc(PAGE_ORDER);
+            cur_page = (page_header *)buddy_alloc(PAGE_ORDER);
 
-            if (temp == NULL)
+            if (cur_page == NULL)
             {
                 unlock(&cache_lk[CPU_CUR]);
                 return NULL;
             }
 
-            cur_page = (page_header *)temp;
             cur_page->next = NULL;
-            free_pagelist[CPU_CUR] = temp;
+            page_entry[CPU_CUR] = (void *)cur_page;
         }
-        cache_entry[CPU_CUR][order] = free_pagelist[CPU_CUR];
-        cur_page = (page_header *)free_pagelist[CPU_CUR];
-        free_pagelist[CPU_CUR] = cur_page->next;
+        cache_entry[CPU_CUR][order] = page_entry[CPU_CUR];
+        cur_page = (page_header *)page_entry[CPU_CUR];
+        page_entry[CPU_CUR] = cur_page->next;
         cache_init(cache_entry[CPU_CUR][order], PAGE_SIZE, order);
     }
 
@@ -89,9 +86,9 @@ void slab_free(void *ptr)
                     cur_page->next->prev = cur_page->prev;
                 if (cur_page->prev)
                     cur_page->prev->next = cur_page->next;
-                cur_page->next = free_pagelist[cur_page->cpu];
+                cur_page->next = page_entry[cur_page->cpu];
                 cur_page->prev = NULL;
-                free_pagelist[cur_page->cpu] = (void *)cur_page;
+                page_entry[cur_page->cpu] = (void *)cur_page;
             }
         }
         unlock(&cache_lk[cur_page->cpu]);
