@@ -102,7 +102,7 @@ static inline void cache_init(void *start, size_t size, uint8_t type)
     size_t unit_max_num = size / unit_size - 1;
     *((page_header *)start) = (page_header){
         .prev = NULL,
-        .next = (type == MAX_SLAB_TYPE ? start + unit_size : NULL),
+        .next = NULL,
         .entry = start + unit_size,
         .cpu = CPU_CUR,
         .type = type,
@@ -129,7 +129,5 @@ void slab_init(uint8_t cpu, void *start, size_t size)
     }
 
     page_entry[cpu] = start;
-
-    cache_init(start, size, MAX_SLAB_TYPE);
     Log("slab_init finished");
 }
