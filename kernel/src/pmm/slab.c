@@ -96,6 +96,31 @@ void slab_free(void *ptr)
     }
 }
 
+static inline void page_init(void *start, void *end, int cpu)
+{
+    void *cur = start;
+    page_header *cur_page = (page_header *)cur;
+    cur_page->cpu = cpu;
+    cur_page->prev = NULL;
+
+    cur = start;
+    while (cur < end - PAGE_SIZE)
+    {
+        cur_page = (page_header *)cur;
+        cur_page->next = cur + PAGE_SIZE;
+        cur += PAGE_SIZE;
+    }
+    cur_page->next = NULL;
+
+    cur = start + PAGE_SIZE;
+    while (cur < end)
+    {
+        cur_page = (page_header *)cur;
+        cur_page->prev = cur - PAGE_SIZE;
+        cur += PAGE_SIZE;
+    }
+}
+
 static inline void cache_init(void *start, size_t size, uint8_t type)
 {
     size_t unit_size = slab_type[type];
@@ -127,7 +152,7 @@ void slab_init(uint8_t cpu, void *start, size_t size)
         cache_lk[cpu] = 0;
         cache_entry[cpu][i] = NULL;
     }
-
+    page_init(start, start + size, cpu);
     page_entry[cpu] = start;
     Log("slab_init finished");
 }
