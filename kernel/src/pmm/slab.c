@@ -62,14 +62,14 @@ void *slab_alloc(uint8_t order)
     page_header *cur_page = cache_entry[CPU_CUR][i];
 
     ret = cur_page->entry;
-    cur_page->entry = *(void **)ret;
     cur_page->units_remaining--;
     if (cur_page->units_remaining == 0)
     {
-        if (cur_page->next != NULL)
-            ((page_header *)cur_page->next)->prev = NULL;
         cache_entry[CPU_CUR][i] = cur_page->next;
+        cur_page->next = NULL;
+        cur_page->prev = NULL;
     }
+    cur_page->entry = *(void **)ret;
     unlock(&cache_lk[CPU_CUR]);
     return ret;
 }
