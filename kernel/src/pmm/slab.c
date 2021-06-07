@@ -12,7 +12,7 @@ static inline void *slab_page_alloc()
     if (page_entry[CPU_CUR] == NULL)
     {
         unlock(&page_lk[CPU_CUR]);
-        return buddy_alloc(PAGE_SIZE);
+        return buddy_alloc(PAGE_ORDER);
     }
     page_header *ret = page_entry[CPU_CUR];
     page_entry[CPU_CUR] = ret->next;
