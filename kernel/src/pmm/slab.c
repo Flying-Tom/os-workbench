@@ -1,6 +1,6 @@
 #include <pmm.h>
 
-static int cache_lk[MAX_CPU_NUM], page_lk[MAX_CPU_NUM];
+static int cache_lk[MAX_CPU_NUM];
 static void *cache_entry[MAX_CPU_NUM][MAX_SLAB_TYPE], *page_entry[MAX_CPU_NUM];
 static size_t slab_type[MAX_SLAB_TYPE + 1] = {32, 64, 128, 256, 512, 1024, 2048, 4096};
 
@@ -22,9 +22,7 @@ void *slab_alloc(uint8_t order)
 
         if (free_pagelist[CPU_CUR] == NULL)
         {
-            lock(&page_lk[CPU_CUR]);
             void *temp = buddy_alloc(PAGE_ORDER);
-            unlock(&page_lk[CPU_CUR]);
 
             if (temp == NULL)
             {
@@ -133,7 +131,6 @@ void slab_init(uint8_t cpu, void *start, size_t size)
         cache_entry[cpu][i] = NULL;
     }
 
-    page_lk[cpu] = 0;
     page_entry[cpu] = start;
 
     cache_init(start, size, MAX_SLAB_TYPE);
