@@ -8,20 +8,6 @@ static page_header *free_pagelist[MAX_CPU_NUM];
 
 static inline void cache_init(void *start, size_t size, uint8_t type);
 
-static inline void slab_page_free(void *ptr, uint8_t cpu)
-{
-    if (ptr < slab_start || ptr >= slab_end)
-    {
-        buddy_free(ptr);
-        return;
-    }
-
-    lock(&page_lk[cpu]);
-    *(void **)ptr = page_entry[cpu];
-    page_entry[cpu] = ptr;
-    unlock(&page_lk[cpu]);
-}
-
 void *slab_alloc(uint8_t order)
 {
     Log("slab alloc %d bytes", 1 << order);
@@ -100,13 +86,10 @@ void slab_free(void *ptr)
                 tar_page->prev = cur_page;
                 cache_entry[cur_page->cpu][cur_page->type] = (void *)cur_page;
             }
-            return;
         }
         else if (cur_page->units_remaining + 1 == ((PAGE_SIZE) / slab_type[cur_page->type]))
         {
-            if (cache_entry[cur_page->cpu][cur_page->type] == (void *)cur_page)
-                return;
-            else
+            if (cache_entry[cur_page->cpu][cur_page->type] != (void *)cur_page)
             {
                 if (cur_page->next)
                     cur_page->next->prev = cur_page->prev;
@@ -116,11 +99,10 @@ void slab_free(void *ptr)
                 cur_page->prev = NULL;
                 free_pagelist[cur_page->cpu] = (void *)cur_page;
             }
-            return;
         }
         unlock(&cache_lk[cur_page->cpu]);
+        return;
     }
-
 }
 
 static inline void cache_init(void *start, size_t size, uint8_t type)
