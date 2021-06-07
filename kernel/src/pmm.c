@@ -6,9 +6,9 @@ static void *kalloc(size_t size)
     Log("kalloc: %d", size);
     uint8_t order = calorder(size);
     if (order >= PAGE_ORDER)
-        ret = buddy_alloc(max(0, order - 5));
+        ret = buddy_alloc(order);
     else
-        ret = slab_alloc(order);
+        ret = slab_alloc(max(0, order - 5));
     //assert((uintptr_t)ret % binalign(size) == 0);
     return ret;
 }
