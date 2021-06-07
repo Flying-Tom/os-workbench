@@ -43,7 +43,7 @@ static void os_run()
 
     void *addr = NULL;
 
-    for (int i = 1; i < 500000; i++)
+    for (int i = 1; i < 500; i++)
     {
         //printf("Alloc\n");
         size_t m = 4 KB;
