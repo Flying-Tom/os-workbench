@@ -46,7 +46,7 @@ static void os_run()
     for (int i = 1; i < 500000; i++)
     {
         //printf("Alloc\n");
-        size_t m = rand() % (128) + 1;
+        size_t m = 4 KB;
         addr = pmm->alloc(m);
         //pmm->free(addr);
         printf("size:%d addr:%p\n", m, addr);
