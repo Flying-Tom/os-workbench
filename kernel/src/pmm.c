@@ -5,10 +5,10 @@ static void *kalloc(size_t size)
     void *ret = NULL;
     Log("kalloc: %d", size);
     uint8_t order = calorder(size);
-    if (size >= PAGE_SIZE)
-        ret = buddy_alloc(size);
+    if (order >= PAGE_ORDER)
+        ret = buddy_alloc(order);
     else
-        ret = slab_alloc(size);
+        ret = slab_alloc(order);
     //assert((uintptr_t)ret % binalign(size) == 0);
     return ret;
 }
