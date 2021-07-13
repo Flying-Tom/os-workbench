@@ -19,7 +19,9 @@ static void os_run()
     }
     */
     printf("Tests Start!\n");
+
     iset(true);
+
     printf("Tests done!\n");
     /*
     while (1)
