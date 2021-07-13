@@ -7,6 +7,7 @@
 static void os_init()
 {
     pmm->init();
+    kmt->init();
 }
 
 static void os_run()
@@ -18,77 +19,25 @@ static void os_run()
     }
     */
     printf("Tests Start!\n");
-#ifdef SMOKE
 
-    /*
-    for (int i = 1; i <= 50; i++)
-    {
-        size_t m = rand() % (128) + 1;
-        a = pmm->alloc(m);
-        printf("a:%p\n", a);
-        pmm->free(a);
-    }
-    */
-    /*
-    for (int i = 1; i < 4; i++)
-    {
-        size_t m = 4;
-        pmm->alloc(m);
-        printf("%d: Alloc %d success\n", i, m);
-    }
-    */
-#endif
-
-#ifdef NORMAL
-
-    void *addr = NULL;
-
-    for (int i = 1; i < 500; i++)
-    {
-        //printf("Alloc\n");
-        size_t m = rand() % 128 + 1;
-        addr = pmm->alloc(m);
-        //pmm->free(addr);
-        printf("size:%d addr:%p\n", m, addr);
-        //assert((uintptr_t)addr % m == 0);
-        //printf("%d: Alloc %d success\n", i, m);
-    }
-
-    /*
-    for (int i = 1; i < 10; i++)
-    {
-        size_t m = rand() % 6 + 1 MB;
-        addr = pmm->alloc(m);
-        printf("size:%d addr:%p\n", m, addr);
-        //assert((uintptr_t)addr % m == 0);
-        //printf("%d: Alloc %d success\n", i, m KB);
-    }
-    */
-
-#endif
-#ifdef STRESSED
-    for (int i = 0; i < 1000; i++)
-    {
-        pmm->alloc(rand() % 32 MB + 1);
-        //printf("Alloc %d success\n", 16 KB);
-    }
-#endif
-
-    //pmm->stat();
-    /*
-    pmm->free(a[7]);
-    pmm->free(a[5]);
-    pmm->free(a[4]);
-
-    pmm->free(a[6]);
-    */
-    //pmm->stat();
     printf("Tests done!\n");
     while (1)
         ;
 }
 
+static Context *os_trap(Event ev, Context *context)
+{
+    Context *ret = NULL;
+    return ret;
+}
+
+static void os_on_irq(int seq, int event, handler_t handler)
+{
+}
+
 MODULE_DEF(os) = {
     .init = os_init,
     .run = os_run,
+    .trap = os_trap,
+    .on_irq = os_on_irq,
 };

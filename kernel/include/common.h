@@ -1,3 +1,6 @@
+#ifndef COMMON_H
+#define COMMON_H
+
 #include <kernel.h>
 #include <klib.h>
 #include <klib-macros.h>
@@ -31,4 +34,6 @@ inline void unlock(lock_t *lk)
 #define Log(...) _Log(__VA_ARGS__)
 #else
 #define Log(...)
+#endif
+
 #endif
