@@ -6,7 +6,6 @@ struct spinlock
     const char *name;
     bool locked;
     int holder;
-
 };
 
 
