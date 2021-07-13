@@ -2,6 +2,7 @@
 #define DEVICES_H
 
 #include <common.h>
+#include <kmt.h>
 
 typedef struct devops {
   int (*init)(device_t *dev);

@@ -31,13 +31,8 @@ typedef struct task
 {
 
 } task_t;
-typedef struct spinlock
-{
-    const char *name;
-    bool locked;
-    int holder;
 
-} spinlock_t;
+typedef struct spinlock spinlock_t;
 
 typedef struct semaphore
 {
