@@ -33,7 +33,7 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
     int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
 
     for (int i = 0; i < CPU_NUM; i++) {
-        if (task_num[i] <= min) {
+        if (task_num[i] <= temp) {
             temp = task_num[i];
             cpu_pos = i;
         }
