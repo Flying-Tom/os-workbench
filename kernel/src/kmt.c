@@ -9,7 +9,7 @@ int task_num[MAX_CPU_NUM];
 
 static void kmt_init()
 {
-
+    Log("kmt_init start");
     for (int i = 0; i < MAX_CPU_NUM; i++) {
         cur_task[i] = NULL;
         for (int j = 0; j < MAX_TASK_NUM; j++) {
