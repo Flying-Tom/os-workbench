@@ -28,6 +28,8 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 {
     task->name = name;
     Area stack = (Area) { .start = &task->stack, .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
+    Log("stack start:%p\n", stack.start);
+    Log("stack end:%p\n", stack.end);
     task->context = kcontext(stack, entry, arg);
 
     int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
