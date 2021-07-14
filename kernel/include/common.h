@@ -28,7 +28,7 @@ inline void unlock(lock_t* lk)
     atomic_xchg(lk, 0);
 }
 
-//#define DEBUG
+#define DEBUG
 
 #define _Log(format, ...)                            \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
