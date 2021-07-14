@@ -27,7 +27,7 @@ static void kmt_init()
 static int create(task_t* task, const char* name, void (*entry)(void* arg), void* arg)
 {
     task->name = name;
-    Area stack = (Area) { &task->stack, (void*)((uint32_t)(&task->stack) + STACK_SIZE) };
+    Area stack = (Area) { .start = &task->stack, .end = (void*)((uint32_t)(&task->stack) + STACK_SIZE) };
     task->context = kcontext(stack, entry, arg);
 
     int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
