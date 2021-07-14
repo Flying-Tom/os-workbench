@@ -19,7 +19,7 @@ void spinlock_acquire(spinlock_t* lk)
     if (spinlock_holding(lk))
         panic("acquire");
 
-    while (atomic_xchg((intptr_t*)&lk->locked, 1))
+    while (atomic_xchg((int*)&lk->locked, 1))
         ;
 
     __sync_synchronize();
