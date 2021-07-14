@@ -23,10 +23,9 @@ static void os_run()
     iset(true);
 
     printf("Tests done!\n");
-    /*
+
     while (1)
         ;
-    */
 }
 
 static Context* os_trap(Event ev, Context* context)
