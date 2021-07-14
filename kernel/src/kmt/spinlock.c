@@ -50,18 +50,16 @@ uint8_t spinlock_holding(spinlock_t* lk)
 
 void spinlock_pushcli()
 {
-    int eflags = get_efl();
-
     iset(false); // close interruption (cli())
     if (ncli[CPU_CUR] == 0)
-        intena[CPU_CUR] = eflags & FL_IF;
+        intena[CPU_CUR] = ienabled();
 
     ncli[CPU_CUR] += 1;
 }
 
 void spinlock_popcli()
 {
-    if (get_efl() & FL_IF)
+    if (ienabled())
         panic("popcli - interruptible");
 
     ncli[CPU_CUR] -= 1;
