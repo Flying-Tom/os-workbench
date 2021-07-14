@@ -1,7 +1,23 @@
 #include <kmt.h>
 
+#define MAX_TASK_NUM 64
+
+task_t* cur_task[MAX_CPU_NUM];
+task_t* tasks[MAX_CPU_NUM][MAX_TASK_NUM];
+
+int task_num[MAX_CPU_NUM];
+
 static void kmt_init()
 {
+
+    for (int i = 0; i < MAX_CPU_NUM; i++) {
+        cur_task[i] = NULL;
+        for (int j = 0; j < MAX_TASK_NUM; j++) {
+            tasks[i][j] = NULL;
+        }
+        task_num[i] = 0;
+    }
+
     /*
     os->on_irq(INT_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
     os->on_irq(INT_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
@@ -10,6 +26,28 @@ static void kmt_init()
 
 static int create(task_t* task, const char* name, void (*entry)(void* arg), void* arg)
 {
+    task->name = name;
+    Area stack = (Area) { &task->stack, (void*)((uint32_t)(&task->stack) + STACK_SIZE) };
+    task->context = kcontext(stack, entry, arg);
+
+    int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
+
+    for (int i = 0; i < CPU_NUM; i++) {
+        if (task_num[i] <= min) {
+            temp = task_num[i];
+            cpu_pos = i;
+        }
+    }
+
+    task_num[cpu_pos]++;
+
+    for (task_pos = 0; task_pos < MAX_TASK_NUM; task_pos++) {
+        if (tasks[cpu_pos][task_pos] == NULL) {
+            tasks[cpu_pos][task_pos] = task;
+            task->cpu = cpu_pos;
+            break;
+        }
+    }
     return 0;
 }
 
