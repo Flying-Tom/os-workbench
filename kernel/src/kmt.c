@@ -58,7 +58,6 @@ static void kmt_init()
     os->on_irq(INT_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
     os->on_irq(INT_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
     Log("kmt_init finished");
-    assert(0);
 }
 
 static int create(task_t* task, const char* name, void (*entry)(void* arg), void* arg)

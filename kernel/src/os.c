@@ -20,7 +20,7 @@ static void os_run()
     */
     printf("Tests Start!\n");
 
-    iset(true);
+    //iset(true);
 
     printf("Tests done!\n");
 
