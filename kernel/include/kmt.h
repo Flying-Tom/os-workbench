@@ -2,7 +2,7 @@
 #define KMT_H
 
 #include <common.h>
-#include <semaphore.h>
+#include <sem.h>
 #include <spinlock.h>
 #include <task.h>
 
