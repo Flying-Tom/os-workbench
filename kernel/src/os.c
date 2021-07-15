@@ -25,6 +25,7 @@ static void os_run()
 
     printf("Tests done!\n");
 
+    assert(0);
     while (1)
         ;
 }
