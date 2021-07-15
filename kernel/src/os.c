@@ -21,6 +21,7 @@ static void os_run()
     printf("Tests Start!\n");
 
     iset(true);
+    iset(false);
 
     printf("Tests done!\n");
 
