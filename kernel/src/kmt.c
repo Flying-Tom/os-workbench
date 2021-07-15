@@ -9,22 +9,6 @@ int task_num[MAX_CPU_NUM];
 
 spinlock_t task_lock;
 
-static void kmt_init()
-{
-    Log("kmt_init start");
-    for (int i = 0; i < MAX_CPU_NUM; i++) {
-        cur_task[i] = NULL;
-        for (int j = 0; j < MAX_TASK_NUM; j++) {
-            tasks[i][j] = NULL;
-        }
-        task_num[i] = 0;
-    }
-
-    os->on_irq(INT_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
-    os->on_irq(INT_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
-    Log("kmt_init finished");
-}
-
 static Context* kmt_context_save(Event e, Context* c)
 {
     kmt->spin_lock(&task_lock);
@@ -58,6 +42,22 @@ static Context* kmt_schedule(Event e, Context* c)
     kmt->spin_unlock(&task_lock);
 
     return ret;
+}
+
+static void kmt_init()
+{
+    Log("kmt_init start");
+    for (int i = 0; i < MAX_CPU_NUM; i++) {
+        cur_task[i] = NULL;
+        for (int j = 0; j < MAX_TASK_NUM; j++) {
+            tasks[i][j] = NULL;
+        }
+        task_num[i] = 0;
+    }
+
+    os->on_irq(INT_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
+    os->on_irq(INT_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
+    Log("kmt_init finished");
 }
 
 static int create(task_t* task, const char* name, void (*entry)(void* arg), void* arg)
