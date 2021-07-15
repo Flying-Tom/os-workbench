@@ -91,18 +91,13 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 
 static void teardown(task_t* task)
 {
-}
-
-void spin_init(spinlock_t* lk, const char* name)
-{
-}
-
-void spin_lock(spinlock_t* lk)
-{
-}
-
-void spin_unlock(spinlock_t* lk)
-{
+    kmt->spin_lock(&task_lock);
+    for (int i = 0; i < MAX_TASK_NUM; i++) {
+        if (tasks[task->cpu][i] == task) {
+            tasks[task->cpu][i] = NULL;
+        }
+    }
+    kmt->spin_unlock(&task_lock);
 }
 
 void sem_init(sem_t* sem, const char* name, int value)
@@ -121,9 +116,9 @@ MODULE_DEF(kmt) = {
     .init = kmt_init,
     .create = create,
     .teardown = teardown,
-    .spin_init = spin_init,
-    .spin_lock = spin_lock,
-    .spin_unlock = spin_unlock,
+    .spin_init = spinlock_init,
+    .spin_lock = spinlock_acquire,
+    .spin_unlock = spinlock_release,
     .sem_init = sem_init,
     .sem_wait = sem_wait,
     .sem_signal = sem_signal,

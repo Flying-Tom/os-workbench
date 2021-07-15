@@ -10,7 +10,7 @@ struct trap_handler {
     int seq;
     int event;
     handler_t handler;
-    struct trap_handler* next;
+    int valid;
 };
 
 typedef trap_handler trap_handler_t;
