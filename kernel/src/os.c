@@ -31,8 +31,37 @@ static void os_run()
 static Context* os_trap(Event ev, Context* context)
 {
     Context* ret = NULL;
+
+    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
+        if (h.event == EVENT_NULL || h.event == ev.event) {
+            Context* r = h.handler(ev, ctx);
+            panic_on(r && ret, "returning multiple contexts");
+            if (r)
+                ret = r;
+        }
+    }
+    panic_on(!ret, "returning NULL context");
+    panic_on(sane_context(ret), "returning to invalid context");
     return ret;
 }
+
+/*
+static Context* os_trap(Event ev, Context* ctx)
+{
+    Context* next = NULL;
+    for (auto& h : handlers_sorted_by_seq) {
+        if (h.event == EVENT_NULL || h.event == ev.event) {
+            Context* r = h.handler(ev, ctx);
+            panic_on(r && next, "returning multiple contexts");
+            if (r)
+                next = r;
+        }
+    }
+    panic_on(!next, "returning NULL context");
+    panic_on(sane_context(next), "returning to invalid context");
+    return next;
+}
+*/
 
 static void os_on_irq(int seq, int event, handler_t handler)
 {
