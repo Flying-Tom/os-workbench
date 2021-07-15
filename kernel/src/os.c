@@ -1,6 +1,6 @@
 #include <common.h>
 
-#define DEBUG_LOCAL
+//#define DEBUG_LOCAL
 
 static void os_init()
 {
