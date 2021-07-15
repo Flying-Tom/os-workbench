@@ -1,10 +1,5 @@
 #include <kmt.h>
 
-#define MAX_TASK_NUM 64
-
-task_t* cur_task[MAX_CPU_NUM];
-task_t* tasks[MAX_CPU_NUM][MAX_TASK_NUM];
-
 int task_num[MAX_CPU_NUM];
 
 spinlock_t task_lock;
