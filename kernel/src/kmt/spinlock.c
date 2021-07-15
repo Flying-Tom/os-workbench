@@ -1,5 +1,5 @@
 #include <common.h>
-#include <kmt/spinlock.h>
+#include <spinlock.h>
 
 /* XV6 spinlock */
 
