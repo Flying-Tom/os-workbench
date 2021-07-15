@@ -2,9 +2,8 @@
 
 void sem_init(sem_t* sem, const char* name, int value)
 {
-
     sem->value = value;
-    kmt->spin_init(&sem->lock, name);
+    //kmt->spin_init(&sem->lock, name);
     for (int i = 0; i < MAX_TASK_NUM; i++) {
         sem->tasks[i] = NULL;
     }
@@ -12,7 +11,6 @@ void sem_init(sem_t* sem, const char* name, int value)
 }
 void sem_wait(sem_t* sem)
 {
-    /*
     kmt->spin_lock(&sem->lock);
     if (sem->value <= 0) {
         sem->tasks[sem->tail] = cur_task[CPU_CUR];
@@ -26,11 +24,9 @@ void sem_wait(sem_t* sem)
     }
     sem->value--;
     kmt->spin_unlock(&sem->lock);
-    */
 }
 void sem_signal(sem_t* sem)
 {
-    /*
     kmt->spin_lock(&sem->lock);
     sem->value++;
     if (sem->tasks[sem->head] != NULL) {
@@ -38,5 +34,4 @@ void sem_signal(sem_t* sem)
         sem->head = (sem->head + 1) % MAX_TASK_NUM;
     }
     kmt->spin_unlock(&sem->lock);
-    */
 }
