@@ -1,8 +1,9 @@
 #include <pmm.h>
 
-static void *kalloc(size_t size)
+static void* kalloc(size_t size)
 {
-    void *ret = NULL;
+    assert(0);
+    void* ret = NULL;
     Log("kalloc: %d", size);
     uint8_t order = calorder(size);
     if (order >= PAGE_ORDER)
@@ -13,8 +14,9 @@ static void *kalloc(size_t size)
     return ret;
 }
 
-static void kfree(void *ptr)
+static void kfree(void* ptr)
 {
+    assert(0);
     if ((uintptr_t)ptr & PAGE_RMASK || (ptr >= slab_start && ptr < slab_end))
         slab_free(ptr);
     else
@@ -36,10 +38,9 @@ static void pmm_init()
 
     uintptr_t pm_cache_size = (pm_size / 16 * 3 / CPU_NUM) & PAGE_LMASK;
 
-    slab_start = (void *)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
+    slab_start = (void*)((uintptr_t)(pm_start + PAGE_SIZE - 1) & PAGE_LMASK);
     pm_cur = slab_start;
-    for (int i = 0; i < CPU_NUM; i++)
-    {
+    for (int i = 0; i < CPU_NUM; i++) {
         slab_init(i, pm_cur, pm_cache_size);
         pm_cur += pm_cache_size;
     }
