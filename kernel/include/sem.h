@@ -1,5 +1,5 @@
-#ifndef SEMAPHORE_H
-#define SEMAPHORE_H
+#ifndef SEM_H
+#define SEM_H
 
 struct semaphore {
 };
