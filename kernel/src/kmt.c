@@ -100,18 +100,6 @@ static void teardown(task_t* task)
     kmt->spin_unlock(&task_lock);
 }
 
-void sem_init(sem_t* sem, const char* name, int value)
-{
-}
-
-void sem_wait(sem_t* sem)
-{
-}
-
-void sem_signal(sem_t* sem)
-{
-}
-
 MODULE_DEF(kmt) = {
     .init = kmt_init,
     .create = create,
