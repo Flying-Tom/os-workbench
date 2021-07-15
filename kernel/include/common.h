@@ -18,8 +18,7 @@
 #define CPU_NUM (uint8_t)(cpu_count())
 #define MAX_CPU_NUM 8
 
-#define MAX_TASK_NUM 64
-
+#define MAX_TASK_NUM 32
 #define lock_t int
 
 inline void lock(lock_t* lk)
