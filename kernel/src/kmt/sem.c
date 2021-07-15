@@ -3,7 +3,7 @@
 void sem_init(sem_t* sem, const char* name, int value)
 {
     sem->value = value;
-    //kmt->spin_init(&sem->lock, name);
+    kmt->spin_init(&sem->lock, name);
     for (int i = 0; i < MAX_TASK_NUM; i++) {
         sem->tasks[i] = NULL;
     }
