@@ -17,4 +17,6 @@ struct task {
     char stack[STACK_SIZE];
 };
 
+typedef struct task task_t;
+
 #endif
