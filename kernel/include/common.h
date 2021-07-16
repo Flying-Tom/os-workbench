@@ -21,15 +21,6 @@
 #define lock_t int
 
 
-inline void lock(lock_t* lk)
-{
-    while (atomic_xchg(lk, 1))
-        ;
-}
-inline void unlock(lock_t* lk)
-{
-    atomic_xchg(lk, 0);
-}
 
 #define DEBUG
 

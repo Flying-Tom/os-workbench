@@ -1,3 +1,5 @@
+#ifndef PMM_H
+#define PMM_H
 #include <common.h>
 
 /* slab system */
@@ -50,3 +52,15 @@ uint8_t calorder(size_t size);
 
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
+
+inline void lock(lock_t* lk)
+{
+    while (atomic_xchg(lk, 1))
+        ;
+}
+inline void unlock(lock_t* lk)
+{
+    atomic_xchg(lk, 0);
+}
+
+#endif
