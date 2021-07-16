@@ -2,6 +2,18 @@
 
 #define DEBUG_LOCAL
 
+static trap_handler_t trap_handlers[SEQ_MAX][TRAP_HANDLER_MAX_NUM];
+
+static void trap_init()
+{
+    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
+        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
+            trap_handlers[i][j].handler = NULL;
+            trap_handlers[i][j].status = 0;
+        }
+    }
+}
+
 #ifdef DEBUG_LOCAL
 sem_t empty, fill;
 #define P kmt->sem_wait
@@ -26,6 +38,7 @@ void consumer(void* arg)
 
 static void os_init()
 {
+    trap_init();
     pmm->init();
     kmt->init();
     kmt->sem_init(&empty, "empty", 5); // 缓冲区大小为 5
@@ -38,6 +51,7 @@ static void os_init()
 #else
 static void os_init()
 {
+    trap_init();
     pmm->init();
     kmt->init();
 }
@@ -67,19 +81,21 @@ static Context* os_trap(Event ev, Context* context)
 {
     Context* ret = NULL;
 
-    /*
     for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
-        if (h.event == EVENT_NULL || h.event == ev.event) {
-            Context* r = h.handler(ev, ctx);
-            panic_on(r && ret, "returning multiple contexts");
-            if (r)
-                ret = r;
+        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
+            if (trap_handlers[i][j].status == 1) {
+                if (trap_handlers[i][j].event == EVENT_NULL || trap_handlers[i][j].event == ev.event) {
+                    Context* r = trap_handlers[i][j].handler(ev, context);
+                    panic_on(r && ret, "returning multiple contexts");
+                    if (r)
+                        ret = r;
+                }
+            } else
+                break;
         }
     }
     panic_on(!ret, "returning NULL context");
     panic_on(sane_context(ret), "returning to invalid context");
-    */
-    assert(0);
     return ret;
 }
 
@@ -103,6 +119,18 @@ static Context* os_trap(Event ev, Context* ctx)
 
 static void os_on_irq(int seq, int event, handler_t handler)
 {
+    int cnt;
+    for (cnt = SEQ_MIN; cnt < TRAP_HANDLER_MAX_NUM; cnt++) {
+        if (trap_handlers[seq][cnt].status == 0) {
+            break;
+        }
+    }
+
+    assert(cnt < TRAP_HANDLER_MAX_NUM);
+    trap_handlers[seq][cnt].status = 1;
+    trap_handlers[seq][cnt].seq = seq;
+    trap_handlers[seq][cnt].event = event;
+    trap_handlers[seq][cnt].handler = handler;
 }
 
 MODULE_DEF(os) = {

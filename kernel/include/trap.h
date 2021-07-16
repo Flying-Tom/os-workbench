@@ -6,6 +6,8 @@
 #define SEQ_MIN 0
 #define SEQ_MAX 512
 
+#define TRAP_HANDLER_MAX_NUM 16
+
 struct trap_handler {
     int seq;
     int event;
