@@ -40,17 +40,17 @@ typedef struct fat_header {
     uint16_t BPB_NumHeads; // Number of heads
     uint32_t BPB_HiddSec; // Number of hidden sectors
     uint32_t BPB_TotSec32; // 32-bit Count of sectors
-    uint32_t BPB_FATSz32; // 32-bit Count of sectors
+    uint32_t BPB_FATSz32; // 32-bit count of sectors per FAT
     uint16_t BPB_ExtFlags; // Extended flags
-    uint16_t BPB_FSVer; // Extended flags
+    uint16_t BPB_FSVer; // File system version
     uint32_t BPB_RootClus; // Root directory start cluster
     uint16_t BPB_FSInfo; // File system information sector
-    uint16_t BPB_BkBootSec; // File system information sector
+    uint16_t BPB_BkBootSec; // Backup boot sector
     uint8_t BPB_Reserved[12]; // Reserved
     uint8_t BS_DrvNum; // Physical drive Number
     uint8_t BS_Reserved1; // Reserved
     uint8_t BS_BootSig; // Extended boot signature
-    uint32_t BS_VolID; // Extended boot signature
+    uint32_t BS_VolID; // Volume serial number
     uint8_t BS_VolLab[11]; // Volume label
     uint8_t BS_FilSysType[8]; // Informational FS Type
     uint8_t padding[420]; // Reserved
@@ -76,3 +76,27 @@ typedef struct bmp_header {
     uint32_t biClrImportant;
 
 } __attribute__((packed)) bmp_header;
+
+typedef struct DIR {
+    uint8_t DIR_Name[11];
+    uint8_t DIR_Attr;
+    uint8_t DIR_NTRes;
+    uint8_t DIR_CrtTimeTenth;
+    uint16_t DIR_CrtTime;
+    uint16_t DIR_CrtDate;
+    uint16_t DIR_LstAccDate;
+    uint16_t DIR_FstClusHI;
+
+} __attribute__((packed)) DIR_t;
+
+typedef struct LDIR {
+    uint8_t LDIR_Ord;
+    uint8_t LDIR_Name1[10];
+    uint8_t LDIR_Attr;
+    uint8_t LDIR_Type;
+    uint8_t LDIR_Chksum;
+    uint8_t LDIR_Name2[12];
+    uint16_t LDIR_FstClusLO;
+    uint32_t LDIR_Name3;
+
+} __attribute__((packed)) LDIR_t;
