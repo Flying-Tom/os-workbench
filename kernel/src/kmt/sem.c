@@ -1,5 +1,9 @@
 #include <kmt.h>
 
+void semmod_init()
+{
+}
+
 void sem_init(sem_t* sem, const char* name, int value)
 {
     sem->value = value;
