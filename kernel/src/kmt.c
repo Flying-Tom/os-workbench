@@ -43,6 +43,10 @@ static Context* kmt_schedule(Event e, Context* c)
 static void kmt_init()
 {
     Log("kmt_init start");
+
+    spinmod_init();
+    semmod_init();
+    
     for (int i = 0; i < MAX_CPU_NUM; i++) {
         cur_task[i] = NULL;
         for (int j = 0; j < MAX_TASK_NUM; j++) {
@@ -82,6 +86,9 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
             break;
         }
     }
+
+    assert(task_pos < MAX_TASK_NUM);
+
     return 0;
 }
 

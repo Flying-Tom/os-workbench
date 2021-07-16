@@ -7,7 +7,7 @@ task_t* cur_task[MAX_CPU_NUM];
 task_t* tasks[MAX_CPU_NUM][MAX_TASK_NUM];
 
 /* spinlock */
-
+void spinmod_init();
 void spinlock_init(spinlock_t* lk, const char* name);
 void spinlock_acquire(spinlock_t* lk);
 void spinlock_release(spinlock_t* lk);
@@ -17,6 +17,7 @@ void spinlock_popcli();
 
 /* semaphore */
 
+void semmod_init();
 void sem_init(sem_t* sem, const char* name, int value);
 void sem_wait(sem_t* sem);
 void sem_signal(sem_t* sem);

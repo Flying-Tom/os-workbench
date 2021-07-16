@@ -6,6 +6,14 @@
 int intena[MAX_CPU_NUM] = {};
 int ncli[MAX_CPU_NUM] = {};
 
+void spinmod_init()
+{
+    for (int i = 0; i < CPU_NUM; i++) {
+        ncli[i] = 0;
+        intena[i] = 1;
+    }
+}
+
 void spinlock_init(spinlock_t* lk, const char* name)
 {
     lk->name = name;
