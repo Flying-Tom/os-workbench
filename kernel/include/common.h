@@ -33,4 +33,33 @@
 #define Log(...)
 #endif
 
+#define STACK_SIZE 8192
+
+struct task {
+
+    const char* name;
+    enum task_status {
+        SLEEP,
+        DEAD,
+    } status;
+
+    Context* context;
+    int cpu;
+
+    char stack[STACK_SIZE];
+};
+
+struct spinlock {
+    const char* name;
+    uint8_t locked;
+    uint8_t cpu;
+};
+
+struct semaphore {
+    int value;
+    spinlock_t lock;
+    task_t* tasks[MAX_TASK_NUM];
+    int head;
+    int tail;
+};
 #endif
