@@ -28,7 +28,9 @@ int main(int argc, char* argv[])
             continue;
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
-            printf("%s\n", dir->DIR_Name);
+            //printf("%s\n", dir->DIR_Name);
+            bool isLDIR = false;
+            
         }
     }
 }
