@@ -31,4 +31,10 @@
 #define Log(...)
 #endif
 
+/*
+extern struct task;
+extern struct sem;
+extern struct spin_lock;
+*/
+
 #endif

@@ -12,7 +12,6 @@ struct semaphore {
     int tail;
 };
 
-typedef struct semaphore sem_t;
 
 void sem_init(sem_t* sem, const char* name, int value);
 void sem_wait(sem_t* sem);

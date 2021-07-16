@@ -7,8 +7,6 @@ struct spinlock {
     uint8_t cpu;
 };
 
-typedef struct spinlock spinlock_t;
-
 void spinlock_init(spinlock_t* lk, const char* name);
 void spinlock_acquire(spinlock_t* lk);
 void spinlock_release(spinlock_t* lk);
