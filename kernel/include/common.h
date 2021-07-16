@@ -20,6 +20,7 @@
 #define MAX_TASK_NUM 8
 #define lock_t int
 
+
 inline void lock(lock_t* lk)
 {
     while (atomic_xchg(lk, 1))
