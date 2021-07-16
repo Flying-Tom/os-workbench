@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
 
     uintptr_t addr;
     for (addr = (uintptr_t)cluster_addr; addr < img_addr + img_size; addr += sizeof(DIR_t)) {
-        DIR_t dir = (DIR_t*)addr;
+        DIR_t* dir = (DIR_t*)addr;
         if (dir->DIR_Attr == ATTR_LONG_NAME)
             continue;
 
