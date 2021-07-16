@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
             }
             if (isLDIR)
                 continue;
-            printf("fuck\n");
+            printf("%s\n", dir->DIR_Name);
         }
     }
 }
