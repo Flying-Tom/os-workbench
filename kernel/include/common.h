@@ -51,8 +51,8 @@ struct task {
 
 struct spinlock {
     const char* name;
-    uint8_t locked;
-    uint8_t cpu;
+    int locked;
+    int cpu;
 };
 
 struct semaphore {
