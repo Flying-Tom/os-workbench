@@ -86,6 +86,10 @@ typedef struct DIR {
     uint16_t DIR_CrtDate;
     uint16_t DIR_LstAccDate;
     uint16_t DIR_FstClusHI;
+    uint16_t DIR_WrtTime;
+    uint16_t DIR_WrtDate;
+    uint16_t DIR_FstClusLO;
+    uint32_t DIR_FileSize;
 
 } __attribute__((packed)) DIR_t;
 
