@@ -1,4 +1,11 @@
+/*
 #include <kernel.h>
+#include <klib.h>
+*/
+
+#include <am.h>
+#include <common.h>
+#include <klib-macros.h>
 #include <klib.h>
 
 int main()
