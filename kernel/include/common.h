@@ -4,7 +4,6 @@
 #include <kernel.h>
 #include <klib-macros.h>
 #include <klib.h>
-
 #include <limits.h>
 
 #define KB *(1L << 10)
