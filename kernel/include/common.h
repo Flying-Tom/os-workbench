@@ -4,6 +4,7 @@
 #include <kernel.h>
 #include <klib-macros.h>
 #include <klib.h>
+
 #include <limits.h>
 
 #define KB *(1L << 10)
@@ -18,6 +19,7 @@
 #define MAX_CPU_NUM 8
 
 #define MAX_TASK_NUM 8
+#define lock_t int
 
 #define DEBUG
 
@@ -30,9 +32,5 @@
 #else
 #define Log(...)
 #endif
-
-typedef struct task task_t;
-typedef struct spinlock spinlock_t;
-typedef struct semaphore sem_t;
 
 #endif
