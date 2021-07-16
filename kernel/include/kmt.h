@@ -15,7 +15,7 @@ uint8_t spinlock_holding(spinlock_t* lk);
 void spinlock_pushcli();
 void spinlock_popcli();
 
-/* sem */
+/* semaphore */
 
 void sem_init(sem_t* sem, const char* name, int value);
 void sem_wait(sem_t* sem);
