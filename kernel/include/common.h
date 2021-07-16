@@ -31,10 +31,8 @@
 #define Log(...)
 #endif
 
-/*
-extern struct task;
-extern struct sem;
-extern struct spin_lock;
-*/
+typedef struct task task_t;
+typedef struct spinlock spinlock_t;
+typedef struct semaphore sem_t;
 
 #endif
