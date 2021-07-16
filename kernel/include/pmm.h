@@ -53,6 +53,8 @@ uint8_t calorder(size_t size);
 #define BREAKPOINT(a) Log("BREAKPOINT:" #a "\n")
 #define align(base, offset) (((base + offset - 1) / offset) * offset) // Right align
 
+#define lock_t int
+
 inline void lock(lock_t* lk)
 {
     while (atomic_xchg(lk, 1))

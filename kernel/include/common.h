@@ -18,9 +18,6 @@
 #define MAX_CPU_NUM 8
 
 #define MAX_TASK_NUM 8
-#define lock_t int
-
-
 
 #define DEBUG
 
