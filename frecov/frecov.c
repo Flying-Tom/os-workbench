@@ -27,6 +27,6 @@ __attribute__((constructor)) void struct_check()
     panic(sizeof(fat_header) == 512, "bad fat_header");
     panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
     panic(sizeof(DIR_t) == 32, "bad DIR");
-    panic(sizeof(LDIR_t) == 6, "bad LDIR");
+    panic(sizeof(LDIR_t) == 32, "bad LDIR");
     printf("hello world\n");
 }
