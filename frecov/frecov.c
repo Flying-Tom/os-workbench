@@ -30,7 +30,7 @@ int main(int argc, char* argv[])
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
             //printf("%s\n", dir->DIR_Name);
             bool isLDIR = false;
-            for (int i = 0; i < 6; i++) {
+            for (int i = 0; i < 7; i++) {
                 if (!isdigit(dir->DIR_Name[i]) && !isupper(dir->DIR_Name[i]) && !islower(dir->DIR_Name[i])) {
                     isLDIR = true;
                     break;
