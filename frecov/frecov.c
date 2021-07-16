@@ -2,8 +2,7 @@
 
 int main(int argc, char* argv[])
 {
-    panic(sizeof(fat_header) == 512, "bad fat_header");
-    panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
+
     panic(argc == 2, "Wrong args : argc != 2");
     char* disk_path = argv[1];
     FILE* fp = fopen(disk_path, "rb");
@@ -25,5 +24,9 @@ int main(int argc, char* argv[])
 
 __attribute__((constructor)) void struct_check()
 {
+    panic(sizeof(fat_header) == 512, "bad fat_header");
+    panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
+    panic(sizeof(DIR_t) == 32, "bad DIR");
+    panic(sizeof(LDIR_t) == 6, "bad LDIR");
     printf("hello world\n");
 }
