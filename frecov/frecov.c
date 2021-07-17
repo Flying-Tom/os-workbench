@@ -140,7 +140,7 @@ int main(int argc, char* argv[])
     panic(strncmp((char*)disk->BS_FilSysType, "FAT32", 5) == 0, "FAT header Error | BS_FilSysTypem : %s", (char*)disk->BS_FilSysType);
     panic(disk->Signature_word == 0xaa55, "FAT header Error | Signature_word : %x ", disk->Signature_word);
 
-    void* cluster_addr = (void*)(img_addr + (disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
+    void* cluster_addr = (void*)((uintptr_t)img_addr + (uintptr_t)(disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
     close(fd);
     fclose(fp);
     DIR_t* dir = (DIR_t*)(cluster_addr);
