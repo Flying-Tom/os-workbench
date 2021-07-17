@@ -97,13 +97,13 @@ typedef struct DIR {
 
 typedef struct LDIR {
     uint8_t LDIR_Ord;
-    uint8_t LDIR_Name1[10];
+    uint16_t LDIR_Name1[5];
     uint8_t LDIR_Attr;
     uint8_t LDIR_Type;
     uint8_t LDIR_Chksum;
-    uint8_t LDIR_Name2[12];
+    uint16_t LDIR_Name2[6];
     uint16_t LDIR_FstClusLO;
-    uint32_t LDIR_Name3;
+    uint16_t LDIR_Name3[2];
 
 } __attribute__((packed)) LDIR_t;
 
