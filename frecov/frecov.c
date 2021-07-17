@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
     panic(strncmp((char*)disk->BS_FilSysType, "FAT32", 5) == 0, "FAT header Error | BS_FilSysTypem : %s", (char*)disk->BS_FilSysType);
     panic(disk->Signature_word == 0xaa55, "FAT header Error | Signature_word : %x ", disk->Signature_word);
 
-    void* cluster_addr = (void*)(img_addr + (disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + disk->BPB_HiddSec) * disk->BPB_BytsPerSec);
+    void* cluster_addr = (void*)(img_addr + (disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
     close(fd);
     fclose(fp);
 
@@ -158,7 +158,7 @@ int main(int argc, char* argv[])
             if (dir->DIR_Name[6] == '~') {
                 memset(name_buf, '\0', sizeof(name_buf));
                 LDIR_t* ldir = (LDIR_t*)(dir - 1);
-                while (ldir->LDIR_Attr == 0x0f) {
+                while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
                     bool over = false;
                     cnt = 0;
                     for (int i = 0; i < 5; i++) {
