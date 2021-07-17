@@ -88,6 +88,6 @@ __attribute__((constructor)) void struct_check()
     panic(sizeof(bmp_header) == 0x36, "bad bmp_header");
     panic(sizeof(DIR_t) == 32, "bad DIR");
     panic(sizeof(LDIR_t) == 32, "bad LDIR");
-    printf("%c", 0xe5);
+    //printf("%c", 0xe5);
     //printf("hello world\n");
 }
