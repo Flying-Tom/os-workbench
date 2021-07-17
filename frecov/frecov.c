@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
             int name_buf_cnt = 0;
             for (int cnt = 1, i = 1; (uintptr_t)(ldir) >= (uintptr_t)cluster_addr && i <= 10; i++) {
-                if (ldir->LDIR_Chksum == chksum && ldir->LDIR_Ord & 0x0f == cnt) {
+                if (ldir->LDIR_Chksum == chksum && (ldir->LDIR_Ord & 0x0f) == cnt) {
                     cnt++;
                     for (int j = 0; j < 5; j++)
                         name_buf[name_buf_cnt++] = ldir->LDIR_Name1[j];
