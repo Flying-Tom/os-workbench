@@ -184,12 +184,13 @@ int main(int argc, char* argv[])
                         }
                     }
                     if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
+                        break;
+                    }
+                    if (strlen(bmp_name[bmp_name_cnt]) > 40) {
                         memset(bmp_name[bmp_name_cnt], '\0', sizeof(bmp_name[bmp_name_cnt]));
                         bmp_name_cnt--;
                         break;
                     }
-                    if (strlen(bmp_name[bmp_name_cnt]) > 40)
-                        break;
                     ldir--;
                 }
 
