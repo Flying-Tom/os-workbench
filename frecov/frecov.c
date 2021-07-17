@@ -163,7 +163,7 @@ int main(int argc, char* argv[])
                             over = true;
                             break;
                         }
-                        bmp_name[cnt++] = ldir->LDIR_Name1[i];
+                        bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name1[i];
                     }
                     if (!over) {
                         for (int i = 0; i < 6; i++) {
@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
                                 over = true;
                                 break;
                             }
-                            bmp_name[cnt++] = ldir->LDIR_Name2[i];
+                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name2[i];
                         }
                     }
                     if (!over) {
@@ -180,7 +180,7 @@ int main(int argc, char* argv[])
                                 over = true;
                                 break;
                             }
-                            bmp_name[cnt++] = ldir->LDIR_Name3[i];
+                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
                 }
