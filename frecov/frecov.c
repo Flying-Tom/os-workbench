@@ -143,7 +143,7 @@ int main(int argc, char* argv[])
     fclose(fp);
 
     uintptr_t addr;
-    DIR_t* dir = (DIR_t*)((uintptr_t)cluster_addr);
+    DIR_t* dir = (DIR_t*)(cluster_addr);
     while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
 
         if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[0] == 0x0f)
