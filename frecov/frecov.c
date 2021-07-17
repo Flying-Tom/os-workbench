@@ -156,6 +156,7 @@ int main(int argc, char* argv[])
         if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) {
             bmp_name_cnt++;
             if (dir->DIR_Name[6] == '~') {
+                memset(name_buf, '\0', sizeof(name_buf));
                 LDIR_t* ldir = (LDIR_t*)(dir - 1);
                 while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
                     bool over = false;
@@ -165,7 +166,8 @@ int main(int argc, char* argv[])
                             over = true;
                             break;
                         }
-                        bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name1[i];
+                        name_buf[cnt++] = ldir->LDIR_Name1[i];
+                        //bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name1[i];
                     }
                     if (!over) {
                         for (int i = 0; i < 6; i++) {
@@ -173,7 +175,8 @@ int main(int argc, char* argv[])
                                 over = true;
                                 break;
                             }
-                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name2[i];
+                            name_buf[cnt++] = ldir->LDIR_Name2[i];
+                            //bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name2[i];
                         }
                     }
                     if (!over) {
@@ -182,17 +185,17 @@ int main(int argc, char* argv[])
                                 over = true;
                                 break;
                             }
-                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
+                            //bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
+                            name_buf[cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
                     if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
+                        printf("123 %s\n", name_buf);
                         break;
                     }
-                    if (strlen(bmp_name[bmp_name_cnt]) > 40) {
-                        memset(bmp_name[bmp_name_cnt], '\0', sizeof(bmp_name[bmp_name_cnt]));
-                        bmp_name_cnt--;
+                    if (strlen(bmp_name[bmp_name_cnt]) > 40)
                         break;
-                    }
+
                     ldir--;
                 }
 
@@ -200,17 +203,12 @@ int main(int argc, char* argv[])
                 for (int i = 0; i < 8; i++) {
                     if (dir->DIR_Name[i] == 0x20)
                         break;
-                    bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
-                    bmp_name[bmp_name_cnt][8] = '.';
-                    bmp_name[bmp_name_cnt][9] = 'b';
-                    bmp_name[bmp_name_cnt][10] = 'm';
-                    bmp_name[bmp_name_cnt][11] = 'p';
+                    //bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
+                    name_buf[i] = dir->DIR_Name[i];
                 }
+                printf("123 %s\n", name_buf);
             }
         }
-    }
-    for (int i = 1; i <= bmp_name_cnt; i++) {
-        printf("123 %s\n", bmp_name[i]);
     }
 }
 
