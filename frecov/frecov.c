@@ -146,7 +146,7 @@ int main(int argc, char* argv[])
     DIR_t* dir = (DIR_t*)(cluster_addr);
     while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
 
-        if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[0] == 0x0f)
+        if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[11] == 0x0f)
             continue;
 
         /*
