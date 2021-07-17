@@ -67,9 +67,9 @@ int main(int argc, char* argv[])
                     for (int j = 0; j < 5; j++)
                         name_buf[name_buf_cnt++] = ldir->LDIR_Name1[j];
                     for (int j = 0; j < 6; j++)
-                        name_buf[name_buf_cnt++] = ldir->LDIR_Name1[j];
+                        name_buf[name_buf_cnt++] = ldir->LDIR_Name2[j];
                     for (int j = 0; j < 2; j++)
-                        name_buf[name_buf_cnt++] = ldir->LDIR_Name1[j];
+                        name_buf[name_buf_cnt++] = ldir->LDIR_Name3[j];
                 }
                 if ((ldir->LDIR_Ord & 0x40) && ldir->LDIR_Chksum == chksum)
                     break;
