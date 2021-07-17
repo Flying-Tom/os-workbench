@@ -1,5 +1,16 @@
 #include "frecov.h"
 
+unsigned char ChkSum(unsigned char* pFcbName)
+{
+    short FcbNameLen;
+    unsigned char Sum;
+    Sum = 0;
+    for (FcbNameLen = 11; FcbNameLen != 0; FcbNameLen--) {
+        Sum = ((Sum & 1) ? 0x80 : 0) + (Sum >> 1) + *pFcbName++;
+    }
+    return (Sum);
+}
+
 int main(int argc, char* argv[])
 {
 
