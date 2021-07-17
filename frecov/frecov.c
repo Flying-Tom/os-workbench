@@ -153,7 +153,7 @@ int main(int argc, char* argv[])
             continue;
         */
 
-        if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0 && dir->DIR_NTRes == 0) {
+        if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) {
             bmp_name_cnt++;
             if (dir->DIR_Name[6] == '~') {
                 LDIR_t* ldir = (LDIR_t*)(dir - 1);
