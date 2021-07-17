@@ -183,8 +183,11 @@ int main(int argc, char* argv[])
                             bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
-                    if ((ldir->LDIR_Ord >> 6 & 1) == 1)
+                    if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
+                        memset(bmp_name[bmp_name_cnt], '\0', sizeof(bmp_name[bmp_name_cnt]));
+                        bmp_name_cnt--;
                         break;
+                    }
                     if (strlen(bmp_name[bmp_name_cnt]) > 40)
                         break;
                     ldir--;
