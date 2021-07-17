@@ -191,12 +191,16 @@ int main(int argc, char* argv[])
                     if (dir->DIR_Name[i] == 0x20)
                         break;
                     bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
+                    bmp_name[bmp_name_cnt][8] = '.';
+                    bmp_name[bmp_name_cnt][9] = 'b';
+                    bmp_name[bmp_name_cnt][10] = 'm';
+                    bmp_name[bmp_name_cnt][11] = 'p';
                 }
             }
         }
     }
     for (int i = 1; i <= bmp_name_cnt; i++) {
-        printf("123 %s.bmp\n", bmp_name[i]);
+        printf("123 %s\n", bmp_name[i]);
     }
 }
 
