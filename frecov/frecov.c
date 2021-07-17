@@ -115,6 +115,8 @@ typedef struct LDIR {
 #define ATTR_ARCHIVE 0x20
 
 #define ATTR_LONG_NAME (ATTR_READ_ONLY | ATTR_HIDDEN | ATTR_SYSTEM | ATTR_VOLUME_ID)
+
+#define check(x, pos) ((x) >> (pos)&1)
 /* ==========================================================*/
 char name_buf[256];
 int bmp_name_cnt = 0, cnt = 0;
@@ -139,8 +141,8 @@ int main(int argc, char* argv[])
     panic(disk->Signature_word == 0xaa55, "FAT header Error | Signature_word : %x ", disk->Signature_word);
 
     void* cluster_addr = (void*)(img_addr + (disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
-    //close(fd);
-    //fclose(fp);
+    close(fd);
+    fclose(fp);
     DIR_t* dir = (DIR_t*)(cluster_addr);
     while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
 
@@ -187,7 +189,7 @@ int main(int argc, char* argv[])
                             name_buf[cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
-                    if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
+                    if (check(ldir->LDIR_Ord, 6) == 1) {
                         printf("123 %s\n", name_buf);
                         break;
                     }
