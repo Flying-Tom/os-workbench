@@ -117,17 +117,9 @@ typedef struct LDIR {
 #define ATTR_LONG_NAME (ATTR_READ_ONLY | ATTR_HIDDEN | ATTR_SYSTEM | ATTR_VOLUME_ID)
 /* ==========================================================*/
 char name_buf[256];
+int bmp_name_cnt = 0;
 
-unsigned char ChkSum(unsigned char* pFcbName)
-{
-    short FcbNameLen;
-    unsigned char Sum;
-    Sum = 0;
-    for (FcbNameLen = 11; FcbNameLen != 0; FcbNameLen--) {
-        Sum = ((Sum & 1) ? 0x80 : 0) + (Sum >> 1) + *pFcbName++;
-    }
-    return (Sum);
-}
+char bmp_name[256][32];
 
 int main(int argc, char* argv[])
 {
@@ -153,52 +145,23 @@ int main(int argc, char* argv[])
     uintptr_t addr;
     for (addr = (uintptr_t)cluster_addr; addr < img_addr + img_size; addr += sizeof(DIR_t)) {
         DIR_t* dir = (DIR_t*)addr;
+        if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[0] == 0x0f)
+            continue;
+
         if (dir->DIR_Attr == ATTR_LONG_NAME)
             continue;
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
-            //printf("%s\n", dir->DIR_Name);
+            if (dir->DIR_Name[6] == '~') {
 
-            memset(name_buf, '\0', sizeof(name_buf));
-            bool isLDIR = false;
-            for (int i = 0; i < 7; i++) {
-                if (!isdigit(dir->DIR_Name[i]) && !isupper(dir->DIR_Name[i]) && !islower(dir->DIR_Name[i])) {
-                    isLDIR = true;
-                    break;
+            } else {
+                for (int i = 0; i < 8; i++) {
+                    if (dir->DIR_Name[i] == 0x20)
+                        break;
+                    bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
                 }
             }
-            if (isLDIR)
-                continue;
-
-            unsigned char chksum = ChkSum((unsigned char*)dir->DIR_Name);
-
-            LDIR_t* ldir = (LDIR_t*)(addr - sizeof(DIR_t));
-            if (ldir->LDIR_Attr != ATTR_LONG_NAME)
-                continue;
-
-            int name_buf_cnt = 0;
-            for (int cnt = 1, i = 1; (uintptr_t)(ldir) >= (uintptr_t)cluster_addr && i <= 10; i++) {
-                if (ldir->LDIR_Chksum == chksum && (ldir->LDIR_Ord & 0x0f) == cnt) {
-                    cnt++;
-                    for (int j = 0; j < 5; j++)
-                        name_buf[name_buf_cnt++] = ldir->LDIR_Name1[j];
-                    for (int j = 0; j < 6; j++)
-                        name_buf[name_buf_cnt++] = ldir->LDIR_Name2[j];
-                    for (int j = 0; j < 2; j++)
-                        name_buf[name_buf_cnt++] = ldir->LDIR_Name3[j];
-                }
-                if ((ldir->LDIR_Ord & 0x40) && ldir->LDIR_Chksum == chksum)
-                    break;
-                else
-                    ldir--;
-            }
-
-            printf("%d %s\n", name_buf_cnt, name_buf);
-            /*
-            for (int i = 0; i < 13; i++)
-                printf("%c", name_buf[i]);
-            printf("\n");
-            */
+            bmp_name_cnt++;
         }
     }
 }
