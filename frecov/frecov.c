@@ -119,7 +119,7 @@ typedef struct LDIR {
 char name_buf[256];
 int bmp_name_cnt = 0, cnt = 0;
 
-char bmp_name[256][32];
+char bmp_name[256][64];
 
 int main(int argc, char* argv[])
 {
