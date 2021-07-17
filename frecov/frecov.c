@@ -183,6 +183,7 @@ int main(int argc, char* argv[])
                             bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
+                    ldir--;
                 }
 
             } else {
@@ -194,7 +195,6 @@ int main(int argc, char* argv[])
             }
         }
     }
-    printf("1\n");
     for (int i = 1; i <= bmp_name_cnt; i++) {
         printf("123 %s.bmp\n", bmp_name[i]);
     }
@@ -208,5 +208,5 @@ __attribute__((constructor)) void struct_check()
     panic(sizeof(LDIR_t) == 32, "bad LDIR");
     //printf("%c", 0xe5);
     //printf("hello world\n");
-    printf("%x\n", ATTR_LONG_NAME);
+    //printf("%x\n", ATTR_LONG_NAME);
 }
