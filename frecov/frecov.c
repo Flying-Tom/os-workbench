@@ -152,10 +152,10 @@ int main(int argc, char* argv[])
             continue;
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
-            bmp_name_cnt++;
             if (dir->DIR_Name[6] == '~') {
 
             } else {
+                bmp_name_cnt++;
                 for (int i = 0; i < 8; i++) {
                     if (dir->DIR_Name[i] == 0x20)
                         break;
