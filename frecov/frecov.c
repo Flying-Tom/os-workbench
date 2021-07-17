@@ -157,10 +157,10 @@ int main(int argc, char* argv[])
         if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) {
             if (dir->DIR_Name[6] == '~') {
                 memset(name_buf, '\0', sizeof(name_buf));
+                cnt = 0;
                 LDIR_t* ldir = (LDIR_t*)(dir - 1);
                 while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
                     bool over = false;
-                    cnt = 0;
                     for (int i = 0; i < 5; i++) {
                         if (ldir->LDIR_Name1[i] == 0x00) {
                             over = true;
