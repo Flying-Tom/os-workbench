@@ -152,6 +152,7 @@ int main(int argc, char* argv[])
             continue;
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
+            bmp_name_cnt++;
             if (dir->DIR_Name[6] == '~') {
 
             } else {
@@ -161,8 +162,10 @@ int main(int argc, char* argv[])
                     bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
                 }
             }
-            bmp_name_cnt++;
         }
+    }
+    for (int i = 1; i <= bmp_name_cnt; i++) {
+        printf("123 %s\n", bmp_name[i]);
     }
 }
 
