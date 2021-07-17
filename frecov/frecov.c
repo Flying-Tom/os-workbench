@@ -77,7 +77,7 @@ int main(int argc, char* argv[])
                     ldir--;
             }
 
-            printf("%s\n", name_buf);
+            printf("%d %s\n", name_buf_cnt, name_buf);
         }
     }
 }
