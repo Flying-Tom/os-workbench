@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
     uint32_t img_size = ftell(fp);
     int fd = open(disk_path, O_RDONLY);
 
-    uintptr_t img_addr = (uintptr_t)mmap(NULL, img_size, PROT_READ, MAP_SHARED, fd, 0);
+    void* img_addr = mmap(NULL, img_size, PROT_READ, MAP_SHARED, fd, 0);
     fat_header* disk = (fat_header*)img_addr;
 
     panic(strncmp((char*)disk->BS_FilSysType, "FAT32", 5) == 0, "FAT header Error | BS_FilSysTypem : %s", (char*)disk->BS_FilSysType);
@@ -143,8 +143,9 @@ int main(int argc, char* argv[])
     fclose(fp);
 
     uintptr_t addr;
-    for (addr = (uintptr_t)cluster_addr; addr < img_addr + img_size; addr += sizeof(DIR_t)) {
-        DIR_t* dir = (DIR_t*)addr;
+    DIR_t* dir = (DIR_t*)((uintptr_t)img_addr + (uintptr_t)cluster_addr);
+    while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
+
         if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[0] == 0x0f)
             continue;
 
