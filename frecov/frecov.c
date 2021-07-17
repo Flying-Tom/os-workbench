@@ -194,6 +194,7 @@ int main(int argc, char* argv[])
             }
         }
     }
+    printf("1\n");
     for (int i = 1; i <= bmp_name_cnt; i++) {
         printf("123 %s.bmp\n", bmp_name[i]);
     }
