@@ -148,8 +148,10 @@ int main(int argc, char* argv[])
         if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[0] == 0x0f)
             continue;
 
+        /*
         if (dir->DIR_Attr == ATTR_LONG_NAME)
             continue;
+        */
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
             bmp_name_cnt++;
