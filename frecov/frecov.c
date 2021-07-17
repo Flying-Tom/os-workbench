@@ -139,10 +139,8 @@ int main(int argc, char* argv[])
     panic(disk->Signature_word == 0xaa55, "FAT header Error | Signature_word : %x ", disk->Signature_word);
 
     void* cluster_addr = (void*)(img_addr + (disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
-    close(fd);
-    fclose(fp);
-
-    uintptr_t addr;
+    //close(fd);
+    //fclose(fp);
     DIR_t* dir = (DIR_t*)(cluster_addr);
     while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
 
