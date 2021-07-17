@@ -153,62 +153,61 @@ int main(int argc, char* argv[])
             continue;
         */
 
-        if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0)
-            {
-                bmp_name_cnt++;
-                if (dir->DIR_Name[6] == '~') {
-                    LDIR_t* ldir = (LDIR_t*)(dir - 1);
-                    while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
-                        bool over = false;
-                        cnt = 0;
-                        for (int i = 0; i < 5; i++) {
-                            if (ldir->LDIR_Name1[i] == 0x00) {
+        if (strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0 && dir->DIR_NTRes == 0) {
+            bmp_name_cnt++;
+            if (dir->DIR_Name[6] == '~') {
+                LDIR_t* ldir = (LDIR_t*)(dir - 1);
+                while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
+                    bool over = false;
+                    cnt = 0;
+                    for (int i = 0; i < 5; i++) {
+                        if (ldir->LDIR_Name1[i] == 0x00) {
+                            over = true;
+                            break;
+                        }
+                        bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name1[i];
+                    }
+                    if (!over) {
+                        for (int i = 0; i < 6; i++) {
+                            if (ldir->LDIR_Name2[i] == 0xffff) {
                                 over = true;
                                 break;
                             }
-                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name1[i];
+                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name2[i];
                         }
-                        if (!over) {
-                            for (int i = 0; i < 6; i++) {
-                                if (ldir->LDIR_Name2[i] == 0xffff) {
-                                    over = true;
-                                    break;
-                                }
-                                bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name2[i];
-                            }
-                        }
-                        if (!over) {
-                            for (int i = 0; i < 2; i++) {
-                                if (ldir->LDIR_Name3[i] == 0xffff) {
-                                    over = true;
-                                    break;
-                                }
-                                bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
-                            }
-                        }
-                        if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
-                            break;
-                        }
-                        if (strlen(bmp_name[bmp_name_cnt]) > 40) {
-                            memset(bmp_name[bmp_name_cnt], '\0', sizeof(bmp_name[bmp_name_cnt]));
-                            bmp_name_cnt--;
-                            break;
-                        }
-                        ldir--;
                     }
+                    if (!over) {
+                        for (int i = 0; i < 2; i++) {
+                            if (ldir->LDIR_Name3[i] == 0xffff) {
+                                over = true;
+                                break;
+                            }
+                            bmp_name[bmp_name_cnt][cnt++] = ldir->LDIR_Name3[i];
+                        }
+                    }
+                    if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
+                        break;
+                    }
+                    if (strlen(bmp_name[bmp_name_cnt]) > 40) {
+                        memset(bmp_name[bmp_name_cnt], '\0', sizeof(bmp_name[bmp_name_cnt]));
+                        bmp_name_cnt--;
+                        break;
+                    }
+                    ldir--;
+                }
 
-                } else {
-                    for (int i = 0; i < 8; i++) {
-                        if (dir->DIR_Name[i] == 0x20)
-                            break;
-                        bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
-                        bmp_name[bmp_name_cnt][8] = '.';
-                        bmp_name[bmp_name_cnt][9] = 'b';
-                        bmp_name[bmp_name_cnt][10] = 'm';
-                        bmp_name[bmp_name_cnt][11] = 'p';
-                    }
+            } else {
+                for (int i = 0; i < 8; i++) {
+                    if (dir->DIR_Name[i] == 0x20)
+                        break;
+                    bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
+                    bmp_name[bmp_name_cnt][8] = '.';
+                    bmp_name[bmp_name_cnt][9] = 'b';
+                    bmp_name[bmp_name_cnt][10] = 'm';
+                    bmp_name[bmp_name_cnt][11] = 'p';
                 }
             }
+        }
     }
     for (int i = 1; i <= bmp_name_cnt; i++) {
         printf("123 %s\n", bmp_name[i]);
