@@ -193,10 +193,12 @@ int main(int argc, char* argv[])
                     ldir--;
             }
 
-            //printf("%d %s\n", name_buf_cnt, name_buf);
+            printf("%d %s\n", name_buf_cnt, name_buf);
+            /*
             for (int i = 0; i < 13; i++)
                 printf("%c", name_buf[i]);
             printf("\n");
+            */
         }
     }
 }
