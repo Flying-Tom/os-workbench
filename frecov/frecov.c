@@ -117,7 +117,7 @@ typedef struct LDIR {
 #define ATTR_LONG_NAME (ATTR_READ_ONLY | ATTR_HIDDEN | ATTR_SYSTEM | ATTR_VOLUME_ID)
 /* ==========================================================*/
 char name_buf[256];
-int bmp_name_cnt = 0;
+int bmp_name_cnt = 0, cnt = 0;
 
 char bmp_name[256][32];
 
@@ -152,10 +152,40 @@ int main(int argc, char* argv[])
             continue;
 
         if ((strncmp((char*)(dir->DIR_Name + 8), "bmp", 3) == 0 || strncmp((char*)(dir->DIR_Name + 8), "BMP", 3) == 0) && dir->DIR_NTRes == 0) {
+            bmp_name_cnt++;
             if (dir->DIR_Name[6] == '~') {
+                LDIR_t* ldir = (LDIR_t*)(dir - 1);
+                while (ldir->LDIR_Attr == ATTR_LONG_NAME) {
+                    bool over = false;
+                    cnt = 0;
+                    for (int i = 0; i < 5; i++) {
+                        if (ldir->LDIR_Name1[i] == 0x00) {
+                            over = true;
+                            break;
+                        }
+                        bmp_name[cnt++] = ldir->LDIR_Name1[i];
+                    }
+                    if (!over) {
+                        for (int i = 0; i < 6; i++) {
+                            if (ldir->LDIR_Name2[i] == 0xffff) {
+                                over = true;
+                                break;
+                            }
+                            bmp_name[cnt++] = ldir->LDIR_Name2[i];
+                        }
+                    }
+                    if (!over) {
+                        for (int i = 0; i < 2; i++) {
+                            if (ldir->LDIR_Name3[i] == 0xffff) {
+                                over = true;
+                                break;
+                            }
+                            bmp_name[cnt++] = ldir->LDIR_Name3[i];
+                        }
+                    }
+                }
 
             } else {
-                bmp_name_cnt++;
                 for (int i = 0; i < 8; i++) {
                     if (dir->DIR_Name[i] == 0x20)
                         break;
