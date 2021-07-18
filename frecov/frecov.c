@@ -189,7 +189,7 @@ int main(int argc, char* argv[])
                             name_buf[cnt++] = ldir->LDIR_Name3[i];
                         }
                     }
-                    if (check(ldir->LDIR_Ord, 6) == 1) {
+                    if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
                         printf("123 %s\n", name_buf);
                         break;
                     }
