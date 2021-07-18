@@ -116,12 +116,9 @@ typedef struct LDIR {
 
 #define ATTR_LONG_NAME (ATTR_READ_ONLY | ATTR_HIDDEN | ATTR_SYSTEM | ATTR_VOLUME_ID)
 
-#define check(x, pos) ((x) >> (pos)&1)
 /* ==========================================================*/
 char name_buf[256];
-int bmp_name_cnt = 0, cnt = 0;
-
-char bmp_name[256][64];
+int cnt = 0;
 
 int main(int argc, char* argv[])
 {
@@ -193,7 +190,7 @@ int main(int argc, char* argv[])
                         printf("123 %s\n", name_buf);
                         break;
                     }
-                    if (strlen(bmp_name[bmp_name_cnt]) > 40)
+                    if (strlen(name_buf) > 40)
                         break;
 
                     ldir--;
