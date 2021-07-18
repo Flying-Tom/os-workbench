@@ -140,11 +140,13 @@ int main(int argc, char* argv[])
     void* cluster_addr = (void*)((uintptr_t)img_addr + (uintptr_t)(disk->BPB_RsvdSecCnt + disk->BPB_NumFATs * disk->BPB_FATSz32 + (disk->BPB_RootClus - 2) * disk->BPB_SecPerClus) * disk->BPB_BytsPerSec);
     close(fd);
     fclose(fp);
-    DIR_t* dir = (DIR_t*)(cluster_addr);
-    while ((uintptr_t)dir++ < (uintptr_t)(img_addr + img_size)) {
 
-        //if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[11] == 0x0f)
-        //    continue;
+    uintptr_t addr = (uintptr_t)cluster_addr;
+    for (; addr < (uintptr_t)img_addr + img_size; addr += sizeof *DIR_t) {
+
+        DIR_t* dir = (DIR_t*)addr;
+        if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[11] == 0x0f)
+            continue;
 
         //if (dir->DIR_Attr == ATTR_LONG_NAME)
         //    continue;
