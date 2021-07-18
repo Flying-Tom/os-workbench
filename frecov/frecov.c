@@ -142,7 +142,7 @@ int main(int argc, char* argv[])
     fclose(fp);
 
     uintptr_t addr = (uintptr_t)cluster_addr;
-    for (; addr < (uintptr_t)img_addr + img_size; addr += sizeof *DIR_t) {
+    for (; addr < (uintptr_t)img_addr + img_size; addr += sizeof(DIR_t)) {
 
         DIR_t* dir = (DIR_t*)addr;
         if (dir->DIR_Name[0] == 0x00 || dir->DIR_Name[0] == 0xe5 || dir->DIR_Name[11] == 0x0f)
