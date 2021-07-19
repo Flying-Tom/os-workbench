@@ -67,7 +67,7 @@ static void os_init()
     for (int i = 0; i < 5; i++) // 5 个消费者
         kmt->create(pmm->alloc(sizeof(task_t)), "consumer", consumer, NULL);
 
-    kmt->create(pmm->alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
+    //kmt->create(pmm->alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
     //kmt->create(pmm->alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
     printf("End Testcase\n");
 }
