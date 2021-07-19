@@ -101,7 +101,6 @@ static Context* os_trap(Event ev, Context* context)
     return ret;
 }
 
-
 static void os_on_irq(int seq, int event, handler_t handler)
 {
     int cnt;
