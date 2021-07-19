@@ -7,7 +7,7 @@ static trap_handler_t trap_handlers[SEQ_MAX][TRAP_HANDLER_MAX_NUM];
 
 static void trap_init()
 {
-    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
+    for (int i = SEQ_MIN; i <= SEQ_MAX; i++) {
         for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
             trap_handlers[i][j].handler = NULL;
             trap_handlers[i][j].status = TRAP_EMPTY;
@@ -90,10 +90,10 @@ static void os_run()
 
 static Context* os_trap(Event ev, Context* context)
 {
-    printf("Enter os_trap\n");
+    //printf("Enter os_trap\n");
     Context* ret = NULL;
 
-    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
+    for (int i = SEQ_MIN; i <= SEQ_MAX; i++) {
         for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
             if (trap_handlers[i][j].status == TRAP_USED) {
                 if (trap_handlers[i][j].event == EVENT_NULL || trap_handlers[i][j].event == ev.event) {
