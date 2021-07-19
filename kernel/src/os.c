@@ -111,6 +111,7 @@ static void os_on_irq(int seq, int event, handler_t handler)
     }
 
     assert(cnt < TRAP_HANDLER_MAX_NUM);
+    Log("trap_handlers[%d][%d] is available\n", seq, cnt);
     trap_handlers[seq][cnt].status = 1;
     trap_handlers[seq][cnt].seq = seq;
     trap_handlers[seq][cnt].event = event;
