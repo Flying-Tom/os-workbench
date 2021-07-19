@@ -3,7 +3,7 @@
 
 //#define DEBUG_LOCAL
 
-static trap_handler_t trap_handlers[SEQ_MAX][TRAP_HANDLER_MAX_NUM];
+static trap_handler_t trap_handlers[SEQ_MAX + 1][TRAP_HANDLER_MAX_NUM];
 
 static void trap_init()
 {
