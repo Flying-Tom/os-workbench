@@ -11,12 +11,12 @@
 #define CPU_NUM (uint8_t)(cpu_count())
 #define MAX_CPU_NUM 8
 
-#define MAX_TASK_NUM 32
+#define MAX_TASK_NUM 24
 #define lock_t int
 
 #define KMT_DEBUG
 
-#define STACK_SIZE 8192
+#define STACK_SIZE 4096
 
 struct task {
 
@@ -47,7 +47,7 @@ struct semaphore {
 };
 
 #define SEQ_MIN 0
-#define SEQ_MAX 16
+#define SEQ_MAX 4
 
 #define TRAP_HANDLER_MAX_NUM 16
 
