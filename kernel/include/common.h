@@ -4,12 +4,8 @@
 #include <kernel.h>
 #include <klib-macros.h>
 #include <klib.h>
-
 #include <limits.h>
-
-
-#define max(a, b) ((a > b) ? (a) : (b))
-#define min(a, b) ((a < b) ? (a) : (b))
+#include <tool.h>
 
 #define CPU_CUR (uint8_t)(cpu_current())
 #define CPU_NUM (uint8_t)(cpu_count())
@@ -19,10 +15,6 @@
 #define lock_t int
 
 #define KMT_DEBUG
-
-#define _Log(format, ...)                            \
-    printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
-        __FILE__, __LINE__, __func__, ##__VA_ARGS__)
 
 #define STACK_SIZE 8192
 
