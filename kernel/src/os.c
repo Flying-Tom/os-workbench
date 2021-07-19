@@ -5,6 +5,17 @@
 
 static trap_handler_t trap_handlers[SEQ_MAX][TRAP_HANDLER_MAX_NUM];
 
+static void trap_init()
+{
+    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
+        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
+            trap_handlers[i][j].handler = NULL;
+            trap_handlers[i][j].status = 0;
+        }
+    }
+}
+
+#ifdef DEBUG_LOCAL
 static void tty_reader(void* arg)
 {
     device_t* tty = dev->lookup(arg);
@@ -19,17 +30,6 @@ static void tty_reader(void* arg)
     }
 }
 
-static void trap_init()
-{
-    for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
-        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
-            trap_handlers[i][j].handler = NULL;
-            trap_handlers[i][j].status = 0;
-        }
-    }
-}
-
-#ifdef DEBUG_LOCAL
 sem_t empty, fill;
 #define P kmt->sem_wait
 #define V kmt->sem_signal
