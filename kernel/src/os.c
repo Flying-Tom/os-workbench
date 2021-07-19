@@ -10,7 +10,7 @@ static void trap_init()
     for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
         for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
             trap_handlers[i][j].handler = NULL;
-            trap_handlers[i][j].status = 0;
+            trap_handlers[i][j].status = TRAP_EMPTY;
         }
     }
 }
@@ -83,7 +83,7 @@ static void os_init()
 
 static void os_run()
 {
-    //iset(true);
+    iset(true);
     while (1)
         ;
 }
@@ -95,7 +95,7 @@ static Context* os_trap(Event ev, Context* context)
 
     for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
         for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
-            if (trap_handlers[i][j].status == 1) {
+            if (trap_handlers[i][j].status == TRAP_USED) {
                 if (trap_handlers[i][j].event == EVENT_NULL || trap_handlers[i][j].event == ev.event) {
                     Context* r = trap_handlers[i][j].handler(ev, context);
                     panic_on(r && ret, "returning multiple contexts");
@@ -115,14 +115,14 @@ static void os_on_irq(int seq, int event, handler_t handler)
 {
     int cnt;
     for (cnt = SEQ_MIN; cnt < TRAP_HANDLER_MAX_NUM; cnt++) {
-        if (trap_handlers[seq][cnt].status == 0) {
+        if (trap_handlers[seq][cnt].status == TRAP_EMPTY) {
             break;
         }
     }
 
     assert(cnt < TRAP_HANDLER_MAX_NUM);
     //Log("trap_handlers[%d][%d] is available\n", seq, cnt);
-    trap_handlers[seq][cnt].status = 1;
+    trap_handlers[seq][cnt].status = TRAP_USED;
     trap_handlers[seq][cnt].seq = seq;
     trap_handlers[seq][cnt].event = event;
     trap_handlers[seq][cnt].handler = handler;

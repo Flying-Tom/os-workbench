@@ -66,7 +66,10 @@ struct trap_handler {
     int seq;
     int event;
     handler_t handler;
-    int status;
+    enum trap_status {
+        TRAP_EMPTY,
+        TRAP_USED,
+    } status;
 };
 
 typedef struct trap_handler trap_handler_t;
