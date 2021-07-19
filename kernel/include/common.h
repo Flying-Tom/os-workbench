@@ -7,9 +7,6 @@
 
 #include <limits.h>
 
-#define KB *(1L << 10)
-#define MB *(1L << 20)
-#define GB *(1L << 30)
 
 #define max(a, b) ((a > b) ? (a) : (b))
 #define min(a, b) ((a < b) ? (a) : (b))

@@ -2,6 +2,10 @@
 #define PMM_H
 #include <common.h>
 
+#define KB *(1L << 10)
+#define MB *(1L << 20)
+#define GB *(1L << 30)
+
 /* slab system */
 #define PAGE_SIZE (4 KB)
 #define PAGE_LMASK ~(uintptr_t)(PAGE_SIZE - 1)
