@@ -1,4 +1,5 @@
 #include <common.h>
+#include <devices.h>
 
 #define DEBUG_LOCAL
 
