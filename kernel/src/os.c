@@ -69,7 +69,7 @@ static void os_init()
 
     //kmt->create(pmm->alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty1");
     //kmt->create(pmm->alloc(sizeof(task_t)), "tty_reader", tty_reader, "tty2");
-    fflush(stdout);
+    printf("\n");
     printf("End Testcase\n");
 }
 #else
