@@ -1,7 +1,7 @@
 #include <common.h>
 #include <devices.h>
 
-#define DEBUG_LOCAL
+//#define DEBUG_LOCAL
 
 static trap_handler_t trap_handlers[SEQ_MAX][TRAP_HANDLER_MAX_NUM];
 
