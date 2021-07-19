@@ -19,6 +19,7 @@ static Context* kmt_context_save(Event e, Context* c)
 
 static Context* kmt_schedule(Event e, Context* c)
 {
+    assert(0);
     kmt->spin_lock(&task_lock);
     Context* ret = c;
 
@@ -71,6 +72,8 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 
     int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
 
+    kmt->spin_lock(&task_lock);
+
     for (int i = 0; i < CPU_NUM; i++) {
         if (task_num[i] <= temp) {
             temp = task_num[i];
@@ -89,7 +92,7 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
     }
 
     assert(task_pos < MAX_TASK_NUM);
-
+    kmt->spin_unlock(&task_lock);
     return 0;
 }
 
