@@ -62,6 +62,7 @@ static void os_init()
 
 static void os_run()
 {
+    iset(true);
     /*
     for (const char *s = "Hello World from CPU #*\n"; *s; s++)
     {
@@ -98,7 +99,7 @@ static Context* os_trap(Event ev, Context* context)
                 break;
         }
     }
-    panic_on(ret, "returning NULL context");
+    panic_on(!ret, "returning NULL context");
     //panic_on(sane_context(ret), "returning to invalid context");
     return ret;
 }
