@@ -64,9 +64,9 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 {
     task->name = name;
     Area stack = (Area) { .start = &task->stack, .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
-    Log("task->stack:%p", (uintptr_t)task->stack);
-    Log("stack start:%p", (uintptr_t)stack.start);
-    Log("stack end:%p", (uintptr_t)stack.end);
+    Log("task->stack:%d", (uintptr_t)task->stack);
+    Log("stack start:%d", (uintptr_t)stack.start);
+    Log("stack end:%d", (uintptr_t)stack.end);
     task->context = kcontext(stack, entry, arg);
 
     int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
