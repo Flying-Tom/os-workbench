@@ -83,7 +83,7 @@ static void os_init()
 
 static void os_run()
 {
-    iset(true);
+    //iset(true);
     while (1)
         ;
 }
