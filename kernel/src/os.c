@@ -16,7 +16,7 @@ static void trap_init()
 }
 
 #ifdef DEBUG_LOCAL
-static void tty_reader(void* arg)
+static void __attribute__((used)) tty_reader(void* arg)
 {
     device_t* tty = dev->lookup(arg);
     char cmd[128], resp[128], ps[16];
