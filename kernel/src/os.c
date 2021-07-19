@@ -42,13 +42,14 @@ static void os_init()
     pmm->init();
     kmt->init();
 
-    Log("Start Testcase");
+    puts("Start Testcase");
     kmt->sem_init(&empty, "empty", 5); // 缓冲区大小为 5
     kmt->sem_init(&fill, "fill", 0);
     for (int i = 0; i < 4; i++) // 4 个生产者
         kmt->create(pmm->alloc(sizeof(task_t)), "producer", producer, NULL);
     for (int i = 0; i < 5; i++) // 5 个消费者
         kmt->create(pmm->alloc(sizeof(task_t)), "consumer", consumer, NULL);
+    puts("End Testcase");
 }
 #else
 static void os_init()
@@ -111,7 +112,7 @@ static void os_on_irq(int seq, int event, handler_t handler)
     }
 
     assert(cnt < TRAP_HANDLER_MAX_NUM);
-    Log("trap_handlers[%d][%d] is available\n", seq, cnt);
+    //Log("trap_handlers[%d][%d] is available\n", seq, cnt);
     trap_handlers[seq][cnt].status = 1;
     trap_handlers[seq][cnt].seq = seq;
     trap_handlers[seq][cnt].event = event;

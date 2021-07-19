@@ -65,4 +65,10 @@ inline void unlock(lock_t* lk)
     atomic_xchg(lk, 0);
 }
 
+#ifdef PMM_DEBUG
+#define Log(...) _Log(__VA_ARGS__)
+#else
+#define Log(...)
+#endif
+
 #endif

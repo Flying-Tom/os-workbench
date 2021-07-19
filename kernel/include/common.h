@@ -21,17 +21,11 @@
 #define MAX_TASK_NUM 32
 #define lock_t int
 
-#define DEBUG
+#define KMT_DEBUG
 
 #define _Log(format, ...)                            \
     printf("\33[1;34m[%s,%d,%s] " format "\33[0m\n", \
         __FILE__, __LINE__, __func__, ##__VA_ARGS__)
-
-#ifdef DEBUG
-#define Log(...) _Log(__VA_ARGS__)
-#else
-#define Log(...)
-#endif
 
 #define STACK_SIZE 8192
 
