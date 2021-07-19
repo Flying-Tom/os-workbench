@@ -82,6 +82,7 @@ static void os_run()
 
 static Context* os_trap(Event ev, Context* context)
 {
+    printf("Enter os_trap\n");
     Context* ret = NULL;
 
     for (int i = SEQ_MIN; i < SEQ_MAX; i++) {
