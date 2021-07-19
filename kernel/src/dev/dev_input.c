@@ -99,8 +99,8 @@ static int input_init(device_t *dev) {
   kmt->sem_init(&in->event_sem, "events in queue", 0);
   kmt->sem_init(&sem_kbdirq, "keyboard-interrupt", 0);
 
-  os->on_irq(0, EVENT_IRQ_IODEV, input_notify);
-  os->on_irq(0, EVENT_IRQ_TIMER, input_notify);
+  os->on_irq(1, EVENT_IRQ_IODEV, input_notify);
+  os->on_irq(1, EVENT_IRQ_TIMER, input_notify);
   return 0;
 }
 
