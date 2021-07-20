@@ -64,7 +64,8 @@ static void os_init()
     dev->init();
 
     printf("Start Testcase\n");
-
+    printf("%d", task_cnt);
+    assert(0);
     kmt->sem_init(&empty, "empty", 5); // 缓冲区大小为 5
     kmt->sem_init(&fill, "fill", 0);
 

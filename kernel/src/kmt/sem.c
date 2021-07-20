@@ -9,10 +9,6 @@ void semmod_init()
 void sem_init(sem_t* sem, const char* name, int value)
 {
     kmt->spin_init(&sem->lock, name);
-
-    for (int i = 0; i < MAX_SEM_TASK_NUM; i++) {
-        sem->tasks[i] = NULL;
-    }
     sem->value = value;
     sem->tail = sem->head = 0;
 }
