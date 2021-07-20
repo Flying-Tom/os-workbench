@@ -60,10 +60,8 @@ static Context* kmt_schedule(Event e, Context* c)
     } else {
         idle_task.running = 1;
         cur_task = &idle_task;
-        assert(0);
     }
     kmt->spin_unlock(&task_lock);
-    assert(0);
     return cur_task->context;
 }
 
@@ -81,6 +79,7 @@ static void kmt_init()
     spinmod_init();
     semmod_init();
     task_cnt = 0;
+    kmt->spin_init(task_lock, "task_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
         cur_tasks[i] = &idle_tasks[i];
