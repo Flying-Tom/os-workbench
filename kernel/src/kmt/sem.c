@@ -3,7 +3,7 @@
 void semmod_init()
 {
     sem_t fuck;
-    printf("%d\n", sizeof(fuck->tasks) / sizeof(task_t*));
+    printf("%d\n", sizeof(fuck.tasks) / sizeof(task_t*));
 }
 
 void sem_init(sem_t* sem, const char* name, int value)
