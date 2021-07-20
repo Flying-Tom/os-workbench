@@ -40,9 +40,11 @@ void sem_signal(sem_t* sem)
 {
     kmt->spin_lock(&sem->lock);
     sem->value++;
-    if (sem->tasks[sem->head] != NULL) {
-        sem->tasks[sem->head] = NULL;
+    if (sem->value <= 0) {
+        task_t* obT = sem->tasks[sem->head];
         sem->head = (sem->head + 1) % MAX_SEM_TASK_NUM;
+        panic(obT->status == TASK_DEAD);
+        obT->status = TASK_AVAILABLE;
     }
     kmt->spin_unlock(&sem->lock);
 }
