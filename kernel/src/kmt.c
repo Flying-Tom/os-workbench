@@ -61,6 +61,7 @@ static Context* kmt_schedule(Event e, Context* c)
         idle_task.running = 1;
         cur_task = &idle_task;
         printf("fuck\n");
+        assert(0);
     }
     kmt->spin_unlock(&task_lock);
     return cur_task->context;
