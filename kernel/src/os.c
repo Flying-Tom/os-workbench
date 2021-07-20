@@ -111,7 +111,7 @@ static Context* os_trap(Event ev, Context* ctx)
 
 static void os_on_irq(int seq, int event, handler_t handler)
 {
-    trap_t& cur_trap = &trap_head;
+    trap_t* cur_trap = &trap_head;
     while (cur_trap->next != NULL) {
         if (cur_trap->next->seq > seq)
             break;
