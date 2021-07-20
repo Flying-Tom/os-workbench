@@ -104,9 +104,9 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
     task->stack = pmm->alloc(STACK_SIZE);
 
     Area stack = (Area) { .start = (void*)(&task->stack), .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
-    Log("task->stack:%d", (uintptr_t)task->stack);
-    Log("stack start:%d", (uintptr_t)stack.start);
-    Log("stack end:%d", (uintptr_t)stack.end);
+    //Log("task->stack:%d", (uintptr_t)task->stack);
+    //Log("stack start:%d", (uintptr_t)stack.start);
+    //Log("stack end:%d", (uintptr_t)stack.end);
     task->context = kcontext(stack, entry, arg);
 
     task->running = 0;

@@ -17,18 +17,22 @@ void sem_init(sem_t* sem, const char* name, int value)
 void sem_wait(sem_t* sem)
 {
     kmt->spin_lock(&sem->lock);
-    if (sem->value <= 0) {
+    bool flag = false;
+    sem->value--;
+    if (sem->value < 0) {
         sem->tasks[sem->tail] = cur_task;
         sem->tail = (sem->tail + 1) % MAX_SEM_TASK_NUM;
+        cur_task->status = TASK_WAITTING;
+        flag = true;
+    }
+    kmt->spin_unlock(&sem->lock);
+    if (flag) {
+        yield();
+        while (cur_task->status != TASK_AVAILABLE)
+            ;
     }
 
-    while (sem->value <= 0) {
-        kmt->spin_unlock(&sem->lock);
-        yield();
-        kmt->spin_lock(&sem->lock);
-    }
-    sem->value--;
-    kmt->spin_unlock(&sem->lock);
+    panic(cur_task->status == TASK_DEAD);
 }
 void sem_signal(sem_t* sem)
 {
