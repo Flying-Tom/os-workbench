@@ -118,7 +118,7 @@ static void os_on_irq(int seq, int event, handler_t handler)
         else
             cur_trap = cur_trap->next;
     }
-    trap_t* new_trap = (trap_t)pmm->alloc(sizeof(trap_t));
+    trap_t* new_trap = (trap_t*)pmm->alloc(sizeof(trap_t));
     new_trap->seq = seq;
     new_trap->event = event;
     new_trap->handler = handler;
