@@ -79,6 +79,7 @@ static void kmt_init()
 
     spinmod_init();
     semmod_init();
+    task_cnt = 0;
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
         cur_tasks[i] = &idle_tasks[i];
