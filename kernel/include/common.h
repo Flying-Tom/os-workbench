@@ -7,7 +7,6 @@
 #include <limits.h>
 #include <tool.h>
 
-
 #define CPU_CUR (uint8_t)(cpu_current())
 #define CPU_NUM (uint8_t)(cpu_count())
 #define MAX_CPU_NUM 8
@@ -40,10 +39,12 @@ struct spinlock {
     int cpu;
 };
 
+#define MAX_SEM_TASK_NUM 32
+
 struct semaphore {
     int value;
     spinlock_t lock;
-    task_t* tasks[MAX_TASK_NUM];
+    task_t* tasks[MAX_SEM_TASK_NUM];
     int head;
     int tail;
 };

@@ -1,7 +1,5 @@
 #include <kmt.h>
 
-#define MAX_SEM_TASK_NUM 32
-
 void semmod_init()
 {
 }
