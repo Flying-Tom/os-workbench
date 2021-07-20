@@ -3,16 +3,21 @@
 
 //#define DEBUG_LOCAL
 
-static trap_handler_t trap_handlers[SEQ_MAX + 1][TRAP_HANDLER_MAX_NUM];
+void handler_NULL()
+{
+    printf("Enter undefined handler!\n");
+    assert(0);
+}
+
+trap_t trap_head = (trap_t) {
+    .seq = INT_MIN,
+    .event = 0,
+    .handler = (handler_t)handler_NULL,
+    .next = NULL,
+};
 
 static void trap_init()
 {
-    for (int i = SEQ_MIN; i <= SEQ_MAX; i++) {
-        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
-            trap_handlers[i][j].handler = NULL;
-            trap_handlers[i][j].status = TRAP_EMPTY;
-        }
-    }
 }
 
 #ifdef DEBUG_LOCAL
@@ -88,44 +93,41 @@ static void os_run()
         ;
 }
 
-static Context* os_trap(Event ev, Context* context)
+static Context* os_trap(Event ev, Context* ctx)
 {
-    //printf("Enter os_trap\n");
-    Context* ret = NULL;
-
-    for (int i = SEQ_MIN; i <= SEQ_MAX; i++) {
-        for (int j = 0; j < TRAP_HANDLER_MAX_NUM; j++) {
-            if (trap_handlers[i][j].status == TRAP_USED) {
-                if (trap_handlers[i][j].event == EVENT_NULL || trap_handlers[i][j].event == ev.event) {
-                    Context* r = trap_handlers[i][j].handler(ev, context);
-                    panic_on(r && ret, "returning multiple contexts");
-                    if (r)
-                        ret = r;
-                }
-            } else
-                break;
+    Context* next = NULL;
+    for (trap_t* h = trap_head.next; h != NULL; h = h->next) {
+        if (h->event == EVENT_NULL || h->event == ev.event) {
+            Context* r = h->handler(ev, ctx);
+            panic_on(r && next, "returning multiple contexts");
+            if (r)
+                next = r;
         }
     }
-    panic_on(!ret, "returning NULL context");
-    //panic_on(sane_context(ret), "returning to invalid context");
-    return ret;
+    panic_on(!next, "returning NULL context");
+    //panic_on(sane_context(next), "returning to invalid context");
+    return next;
 }
 
 static void os_on_irq(int seq, int event, handler_t handler)
 {
-    int cnt;
-    for (cnt = SEQ_MIN; cnt < TRAP_HANDLER_MAX_NUM; cnt++) {
-        if (trap_handlers[seq][cnt].status == TRAP_EMPTY) {
+    trap_t cur_trap = &trap_head;
+    while (cur_trap->next != NULL) {
+        if (cur_trap->next->seq > seq)
             break;
-        }
+        else
+            cur_trap = cur_trap->next;
     }
+    trap_t* new_trap = (trap_t)pmm->alloc(sizeof(trap_t));
+    new_trap->seq = seq;
+    new_trap->event = event;
+    new_trap->handler = handler;
 
-    assert(cnt < TRAP_HANDLER_MAX_NUM);
-    //Log("trap_handlers[%d][%d] is available\n", seq, cnt);
-    trap_handlers[seq][cnt].status = TRAP_USED;
-    trap_handlers[seq][cnt].seq = seq;
-    trap_handlers[seq][cnt].event = event;
-    trap_handlers[seq][cnt].handler = handler;
+    if (cur_trap->next != NULL)
+        new_trap->next = cur_trap->next;
+    else
+        new_trap->next = NULL;
+    cur_trap->next = new_trap;
 }
 
 MODULE_DEF(os) = {

@@ -3,8 +3,16 @@
 
 #include <common.h>
 
-task_t* cur_task[MAX_CPU_NUM];
-task_t* tasks[MAX_CPU_NUM][MAX_TASK_NUM];
+task_t idle_tasks[MAX_CPU_NUM];
+task_t* cur_tasks[MAX_CPU_NUM];
+task_t* pre_tasks[MAX_CPU_NUM];
+task_t* tasks[512];
+
+int task_cnt;
+
+#define idle_task idle_tasks[CPU_CUR]
+#define cur_task cur_tasks[CPU_CUR]
+#define pre_task pre_tasks[CPU_CUR]
 
 /* spinlock */
 void spinmod_init();

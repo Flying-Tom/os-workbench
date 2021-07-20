@@ -7,6 +7,7 @@
 #include <limits.h>
 #include <tool.h>
 
+
 #define CPU_CUR (uint8_t)(cpu_current())
 #define CPU_NUM (uint8_t)(cpu_count())
 #define MAX_CPU_NUM 8
@@ -22,14 +23,15 @@ struct task {
 
     const char* name;
     enum task_status {
-        SLEEP,
-        DEAD,
+        TASK_EMPTY,
+        TASK_AVAILABLE,
+        TASK_WAITTING,
+        TASK_DEAD,
     } status;
-
+    int running, pause, id;
     Context* context;
-    int cpu;
 
-    char stack[STACK_SIZE];
+    char* stack;
 };
 
 struct spinlock {
@@ -46,21 +48,16 @@ struct semaphore {
     int tail;
 };
 
-#define SEQ_MIN 0
-#define SEQ_MAX 4
+//#define INT_MIN INT32_MIN
+//#define INT_MAX INT32_MAX
 
-#define TRAP_HANDLER_MAX_NUM 16
-
-struct trap_handler {
+struct trap {
     int seq;
     int event;
     handler_t handler;
-    enum trap_status {
-        TRAP_EMPTY,
-        TRAP_USED,
-    } status;
+    struct trap* next;
 };
 
-typedef struct trap_handler trap_handler_t;
+typedef struct trap trap_t;
 
 #endif

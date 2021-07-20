@@ -1,18 +1,19 @@
 #include <common.h>
 #include <kmt.h>
 
-int task_num[MAX_CPU_NUM];
-
 spinlock_t task_lock;
 
 static Context* kmt_context_save(Event e, Context* c)
 {
     kmt->spin_lock(&task_lock);
 
-    if (cur_task[CPU_CUR] != NULL) {
-        *cur_task[CPU_CUR]->context = *c;
-    }
+    if (pre_task != NULL) {
 
+        panic_on(pre_task->pause != 0, "pre_task should be paused");
+        pre_task->pause = 0;
+        pre_task = NULL;
+    }
+    cur_task->context = c;
     kmt->spin_unlock(&task_lock);
     return NULL;
 }
@@ -20,24 +21,55 @@ static Context* kmt_context_save(Event e, Context* c)
 static Context* kmt_schedule(Event e, Context* c)
 {
     kmt->spin_lock(&task_lock);
-    Context* ret = c;
+    int cnt = -1, id = 0;
 
-    int cnt = 0;
-    task_t* task_valid[MAX_TASK_NUM];
-    for (int i = 0; i < MAX_TASK_NUM; i++) {
-        if (tasks[CPU_CUR][i] != NULL) {
-            task_valid[cnt] = tasks[CPU_CUR][i];
-            cnt++;
+    if (task_cnt > 0) {
+        if (cur_task == &idle_task) {
+            id = 0;
+            cnt = task_cnt;
+        } else {
+            id = cur_task->id;
+            cnt = task_cnt - 1;
         }
+
+        do {
+            if (--cnt < 0)
+                break;
+            id = (id + 1) % task_cnt;
+
+        } while (tasks[id]->status != TASK_AVAILABLE || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
     }
 
-    if (cnt != 0) {
-        cur_task[CPU_CUR] = task_valid[rand() % cnt];
-        ret = cur_task[CPU_CUR]->context;
+    cur_task->running = 0;
+    assert(pre_task == NULL);
+
+    if (cur_task != &idle_task) {
+        if (cur_task->pause == 1)
+            pre_task = cur_task;
+        else
+            assert(0);
+    }
+
+    if (cnt >= 0) {
+        if (tasks[id]->status == TASK_AVAILABLE) {
+            tasks[id]->running = 1;
+            cur_task = tasks[id];
+        } else
+            assert(0);
+    } else {
+        idle_task.running = 1;
+        cur_task = &idle_task;
     }
     kmt->spin_unlock(&task_lock);
 
-    return ret;
+    return &(cur_task->context);
+}
+
+static void idle_entry()
+{
+    iset(true);
+    while (true)
+        yield();
 }
 
 static void kmt_init()
@@ -48,49 +80,43 @@ static void kmt_init()
     semmod_init();
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
-        cur_task[i] = NULL;
-        for (int j = 0; j < MAX_TASK_NUM; j++) {
-            tasks[i][j] = NULL;
-        }
-        task_num[i] = 0;
+        cur_tasks[i] = &idle_tasks[i];
+        pre_tasks[i] = NULL;
+        idle_tasks[i] = (task_t) {
+            .status = TASK_AVAILABLE,
+            .running = 0,
+            .pause = 0,
+            .id = -1,
+            .stack = pmm->alloc(STACK_SIZE),
+            .context = kcontext((Area) { .start = (void*)(&idle_tasks[i].stack), .end = (void*)((char*)(&idle_tasks[i].stack) + STACK_SIZE) }, idle_entry, NULL),
+        };
     }
 
-    os->on_irq(SEQ_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
-    os->on_irq(SEQ_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
+    os->on_irq(INT_MIN, EVENT_NULL, kmt_context_save); // 总是最先调用
+    os->on_irq(INT_MAX, EVENT_NULL, kmt_schedule); // 总是最后调用
     Log("kmt_init finished");
 }
 
 static int create(task_t* task, const char* name, void (*entry)(void* arg), void* arg)
 {
     task->name = name;
-    Area stack = (Area) { .start = &task->stack, .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
+    task->stack = pmm->alloc(STACK_SIZE);
+
+    Area stack = (Area) { .start = (void*)(&task->stack), .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
     Log("task->stack:%d", (uintptr_t)task->stack);
     Log("stack start:%d", (uintptr_t)stack.start);
     Log("stack end:%d", (uintptr_t)stack.end);
     task->context = kcontext(stack, entry, arg);
 
-    int temp = INT32_MAX, cpu_pos = -1, task_pos = 0;
+    task->running = 0;
+    task->pause = 0;
 
     kmt->spin_lock(&task_lock);
 
-    for (int i = 0; i < CPU_NUM; i++) {
-        if (task_num[i] <= temp) {
-            temp = task_num[i];
-            cpu_pos = i;
-        }
-    }
+    task->id = task_cnt;
+    tasks[task_cnt++] = task;
+    task->status = TASK_AVAILABLE;
 
-    task_num[cpu_pos]++;
-
-    for (task_pos = 0; task_pos < MAX_TASK_NUM; task_pos++) {
-        if (tasks[cpu_pos][task_pos] == NULL) {
-            tasks[cpu_pos][task_pos] = task;
-            task->cpu = cpu_pos;
-            break;
-        }
-    }
-
-    assert(task_pos < MAX_TASK_NUM);
     kmt->spin_unlock(&task_lock);
     return 0;
 }
@@ -98,11 +124,9 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 static void teardown(task_t* task)
 {
     kmt->spin_lock(&task_lock);
-    for (int i = 0; i < MAX_TASK_NUM; i++) {
-        if (tasks[task->cpu][i] == task) {
-            tasks[task->cpu][i] = NULL;
-        }
-    }
+    task->status = TASK_DEAD;
+    panic_on(task->running == 1, "task shouldn't be running");
+    pmm->free(task->stack);
     kmt->spin_unlock(&task_lock);
 }
 
