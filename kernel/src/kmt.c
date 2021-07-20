@@ -5,7 +5,7 @@ spinlock_t task_lock;
 
 static Context* kmt_context_save(Event e, Context* c)
 {
-    //kmt->spin_lock(&task_lock);
+    kmt->spin_lock(&task_lock);
 
     if (pre_task != NULL) {
 
@@ -15,7 +15,7 @@ static Context* kmt_context_save(Event e, Context* c)
         pre_task = NULL;
     }
     cur_task->context = c;
-    //kmt->spin_unlock(&task_lock);
+    kmt->spin_unlock(&task_lock);
     return NULL;
 }
 
