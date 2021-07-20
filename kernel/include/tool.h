@@ -1,8 +1,6 @@
 #ifndef TOOL_H
 #define TOOL_H
 
-#include <assert.h>
-
 #define max(a, b) ((a > b) ? (a) : (b))
 #define min(a, b) ((a < b) ? (a) : (b))
 
