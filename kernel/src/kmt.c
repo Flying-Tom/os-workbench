@@ -23,7 +23,7 @@ static Context* kmt_schedule(Event e, Context* c)
 {
     kmt->spin_lock(&task_lock);
     int cnt = -1, id = 0;
-
+    printf("%d\n", task_cnt);
     if (task_cnt > 0) {
         if (cur_task == &idle_task) {
             id = 0;
@@ -51,7 +51,7 @@ static Context* kmt_schedule(Event e, Context* c)
             assert(0);
     }
 
-    printf("%d\n", cnt);
+    //printf("%d\n", cnt);
     if (cnt >= 0) {
         if (tasks[id]->status == TASK_AVAILABLE) {
             tasks[id]->running = 1;
@@ -61,8 +61,6 @@ static Context* kmt_schedule(Event e, Context* c)
     } else {
         idle_task.running = 1;
         cur_task = &idle_task;
-        printf("fuck\n");
-        assert(0);
     }
     kmt->spin_unlock(&task_lock);
     return cur_task->context;
