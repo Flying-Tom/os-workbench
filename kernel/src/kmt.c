@@ -62,7 +62,7 @@ static Context* kmt_schedule(Event e, Context* c)
         cur_task = &idle_task;
     }
     kmt->spin_unlock(&task_lock);
-
+    assert(0);
     return cur_task->context;
 }
 
