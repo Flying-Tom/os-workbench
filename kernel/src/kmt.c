@@ -51,7 +51,7 @@ static Context* kmt_schedule(Event e, Context* c)
             assert(0);
     }
 
-    //printf("%d\n", cnt);
+    printf("id:%d cnt:%d\n", id, cnt);
     if (cnt >= 0) {
         if (tasks[id]->status == TASK_AVAILABLE) {
             tasks[id]->running = 1;

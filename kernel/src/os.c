@@ -62,9 +62,7 @@ static void os_init()
     pmm->init();
     kmt->init();
     dev->init();
-    printf("%d\n", task_cnt);
-    assert(0);
-    
+
     printf("Start Testcase\n");
     kmt->sem_init(&empty, "empty", 5); // 缓冲区大小为 5
     kmt->sem_init(&fill, "fill", 0);
