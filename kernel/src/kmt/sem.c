@@ -34,7 +34,7 @@ void sem_wait(sem_t* sem)
             ;
     }
 
-    //panic(cur_task->status == TASK_DEAD);
+    panic_on(cur_task->status == TASK_DEAD, "cur_task is dead");
 }
 void sem_signal(sem_t* sem)
 {
@@ -43,7 +43,7 @@ void sem_signal(sem_t* sem)
     if (sem->value <= 0) {
         task_t* obT = sem->tasks[sem->head];
         sem->head = (sem->head + 1) % MAX_SEM_TASK_NUM;
-        panic(obT->status == TASK_DEAD);
+        panic_on(obT->status == TASK_DEAD, "obT is dead");
         obT->status = TASK_AVAILABLE;
     }
     kmt->spin_unlock(&sem->lock);
