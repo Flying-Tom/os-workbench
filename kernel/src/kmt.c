@@ -62,7 +62,7 @@ static Context* kmt_schedule(Event e, Context* c)
     }
     kmt->spin_unlock(&task_lock);
 
-    return &(cur_task->context);
+    return cur_task->context;
 }
 
 static void idle_entry()
