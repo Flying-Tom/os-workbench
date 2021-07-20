@@ -32,7 +32,7 @@ void sem_wait(sem_t* sem)
             ;
     }
 
-    panic(cur_task->status == TASK_DEAD);
+    //panic(cur_task->status == TASK_DEAD);
 }
 void sem_signal(sem_t* sem)
 {
