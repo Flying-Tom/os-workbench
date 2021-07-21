@@ -67,6 +67,7 @@ static Context* kmt_schedule(Event e, Context* c)
 
 static void idle_entry()
 {
+    assert(0);
     iset(true);
     while (true)
         yield();
