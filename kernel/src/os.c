@@ -125,10 +125,7 @@ static void os_on_irq(int seq, int event, handler_t handler)
     new_trap->event = event;
     new_trap->handler = handler;
 
-    if (cur_trap->next != NULL)
-        new_trap->next = cur_trap->next;
-    else
-        new_trap->next = NULL;
+    new_trap->next = (cur_trap->next != NULL) ? cur_trap->next : NULL;
     cur_trap->next = new_trap;
 }
 
