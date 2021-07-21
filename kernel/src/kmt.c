@@ -21,9 +21,8 @@ static Context* kmt_context_save(Event e, Context* c)
 
 static Context* kmt_schedule(Event e, Context* c)
 {
-    int cnt = -1, id = 0;
     kmt->spin_lock(&task_lock);
-
+    int cnt = -1, id = 0;
     if (task_cnt > 0) {
         if (cur_task == &idle_task) {
             id = 0;
@@ -105,7 +104,7 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
     task->name = name;
     task->stack = pmm->alloc(STACK_SIZE);
 
-    Area stack = (Area) { .start = (void*)(&task->stack), .end = (void*)((char*)(&task->stack) + STACK_SIZE) };
+    Area stack = (Area) { .start = (void*)(task->stack), .end = (void*)((char*)(task->stack) + STACK_SIZE) };
     task->context = kcontext(stack, entry, arg);
 
     task->running = 0;
