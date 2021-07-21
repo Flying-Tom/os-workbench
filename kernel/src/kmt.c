@@ -36,26 +36,21 @@ static Context* kmt_schedule(Event e, Context* c)
                 break;
             id = (id + 1) % task_cnt;
 
-        } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1);
+        } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
     }
 
     nxt_task->running = 0;
-    assert(cur_task == NULL);
 
     if (nxt_task != &idle_task) {
-        if (nxt_task->pause == 1)
-            cur_task = nxt_task;
-        else
-            assert(0);
+        panic_on(nxt_task->pause == 0, "nxt_task should be paused");
+        cur_task = nxt_task;
     }
 
-    //printf("id:%d cnt:%d task_cnt:%d\n", id, cnt, task_cnt);
     if (cnt >= 0) {
-        if (tasks[id]->status == TASK_RUNNING) {
-            tasks[id]->running = 1;
-            nxt_task = tasks[id];
-        } else
-            assert(0);
+        panic_on(tasks[id]->status != TASK_RUNNING, "tasks[id] should be running");
+        tasks[id]->running = 1;
+        nxt_task = tasks[id];
+
     } else {
         idle_task.running = 1;
         nxt_task = &idle_task;
@@ -95,7 +90,6 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 {
     task->name = name;
     task->stack = pmm->alloc(STACK_SIZE);
-
     Area stack = (Area) { .start = (void*)(task->stack), .end = (void*)((char*)(task->stack) + STACK_SIZE) };
     task->context = kcontext(stack, entry, arg);
 

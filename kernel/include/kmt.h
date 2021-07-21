@@ -6,7 +6,7 @@
 task_t idle_tasks[MAX_CPU_NUM];
 task_t* nxt_tasks[MAX_CPU_NUM];
 task_t* cur_tasks[MAX_CPU_NUM];
-task_t* tasks[512];
+task_t* tasks[1024];
 
 int task_cnt;
 
