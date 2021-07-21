@@ -36,7 +36,7 @@ static Context* kmt_schedule(Event e, Context* c)
                 break;
             id = (id + 1) % task_cnt;
 
-        } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
+        } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1);
     }
 
     nxt_task->running = 0;
