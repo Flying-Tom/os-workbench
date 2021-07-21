@@ -21,9 +21,9 @@ static Context* kmt_context_save(Event e, Context* c)
 
 static Context* kmt_schedule(Event e, Context* c)
 {
-    kmt->spin_lock(&task_lock);
     int cnt = -1, id = 0;
-    printf("%d\n", task_cnt);
+    kmt->spin_lock(&task_lock);
+
     if (task_cnt > 0) {
         if (cur_task == &idle_task) {
             id = 0;
