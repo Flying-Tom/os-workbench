@@ -10,8 +10,7 @@ static Context* kmt_context_save(Event e, Context* c)
     if (pre_task != NULL) {
 
         panic_on(pre_task->pause == 0, "pre_task should be paused");
-        //pre_task->pause = 0;
-        atomic_xchg(&pre_task->pause, 0);
+        pre_task->pause = 0;
         pre_task = NULL;
     }
     cur_task->context = c;
