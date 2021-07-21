@@ -36,7 +36,7 @@ static Context* kmt_schedule(Event e, Context* c)
                 break;
             id = (id + 1) % task_cnt;
 
-        } while (tasks[id]->status != TASK_AVAILABLE || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
+        } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
     }
 
     cur_task->running = 0;
@@ -51,7 +51,7 @@ static Context* kmt_schedule(Event e, Context* c)
 
     //printf("id:%d cnt:%d task_cnt:%d\n", id, cnt, task_cnt);
     if (cnt >= 0) {
-        if (tasks[id]->status == TASK_AVAILABLE) {
+        if (tasks[id]->status == TASK_RUNNING) {
             tasks[id]->running = 1;
             cur_task = tasks[id];
         } else
@@ -77,7 +77,7 @@ static void kmt_init()
         cur_tasks[i] = &idle_tasks[i];
         pre_tasks[i] = NULL;
         idle_tasks[i] = (task_t) {
-            .status = TASK_AVAILABLE,
+            .status = TASK_RUNNING,
             .running = 0,
             .pause = 0,
             .id = -1,
@@ -106,7 +106,7 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 
     task->id = task_cnt;
     tasks[task_cnt++] = task;
-    task->status = TASK_AVAILABLE;
+    task->status = TASK_RUNNING;
 
     kmt->spin_unlock(&task_lock);
     return 0;

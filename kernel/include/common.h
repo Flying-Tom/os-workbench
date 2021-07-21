@@ -23,7 +23,7 @@ struct task {
     const char* name;
     enum task_status {
         TASK_EMPTY,
-        TASK_AVAILABLE,
+        TASK_RUNNING,
         TASK_WAITTING,
         TASK_DEAD,
     } status;
