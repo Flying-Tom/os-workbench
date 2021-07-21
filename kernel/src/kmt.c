@@ -65,14 +65,6 @@ static Context* kmt_schedule(Event e, Context* c)
     return cur_task->context;
 }
 
-static void idle_entry()
-{
-    assert(0);
-    iset(true);
-    while (true)
-        yield();
-}
-
 static void kmt_init()
 {
     Log("kmt_init start");
