@@ -91,7 +91,7 @@ static void kmt_init()
             .pause = 0,
             .id = -1,
             .stack = pmm->alloc(STACK_SIZE),
-            .context = kcontext((Area) { .start = (void*)(&idle_tasks[i].stack), .end = (void*)((char*)(&idle_tasks[i].stack) + STACK_SIZE) }, idle_entry, NULL),
+            .context = kcontext((Area) { .start = (void*)(&idle_tasks[i].stack), .end = (void*)((char*)(&idle_tasks[i].stack) + STACK_SIZE) }, NULL, NULL),
         };
     }
 
