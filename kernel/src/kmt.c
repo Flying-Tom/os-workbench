@@ -23,7 +23,7 @@ static Context* kmt_schedule(Event e, Context* c)
     kmt->spin_lock(&task_lock);
     int cnt = -1, id = 0;
     if (task_cnt > 0) {
-        if (nxt_task == idle_task) {
+        if (nxt_task == &idle_task) {
             id = 0;
             cnt = task_cnt;
         } else {
@@ -40,20 +40,25 @@ static Context* kmt_schedule(Event e, Context* c)
     }
 
     nxt_task->running = 0;
+    assert(cur_task == NULL);
 
-    if (nxt_task != idle_task) {
-        panic_on(nxt_task->pause == 0, "nxt_task should be paused");
-        cur_task = nxt_task;
+    if (nxt_task != &idle_task) {
+        if (nxt_task->pause == 1)
+            cur_task = nxt_task;
+        else
+            assert(0);
     }
 
+    //printf("id:%d cnt:%d task_cnt:%d\n", id, cnt, task_cnt);
     if (cnt >= 0) {
-        panic_on(tasks[id]->status != TASK_RUNNING, "tasks[id] should be running");
-        tasks[id]->running = 1;
-        nxt_task = tasks[id];
-
+        if (tasks[id]->status == TASK_RUNNING) {
+            tasks[id]->running = 1;
+            nxt_task = tasks[id];
+        } else
+            assert(0);
     } else {
-        idle_task->running = 1;
-        nxt_task = idle_task;
+        idle_task.running = 1;
+        nxt_task = &idle_task;
     }
     kmt->spin_unlock(&task_lock);
     return nxt_task->context;
@@ -69,16 +74,15 @@ static void kmt_init()
     kmt->spin_init(&task_lock, "task_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
-        idle_tasks[i] = pmm->alloc(sizeof(task_t*));
-        nxt_tasks[i] = idle_tasks[i];
+        nxt_tasks[i] = &idle_tasks[i];
         cur_tasks[i] = NULL;
-        *idle_tasks[i] = (task_t) {
+        idle_tasks[i] = (task_t) {
             .status = TASK_RUNNING,
             .running = 0,
             .pause = 0,
             .id = -1,
             .stack = pmm->alloc(STACK_SIZE),
-            .context = kcontext((Area) { .start = (void*)(idle_tasks[i]->stack), .end = (void*)((char*)(idle_tasks[i]->stack) + STACK_SIZE) }, NULL, NULL),
+            .context = kcontext((Area) { .start = (void*)(&idle_tasks[i].stack), .end = (void*)((char*)(&idle_tasks[i].stack) + STACK_SIZE) }, NULL, NULL),
         };
     }
 
@@ -91,6 +95,7 @@ static int create(task_t* task, const char* name, void (*entry)(void* arg), void
 {
     task->name = name;
     task->stack = pmm->alloc(STACK_SIZE);
+
     Area stack = (Area) { .start = (void*)(task->stack), .end = (void*)((char*)(task->stack) + STACK_SIZE) };
     task->context = kcontext(stack, entry, arg);
 
