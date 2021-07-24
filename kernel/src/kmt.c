@@ -69,7 +69,7 @@ static void kmt_init()
     kmt->spin_init(&task_lock, "task_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
-        idle_task[i] = (task_t*)pmm->alloc(sizeof(task_t));
+        idle_tasks[i] = pmm->alloc(sizeof(task_t*));
         nxt_tasks[i] = idle_tasks[i];
         cur_tasks[i] = NULL;
         *idle_tasks[i] = (task_t) {
