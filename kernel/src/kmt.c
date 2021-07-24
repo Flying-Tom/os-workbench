@@ -23,7 +23,7 @@ static Context* kmt_schedule(Event e, Context* c)
     kmt->spin_lock(&task_lock);
     int cnt = -1, id = 0;
     if (task_cnt > 0) {
-        if (nxt_task == &idle_task) {
+        if (nxt_task == idle_task) {
             id = 0;
             cnt = task_cnt;
         } else {
@@ -41,7 +41,7 @@ static Context* kmt_schedule(Event e, Context* c)
 
     nxt_task->running = 0;
 
-    if (nxt_task != &idle_task) {
+    if (nxt_task != idle_task) {
         panic_on(nxt_task->pause == 0, "nxt_task should be paused");
         cur_task = nxt_task;
     }
@@ -52,8 +52,8 @@ static Context* kmt_schedule(Event e, Context* c)
         nxt_task = tasks[id];
 
     } else {
-        idle_task.running = 1;
-        nxt_task = &idle_task;
+        idle_task->running = 1;
+        nxt_task = idle_task;
     }
     kmt->spin_unlock(&task_lock);
     return nxt_task->context;
@@ -69,7 +69,8 @@ static void kmt_init()
     kmt->spin_init(&task_lock, "task_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
-        nxt_tasks[i] = &idle_tasks[i];
+        idle_task[i] = pmm->alloc(sizeof(task_t));
+        nxt_tasks[i] = idle_tasks[i];
         cur_tasks[i] = NULL;
         idle_tasks[i] = (task_t) {
             .status = TASK_RUNNING,
@@ -77,7 +78,7 @@ static void kmt_init()
             .pause = 0,
             .id = -1,
             .stack = pmm->alloc(STACK_SIZE),
-            .context = kcontext((Area) { .start = (void*)(&idle_tasks[i].stack), .end = (void*)((char*)(&idle_tasks[i].stack) + STACK_SIZE) }, NULL, NULL),
+            .context = kcontext((Area) { .start = (void*)(idle_tasks[i]->stack), .end = (void*)((char*)(idle_tasks[i]->stack) + STACK_SIZE) }, NULL, NULL),
         };
     }
 
