@@ -2,10 +2,11 @@
 #include <kmt.h>
 
 spinlock_t task_lock;
+spinlock_t os_trap_lock;
 
 static Context* kmt_context_save(Event e, Context* c)
 {
-    kmt->spin_lock(&task_lock);
+    kmt->spin_lock(&os_trap_lock);
 
     if (pre_task != NULL) {
 
@@ -14,13 +15,13 @@ static Context* kmt_context_save(Event e, Context* c)
         pre_task = NULL;
     }
     cur_task->context = c;
-    kmt->spin_unlock(&task_lock);
+    kmt->spin_unlock(&os_trap_lock);
     return NULL;
 }
 
 static Context* kmt_schedule(Event e, Context* c)
 {
-    kmt->spin_lock(&task_lock);
+    kmt->spin_lock(&os_trap_lock);
     int cnt = -1, id = 0;
     if (task_cnt > 0) {
         if (cur_task == &idle_task) {
@@ -60,7 +61,7 @@ static Context* kmt_schedule(Event e, Context* c)
         idle_task.running = 1;
         cur_task = &idle_task;
     }
-    kmt->spin_unlock(&task_lock);
+    kmt->spin_unlock(&os_trap_lock);
     return cur_task->context;
 }
 
@@ -72,6 +73,7 @@ static void kmt_init()
     semmod_init();
     task_cnt = 0;
     kmt->spin_init(&task_lock, "task_lock");
+    kmt->spin_init(&os_trap_lock, "os_trap_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
         cur_tasks[i] = &idle_tasks[i];
