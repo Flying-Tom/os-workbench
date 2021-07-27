@@ -7,13 +7,13 @@ static Context* kmt_context_save(Event e, Context* c)
 {
     kmt->spin_lock(&task_lock);
 
-    if (cur_task != NULL) {
+    if (pre_task != NULL) {
 
-        panic_on(cur_task->pause == 0, "cur_task should be paused");
-        cur_task->pause = 0;
-        cur_task = NULL;
+        panic_on(pre_task->pause == 0, "pre_task should be paused");
+        pre_task->pause = 0;
+        pre_task = NULL;
     }
-    nxt_task->context = c;
+    cur_task->context = c;
     kmt->spin_unlock(&task_lock);
     return NULL;
 }
@@ -23,11 +23,11 @@ static Context* kmt_schedule(Event e, Context* c)
     kmt->spin_lock(&task_lock);
     int cnt = -1, id = 0;
     if (task_cnt > 0) {
-        if (nxt_task == &idle_task) {
+        if (cur_task == &idle_task) {
             id = 0;
             cnt = task_cnt;
         } else {
-            id = nxt_task->id;
+            id = cur_task->id;
             cnt = task_cnt - 1;
         }
 
@@ -39,12 +39,12 @@ static Context* kmt_schedule(Event e, Context* c)
         } while (tasks[id]->status != TASK_RUNNING || tasks[id]->running == 1 || atomic_xchg(&tasks[id]->pause, 1));
     }
 
-    nxt_task->running = 0;
-    assert(cur_task == NULL);
+    cur_task->running = 0;
+    assert(pre_task == NULL);
 
-    if (nxt_task != &idle_task) {
-        if (nxt_task->pause == 1)
-            cur_task = nxt_task;
+    if (cur_task != &idle_task) {
+        if (cur_task->pause == 1)
+            pre_task = cur_task;
         else
             assert(0);
     }
@@ -53,15 +53,15 @@ static Context* kmt_schedule(Event e, Context* c)
     if (cnt >= 0) {
         if (tasks[id]->status == TASK_RUNNING) {
             tasks[id]->running = 1;
-            nxt_task = tasks[id];
+            cur_task = tasks[id];
         } else
             assert(0);
     } else {
         idle_task.running = 1;
-        nxt_task = &idle_task;
+        cur_task = &idle_task;
     }
     kmt->spin_unlock(&task_lock);
-    return nxt_task->context;
+    return cur_task->context;
 }
 
 static void kmt_init()
@@ -74,8 +74,8 @@ static void kmt_init()
     kmt->spin_init(&task_lock, "task_lock");
 
     for (int i = 0; i < MAX_CPU_NUM; i++) {
-        nxt_tasks[i] = &idle_tasks[i];
-        cur_tasks[i] = NULL;
+        cur_tasks[i] = &idle_tasks[i];
+        pre_tasks[i] = NULL;
         idle_tasks[i] = (task_t) {
             .status = TASK_RUNNING,
             .running = 0,

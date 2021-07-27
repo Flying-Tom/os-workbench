@@ -18,19 +18,19 @@ void sem_wait(sem_t* sem)
     bool flag = false;
     sem->value--;
     if (sem->value < 0) {
-        sem->tasks[sem->tail] = nxt_task;
+        sem->tasks[sem->tail] = cur_task;
         sem->tail = (sem->tail + 1) % MAX_SEM_TASK_NUM;
-        nxt_task->status = TASK_WAITTING;
+        cur_task->status = TASK_WAITTING;
         flag = true;
     }
     kmt->spin_unlock(&sem->lock);
     if (flag) {
         yield();
-        while (nxt_task->status != TASK_RUNNING)
+        while (cur_task->status != TASK_RUNNING)
             ;
     }
 
-    panic_on(nxt_task->status == TASK_DEAD, "nxt_task is dead");
+    panic_on(cur_task->status == TASK_DEAD, "cur_task is dead");
 }
 void sem_signal(sem_t* sem)
 {
