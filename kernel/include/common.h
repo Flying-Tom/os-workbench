@@ -7,7 +7,7 @@
 #include <limits.h>
 #include <tool.h>
 
-#define CPU_CUR (uint8_t)(cpu_current())
+#define CPU_CUR (uint8_t)(rand() % cpu_current())
 #define CPU_NUM (uint8_t)(cpu_count())
 #define MAX_CPU_NUM 8
 
