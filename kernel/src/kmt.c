@@ -44,19 +44,16 @@ static Context* kmt_schedule(Event e, Context* c)
     assert(pre_task == NULL);
 
     if (cur_task != &idle_task) {
-        if (cur_task->pause == 1)
-            pre_task = cur_task;
-        else
-            assert(0);
+        panic_on(cur_task->pause == 0, "cur_task->pause should be 1");
+        pre_task = cur_task;
     }
 
     //printf("id:%d cnt:%d task_cnt:%d\n", id, cnt, task_cnt);
     if (cnt >= 0) {
-        if (tasks[id]->status == TASK_RUNNING) {
-            tasks[id]->running = 1;
-            cur_task = tasks[id];
-        } else
-            assert(0);
+        panic_on(tasks[id]->status != TASK_RUNNING, "tasks[id] should be running");
+        tasks[id]->running = 1;
+        cur_task = tasks[id];
+
     } else {
         idle_task.running = 1;
         cur_task = &idle_task;
