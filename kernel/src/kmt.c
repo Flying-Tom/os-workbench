@@ -52,12 +52,11 @@ static Context* kmt_schedule(Event e, Context* c)
     if (cnt >= 0) {
         panic_on(tasks[id]->status != TASK_RUNNING, "tasks[id] should be running");
         cur_task = tasks[id];
-        cur_task->running = 1;
 
-    } else {
+    } else
         cur_task = &idle_task;
-        cur_task->running = 1;
-    }
+
+    cur_task->running = 1;
     kmt->spin_unlock(&os_trap_lock);
     return cur_task->context;
 }
