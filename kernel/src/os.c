@@ -62,6 +62,7 @@ static void os_init()
     pmm->init();
     kmt->init();
     dev->init();
+    vfs->init();
 
     printf("Start Testcase\n");
     kmt->sem_init(&empty, "empty", 5); // 缓冲区大小为 5
@@ -85,6 +86,7 @@ static void os_init()
     trap_init();
     pmm->init();
     kmt->init();
+    vfs->init();
 }
 #endif
 
