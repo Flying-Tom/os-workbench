@@ -1,7 +1,8 @@
 #include <vfs.h>
 
-void vfs_init() {
-
+void vfs_init()
+{
+    assert(0);
 };
 
 int write(int fd, void* buf, int count)
