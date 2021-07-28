@@ -48,7 +48,6 @@ static Context* kmt_schedule(Event e, Context* c)
         pre_task = cur_task;
     }
 
-    //printf("id:%d cnt:%d task_cnt:%d\n", id, cnt, task_cnt);
     if (cnt >= 0) {
         panic_on(tasks[id]->status != TASK_RUNNING, "tasks[id] should be running");
         cur_task = tasks[id];
