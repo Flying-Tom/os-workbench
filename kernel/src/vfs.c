@@ -2,39 +2,50 @@ void vfs_init() {
 
 };
 
-int write(int fd, void* buf, int count) {
-
+int write(int fd, void* buf, int count)
+{
+    return 0;
 };
-int read(int fd, void* buf, int count) {
-
+int read(int fd, void* buf, int count)
+{
+    return 0;
 };
-int close(int fd) {
-
+int close(int fd)
+{
+    return 0;
 };
-int open(const char* pathname, int flags) {
-
+int open(const char* pathname, int flags)
+{
+    return 0;
 };
 
-int lseek(int fd, int offset, int whence) {
-
+int lseek(int fd, int offset, int whence)
+{
+    return 0;
 };
-int link(const char* oldpath, const char* newpath) {
-
+int link(const char* oldpath, const char* newpath)
+{
+    return 0;
 };
-int unlink(const char* pathname) {
-
+int unlink(const char* pathname)
+{
+    return 0;
 };
-int fstat(int fd, struct ufs_stat* buf) {
-
+int fstat(int fd, struct ufs_stat* buf)
+{
+    return 0;
 };
-int mkdir(const char* pathname) {
-
+int mkdir(const char* pathname)
+{
+    return 0;
 };
-int chdir(const char* path) {
-
+int chdir(const char* path)
+{
+    return 0;
 };
-int dup(int fd) {
-
+int dup(int fd)
+{
+    return 0;
 };
 
 MODULE_DEF(vfs) = {
