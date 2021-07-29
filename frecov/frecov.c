@@ -186,7 +186,7 @@ int main(int argc, char* argv[])
                         }
                     }
                     if ((ldir->LDIR_Ord >> 6 & 1) == 1) {
-                        //printf("123long %s\n", name_buf);
+                        printf("123 %s\n", name_buf);
                         break;
                     }
                     if (strlen(name_buf) > 40)
@@ -202,7 +202,7 @@ int main(int argc, char* argv[])
                     //bmp_name[bmp_name_cnt][i] = dir->DIR_Name[i];
                     name_buf[i] = dir->DIR_Name[i];
                 }
-                printf("123short %s\n", name_buf);
+                printf("123 %s\n", name_buf);
             }
         }
     }
